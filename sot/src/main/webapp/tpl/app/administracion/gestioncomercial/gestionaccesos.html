@@ -1,0 +1,100 @@
+<div class="modal-header bg-info">
+	<h3 class="modal-title">Gesti&oacute;n Comercial -
+		Actualizaci&oacute;n de Productos</h3>
+</div>
+<div class="modal-body wrapper-lg" ng-init="init()">
+	<div class="row">
+
+		<div class="col-sm-4">
+
+			<form name="form" class="form-validation">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<span class="h4">{{renovacionObj.distribucion.suscripcion.producto.nombre}}</span>
+					</div>
+					<div class="panel-body">
+						<p class="text-muted">Seleccione el producto que necesita
+							actualizar</p>
+						<div class="form-group">
+							<label>Producto </label> <select class="form-control"
+								ng-model="producto" ng-change="seleccionarProducto()" required
+								ng-options="p.nombre for p in productosAccesos">
+								<option value="">Seleccione un producto...</option>
+
+							</select>
+						</div>
+						<div class="form-group">
+							<label>Accesos </label> <input type="number"
+								class="form-control col-sm-3" ng-model="accesosNuevos"
+								ui-validate="'validarMinMax($value)'" required> <span
+								ng-show="producto!=null"> - Min: <span
+								class="badge bg-primary"> {{minimo}}</span> Max: <span
+								class="badge bg-primary"> {{maximo}}</span></span>
+
+						</div>
+
+
+					</div>
+					<footer class="panel-footer text-right bg-light lter">
+						<button class="btn btn-success" ng-disabled="form.$invalid"
+							ng-click="generar()">Generar accesos</button>
+					</footer>
+				</div>
+			</form>
+
+		</div>
+
+		<div class="col-sm-8">
+
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<span class="label bg-success"> {{renovacionObj.renovacionDetalle.accesosRenovacion.length}}</span>  Accesos de la
+					Suscripci&oacute;n 
+
+				</div>
+
+				<div class="panel-body">
+				
+					<table st-table="rowCollectionBasic"
+						class="table table-bordered table-striped"
+						style="font-size: x-small">
+						<thead>
+							<tr>
+								<th style="width: 1%"></th>
+								<th style="width: 1%">#</th>
+								<th>Usuario</th>
+								<th>Clave</th>
+								
+								<th>Tipo</th>
+								<th>Email</th>
+								<th>Nombre</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="a in renovacionObj.renovacionDetalle.accesosRenovacion">
+								<td><a class="btn btn-xs btn-danger"
+									ng-click="eliminarAcceso($index)" tooltip="Eliminar"><i
+										class="fa fa-times"></i> </a></td>
+								<td>{{$index+1}}</td>
+								<td>{{a.usuario}}</td>
+								<td>{{a.clave}}</td>
+								<td>{{a.tipoAcceso.nombre}}</td>
+								<td><input type="email" ng-model="a.email"></td>
+								<td><input type="text" ng-model="a.nombre"></td>
+
+							</tr>
+						</tbody>
+					</table>
+				</div>
+
+			</div>
+
+		</div>
+
+
+	</div>
+</div>
+<div class="modal-footer">
+	<button class="btn btn-info" ng-click="aceptar()" ng-disabled="form.$invalid">Aceptar</button>
+	<button class="btn btn-default" ng-click="cerrar()">Cerrar</button>
+</div>

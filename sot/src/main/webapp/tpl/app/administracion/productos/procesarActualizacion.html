@@ -1,0 +1,100 @@
+<div class="modal-header bg-success">
+	<h3 class="modal-title">
+		<i class="fa fa-cog"></i> Procesar Actualización
+	</h3>
+</div>
+<div class="modal-body wrapper-lg" ng-init="init()">
+	<form name="formProcesar"
+		class="form-validation ng-pristine ng-invalid ng-invalid-required ng-valid-pattern ng-valid-validator">
+		<div class="modal-body m">
+			<div class="row">
+				<div class="col-sm-12">
+					<span class="alert alert-info col-sm-12"><i
+						class="fa fa-exclamation-triangle"></i> Indique si el aviso fue
+						<strong>enviado</strong>, caso contrario se dará de <strong>baja</strong> el mismo.</span> <br>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<div class="clearfix">
+								<div class="clear">
+									<div class="h3 m-t-xs m-b-xs">
+										<i class="icon-user"></i>
+										{{aviso.suscripcion.clienteP.nombres}}
+										{{aviso.suscripcion.clienteP.apellidos}}
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="list-group no-radius alt">
+							<a class="list-group-item"
+								href="#"> <span class="pull-right"><strong>{{aviso.suscripcion.producto.nombre}}</strong></span>
+								<i class="icon-bag text-muted text-info"></i> Producto
+							</a> <a class="list-group-item" href="#"> <span
+								class="badge bg-success">{{aviso.version}}</span> <i
+								class="glyphicon glyphicon-sound-7-1 text-muted text-info"></i> Versión
+							</a> <a class="list-group-item" href="#"> <span
+								class="badge bg-info">{{aviso.fechaCreacion}}</span> <i
+								class="icon-calendar text-muted text-info"></i> Fecha creación
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<div class="row">
+								<div class="col-sm-3">
+									<label><strong>Enviado</strong></label>
+								</div>
+								<div class="col-sm-9">
+									<label class="i-switch bg-info m-t-xs m-r"> <input
+										type="checkbox" checked ng-model="enviado"
+										ng-change="validar()"> <i></i>
+									</label>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-12">
+									<br>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-3">
+									<label><strong>Observación</strong></label>
+								</div>
+								<div class="col-sm-9">
+									<textarea type="text"
+										class="form-control ng-pristine ng-invalid ng-invalid-required ng-touched"
+										ng-model="observacion" placeholder="Observaciones..." rows="5"
+										cols="40" ng-change="validar()"></textarea>
+								</div>
+							</div>
+							<div class="row" ng-if="validado==false">
+								<div class="col-sm-12">
+									<br> <span class="alert alert-danger col-sm-12">Ingrese
+										el campo observación.</span>
+								</div>
+							</div>
+						</div>
+						<div class="panel-footer pull-right">
+							<button type="submit" class="btn btn-success btn-addon"
+								ng-click="procesar()" ng-disabled="!validado">
+								<i class="fa fa-check"></i> Procesar
+							</button>
+							<button class="btn btn-default btn-addon" ng-click="cancel()">
+								<i class="fa fa-times"></i> Cerrar
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+</div>

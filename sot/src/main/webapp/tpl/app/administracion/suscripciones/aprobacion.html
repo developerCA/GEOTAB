@@ -1,0 +1,235 @@
+<toaster-container
+	toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+
+<div class="wrapper-md" ng-init="selectOperacion(1);traerNotasPedido()"
+	ng-show="!nuevo">
+
+
+	<div class="panel panel-info">
+
+		<div class="panel-body">
+
+			<div class="table-responsive">
+
+				<table id="dt" ui-jq="dataTable"
+					ng-if="notasPedido!=undefined||null"
+					class="table table-striped m-b-none example"
+					ui-options="{
+						oLanguage: {sUrl: 'vendor/jquery/datatables/spanish.txt'},
+						lengthChange:false
+						}">
+					<thead>
+						<tr>
+							<th>#</th>
+							<td style="width: 1%"></td>
+							<th style="width: 13%">O.I.T</th>
+							<th style="width: 13%">O.E.T</th>
+							<th style="width: 30%">Cliente</th>
+							<th style="width: 30%">Responsable</th>
+
+
+							<th style="width: 10%">Fecha Gesti&oacute;n</th>
+							<th style="width: 22%"></th>
+<!-- 							<th></th> -->
+
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="i in notasPedido">
+							<td>{{$index+1}}</td>
+							<td><i class="{{i.idCatalogo.icono}}"></i></td>
+							<td>{{i.ordenInterna}}</td>
+							<td>{{i.numeroReferencia}}</td>
+							<td>{{i.cliente.nombres}} {{i.cliente.apellidos}}</td>
+							<td>{{i.vendedor.nombres}} {{i.vendedor.apellidos}}</td>
+
+							<td>{{toDate(i.fechaGestion)}}</td>
+							<td><button class="btn btn-sm btn-icon btn-success"
+									ng-click="aprobarSuscripcion(i)"
+									tooltip="Aprobar Orden de Trabajo ">
+									<i class="icon-check"></i>
+								</button></td>
+<!-- 							<td style="width: 1px"><button -->
+<!-- 									class="btn btn-sm btn-icon btn-danger" -->
+<!-- 									ng-click="eliminarItem(i)" tooltip="Eliminar Orden de Trabajo"> -->
+<!-- 									<i class="fa fa-times"></i> -->
+<!-- 								</button></td> -->
+
+
+						</tr>
+					</tbody>
+				</table>
+
+			</div>
+		</div>
+
+	</div>
+
+
+</div>
+
+
+<!-- FORMULARIO -->
+<div class="col-sm-12" ng-show="nuevo">
+	<br />
+	<div class="panel panel-info" draggable="true">
+		<div class="panel-heading">
+			<a class="btn m-b-xs btn-sm btn-info btn-addon" ng-show="nuevo"
+				ng-click="guardarSuscripcion()" ng-disabled="form.$invalid"
+				disabled="disabled"><i class="icon-check"></i> Aprobar Orden de
+				Trabajo</a> <a class="btn m-b-xs btn-sm btn-danger btn-addon"
+				ng-show="nuevo" ng-click="revisarNotaPedido('lg')"><i
+				class="fa fa-eye"></i> Revisar</a><a
+				class="btn m-b-xs btn-sm btn-default btn-addon" ng-show="nuevo"
+				ng-click="cancelarItem()"><i class="fa fa-times"></i> Cancelar</a>
+		</div>
+		<div class="panel-body">
+
+
+			<div class="row">
+				<div class="col-sm-10 connected" ui-jq="sortable"
+					ui-options="{items:'.panel', handle:'.panel-heading', connectWith:'.connected'}">
+					<div class="panel panel-info">
+						<div class="panel-heading">
+							Orden de Trabajo Cliente# <span class="badge">{{dto.notaPedido.numeroReferencia}}</span>
+							Orden de Trabajo Interna# <span class="badge">{{dto.notaPedido.ordenInterna}}</span>
+							<em class="text-xs">Fecha de Orden <span class="text-danger">{{toDate(dto.notaPedido.fechaHoraRegistro)}}</span></em>
+						</div>
+
+						<div class="panel-body">
+							<article class="media">
+								<div class="pull-left">
+									<span class="fa-stack fa-lg"> <i
+										class="fa fa-user fa-stack-2x"></i>
+									</span>
+								</div>
+								<div class="media-body">
+									<a href class="h4">Cliente:
+										{{dto.notaPedido.cliente.nombres}}
+										{{dto.notaPedido.cliente.apellidos}} </a> <small
+										class="block m-t-xs">
+										Email:{{dto.notaPedido.cliente.email}} Direcci&oacute;n:
+										{{dto.notaPedido.cliente.direccion}} /
+										Tel&eacute;fono:{{dto.notaPedido.cliente.telefono1}} /Celular:
+										{{dto.notaPedido.cliente.celular1}} /
+										Ciudad:{{dto.notaPedido.cliente.ciudad.nombre}} </small> <em
+										class="text-xs">C&eacute;dula: <span class="text-success">{{dto.notaPedido.cliente.identificacion}}</span></em>
+
+
+								</div>
+							</article>
+							<div class="line pull-in"></div>
+							<article class="media">
+								<div class="pull-left">
+									<span class="fa-stack fa-lg"> <i
+										class="fa fa-circle fa-stack-2x text-info"></i> <i
+										class="fa fa-user fa-stack-1x text-white"></i>
+									</span>
+								</div>
+								<div class="media-body">
+									<a href class="h4">Responsable:
+										{{dto.notaPedido.vendedor.nombres}}
+										{{dto.notaPedido.vendedor.apellidos}}</a> <small
+										class="block m-t-xs">Email:
+										{{dto.notaPedido.vendedor.email}} / T&eacute;lefono:
+										{{dto.notaPedido.vendedor.telefono}} / Celular:
+										{{dto.notaPedido.vendedor.celular}} / Cargo:
+										{{dto.notaPedido.vendedor.cargo}}</small> <em class="text-xs">C&eacute;dula:
+										<span class="text-success">{{dto.notaPedido.vendedor.cedula}}</span><br />
+
+
+									</em>
+								</div>
+							</article>
+							<div class="line pull-in"></div>
+
+
+						</div>
+
+
+					</div>
+
+				</div>
+
+				<div class="col-sm-10 connected" ui-jq="sortable"
+					ui-options="{items:'.panel', handle:'.panel-heading', connectWith:'.connected'}">
+
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<span class="label bg-info">{{dto.detalleServicio.length}}</span>
+							Reporte de Servicios Generados <a
+								class="btn btn-xs btn-info pull-right"
+								download="{{dto.notaPedido.archivoReal}}"
+								ng-href="{{app.versionApp}}/files/{{dto.notaPedido.archivoReal}}">Descargar
+								Orden Cliente</a>
+
+						</div>
+						<div class="panel-body">
+
+							<table class="table table-striped bg-white b-a">
+								<tr>
+									<th>Cant</th>
+									<th>Equipo</th>
+									<th>Servicio</th>
+									<th>Alcance</th>
+									
+									<th></th>
+									<th></th>
+								</tr>
+
+								<tr>
+								<tr ng-repeat="s in dto.detalleServicio">
+									<td>{{s.detalleNotapedido.cantidad}} </td>
+									<td><strong>{{s.detalleNotapedido.producto.nombre}}
+											/ Serie: <small>{{s.detalleNotapedido.producto.serie}}</small>
+									</strong></td>
+									<td>
+										<ul ng-repeat="r in s.listaTareas" style="padding-left: 2px;">
+											<li style="list-style: none"><span
+												class="label bg-primary">{{r.tarea.nombre}} </span> </li>
+										</ul>
+									</td>
+									<td>
+										<ul ng-repeat="r in s.listaTareas" style="padding-left: 2px;">
+											<li style="list-style: none"><span
+												class="label bg-primary"> {{r.alcance}}</span></li>
+										</ul>
+									</td>
+									<td>
+										<ul ng-repeat="r in s.listaTareas">
+											<li style="list-style: none"><a
+												download="{{r.archivoReal}}"
+												ng-href="{{app.versionApp}}/files/{{r.archivoReal}}"
+												class="btn-dark btn-rounded btn-xs"
+												ng-click="crearArchivo(r,$index)"> Descargar</a></li>
+										</ul>
+									</td>
+
+									<td>
+										<ul ng-repeat="r in s.listaTareas">
+											<li style="list-style: none"><small>{{r.archivoTarea}}</small></li>
+										</ul>
+									</td>
+								<tr>
+							</table>
+
+
+							<div class="line pull-in"></div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+
+
+		</div>
+
+
+
+
+
+	</div>
+</div>
+

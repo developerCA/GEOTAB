@@ -1,0 +1,104 @@
+<toaster-container
+	toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+<div ng-controller="avisosRenovacionCtrl" ng-init="init()">
+	<div class="bg-light lter b-b wrapper-md">
+		<h1 class="m-n font-thin h4">
+			<i class="fa fa-bell"></i> Avisos de Renovaci&oacute;n
+		</h1>
+	</div>
+
+	<div class="wrapper-md" ng-show="!nuevo">
+		<div class="panel panel-info">
+			<div class="panel-heading">
+				<a class="btn m-b-xs btn-sm btn-success btn-addon"
+					ng-click="procesar()" ng-disabled="fechaRegistrada==null || lineas.estado==false"><i
+					class="fa fa-plus"></i>Procesar</a> <a
+					class="btn m-b-xs btn-sm btn-default btn-addon"
+					ui-sref="app.dashboard-v1"><i class="fa fa-times"></i>Cancelar</a>
+
+			</div>
+			<div class="panel-body">
+				<div ng-show="lineas.estado==false">
+					<div class="alert alert-danger" role="alert">
+						<span class="glyphicon glyphicon-exclamation-sign"
+							aria-hidden="true"></span> <span class="sr-only">Error:</span> {{lineas.mensaje}}
+						renovaci&oacute;n
+					</div>
+
+				</div>
+
+				<div ng-hide="fechaRegistrada==null">
+					<label>Rango de Fechas a Renovar: </label> <label><b>{{mostrar}}</b></label>
+					<div class="line line-dashed b-b line-lg pull-in"></div>
+				</div>
+				<div ng-show="fechaRegistrada==null && proceso==false">
+					<div class="alert alert-danger" role="alert">
+						<span class="glyphicon glyphicon-exclamation-sign"
+							aria-hidden="true"></span> <span class="sr-only">Error:</span> No
+						existe una fecha activa para realizar los avisos de
+						renovaci&oacute;n
+					</div>
+
+				</div>
+
+
+				<div>
+
+					<ul class="breadcrumb bg-white b-a">
+						<li><a href><i class="fa fa-home"></i>
+								{{sucursal.nombre}}</a></li>
+						<li><a href>{{sucursal.direccion}}</a></li>
+
+					</ul>
+				</div>
+
+
+
+				<accordion close-others="false"> <accordion-group
+					heading="{{linea.subcategoria.nombre}}" is-open="true"
+					ng-repeat="linea in lineas.lineasProductos"> <accordion-heading>
+				<strong>{{linea.subcategoria.nombre}}</strong></accordion-heading> <accordion
+					close-others="oneAtATime"> <accordion-group
+					is-open="true" ng-repeat="cliente in linea.clientes">
+				<accordion-heading> <i class="icon-user"></i>
+				{{cliente.cliente.nombres}} {{cliente.cliente.apellidos}}</accordion-heading> <accordion
+					close-others="oneAtATime"> <accordion-group
+					ng-repeat="enlace in cliente.listaContactos" is-open="true">
+				<accordion-heading> <span
+					class="badge bg-primary">{{enlace.listaDetalle.length}}
+					Suscripciones</span> {{enlace.enlace.nombres}} {{enlace.enlace.apellidos}}</accordion-heading>
+
+				<div class="table-responsive"
+					ng-if="enlace.listaDetalle !=undefined||null">
+					<table class="table table-striped bg-white b-a">
+						<thead>
+							<tr>
+								<th style="width: 10px"># Suscripci&oacute;n</th>
+								<th style="width: 140px">PRODUCTO</th>
+								<th style="width: 140px">CONTACTO</th>
+								<th style="width: 90px">VALOR</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="detalle in enlace.listaDetalle">
+								<td>{{detalle.suscripcion.id}}</td>
+								<td>{{detalle.suscripcion.producto.nombre}}</td>
+								<td>{{detalle.suscripcion.enlaceP.nombres}}
+									{{detalle.suscripcion.enlaceP.apellidos}}</td>
+								<td><strong>$ {{detalle.suscripcion.costo}}</strong></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				</accordion-group> </accordion> </accordion-group> </accordion> </accordion-group> </accordion>
+
+
+
+
+
+
+
+			</div>
+		</div>
+	</div>
+</div>

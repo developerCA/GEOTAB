@@ -1,0 +1,264 @@
+<toaster-container
+	toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+<div ng-controller="productoCtrl" ng-init="init()">
+	<div class="bg-light lter b-b wrapper-md">
+		<h1 class="m-n font-thin h4">
+			<i class="fa fa-cubes"></i> Productos
+		</h1>
+	</div>
+	<div class="wrapper-md" ng-show="!nuevo">
+		<div class="panel panel-info">
+			<div class="panel-heading">
+				<a class="btn m-b-xs btn-sm btn-success btn-addon"
+					ng-click="nuevoItem()"><i class="fa fa-plus"></i>Agregar</a> </span>
+			</div>
+			<div class="table-responsive" ng-if="productos!=undefined||null">
+
+				<table ui-jq="dataTable" class="table table-striped m-b-none"
+					ui-options="{oLanguage: {sUrl: 'vendor/jquery/datatables/spanish.txt'}}">
+					<thead>
+						<tr>
+							<th>#</th>
+							<th>Nombre</th>
+							<th>Categor&iacute;a</th>
+							<th>Tipo</th>
+							<th>Costo</th>
+							<th># Actualizaci&oacute;n</th>
+							<th>Vigencia</th>
+							<th>Accesos</th>
+							<th></th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="p in productos">
+							<td>{{$index+1}}</td>
+							<td>{{p.producto.nombre}}</td>
+							<td>{{p.producto.categoria.nombre}}</td>
+							<td>{{p.producto.tipoProducto.nombre}}</td>
+							<td>{{p.producto.costo}}</td>
+							<td>{{p.producto.numeroActualizacion}}</td>
+							<td>{{p.producto.mesesVigencia}}</td>
+							<td>{{p.producto.aplicaAccesos==true?'Si':'No'}}</td>
+							<td><button class="btn btn-sm btn-icon btn-info"
+									ng-click="editarItem(p)" tooltip="Editar registro">
+									<i class="fa fa-pencil"></i>
+								</button></td>
+							<td style="width: 1px"><button
+									class="btn btn-sm btn-icon btn-danger"
+									ng-click="eliminarItem(p)" tooltip="Eliminar registro">
+									<i class="fa fa-times"></i>
+								</button></td>
+
+
+						</tr>
+					</tbody>
+				</table>
+
+			</div>
+		</div>
+	</div>
+
+	<!-- FORMULARIO -->
+	<div class="col-sm-12" ng-show="nuevo">
+		<div class="panel panel-info" draggable="true">
+			<div class="panel-heading">
+				<a class="btn m-b-xs btn-sm btn-info btn-addon" ng-show="!editar"
+					ng-click="guardarItem()" ng-disabled="form.$invalid"
+					disabled="disabled"><i class="fa fa-save"></i> Guardar</a> <a
+					class="btn m-b-xs btn-sm btn-info btn-addon" ng-show="editar"
+					ng-click="actualizarItem()" ng-disabled="form.$invalid"
+					disabled="disabled"><i class="fa fa-save"></i> Editar</a> <a
+					class="btn m-b-xs btn-sm btn-default btn-addon" ng-show="nuevo"
+					ng-click="cancelarItem()"><i class="fa fa-times"></i> Cancelar</a>
+			</div>
+			<form name="form"
+				class="w-full wrapper-md form-validation ng-pristine ng-invalid ng-invalid-required ng-valid-pattern ng-valid-email ng-valid-validator">
+				<div class="col w-full bg-white-only">
+					<div class="padder">
+						<div class="panel-body">
+							<div class="form-group pull-in clearfix ">
+								<div class="row">
+									<div class="col-sm-5">
+										<label>Nombre</label> <input type="text"
+											class="form-control  ng-pristine ng-invalid ng-invalid-required ng-touched"
+											ng-model="item.producto.nombre" required>
+									</div>
+									
+									
+									
+									<div class="col-sm-1">
+										<label></label>
+									</div>
+									<div class="col-sm-5">
+										<table>
+											<br>
+											<tr>
+												<td>Aplica Acceso:</td>
+												<td><input type="checkbox"
+													style="width: 18px; height: 18px"
+													ng-model="item.producto.aplicaAccesos"
+													ng-change="bloqueaAccesos()"></td>
+											</tr>
+										</table>
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="col-sm-5">
+										<label>Categor&iacute;a</label> <select
+											class="form-control ng-pristine ng-invalid ng-invalid-required ng-touched"
+											ng-model="item.producto.categoria.id" required>
+											<option ng-repeat="c in categorias" value="{{c.id}}">{{c.nombre}}</option>
+										</select>
+									</div>
+									<div class="col-sm-1">
+										<label></label>
+									</div>
+									<div class="col-sm-5">
+										<label>M&iacute;nimo accesos</label> <input type="text"
+											class="form-control  ng-pristine ng-invalid ng-invalid-required ng-touched"
+											ng-model="item.producto.minimoAccesos" ng-readonly="!accesos">
+									</div>
+								</div>
+								<div class="row">
+									
+								
+									<div class="col-sm-5">
+									<label>C&oacute;digo kohinor</label> <select
+											class="form-control ng-pristine ng-invalid ng-invalid-required ng-touched"
+											ng-model="item.codigokohinor" >
+											<option ng-repeat="pk in listProductosKoynor" value="{{pk.codalt}}">{{pk.nomart}}</option>
+										</select>       
+								</div>
+									</div>
+								<div class="row">
+									<div class="col-sm-5">
+										<label>Tipo</label> <select
+											class="form-control ng-pristine ng-invalid ng-invalid-required ng-touched"
+											ng-model="item.producto.tipoProducto.id" required>
+											<option ng-repeat="tp in tipoProductos" value="{{tp.id}}">{{tp.nombre}}</option>
+
+										</select>
+									</div>
+									<div class="col-sm-1">
+										<label></label>
+									</div>
+									<div class="col-sm-5">
+										<label>M&aacute;ximo accesos</label> <input type="text"
+											class="form-control  ng-pristine ng-invalid ng-invalid-required ng-touched"
+											ng-model="item.producto.maximoAccesos" ng-readonly="!accesos">
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="col-sm-5">
+										<label>Costo</label> <input type="text"
+											class="form-control  ng-pristine ng-invalid ng-invalid-required ng-touched"
+											ng-model="item.producto.costo" required>
+									</div>
+									<div class="col-sm-1">
+										<label></label>
+									</div>
+									<div class="col-sm-5">
+										<table>
+											<br>
+											<tr>
+												<td>Actualizable:</td>
+												<td><input type="checkbox"
+													style="width: 18px; height: 18px"
+													ng-model="item.producto.actualizable"
+													ng-change="bloqueaActualizable()"></td>
+											</tr>
+										</table>
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="col-sm-5">
+										<label>Vigencia</label> <input type="text"
+											class="form-control  ng-pristine ng-invalid ng-invalid-required ng-touched"
+											ng-model="item.producto.mesesVigencia">
+									</div>
+								<div class="col-sm-1">
+										<label></label>
+									</div>
+									<div class="col-sm-5">
+										<label>N&uacute;mero Actualizaci&oacute;n</label> <input
+											type="text"
+											class="form-control  ng-pristine ng-invalid ng-invalid-required ng-touched"
+											ng-model="item.producto.numeroActualizacion"
+											ng-readonly="!actualizable">
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-5">
+										<table>
+											<br>
+											<tr>
+												<td>Renovable:</td>
+												<td><input type="checkbox"
+													style="width: 18px; height: 18px"
+													class="form-control  ng-pristine ng-invalid ng-invalid-required ng-touched"
+													ng-model="item.producto.renovable"
+													ng-change="muestraRenovable()"></td>
+												<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+												<td>
+												<select class="form-control" ng-show="renovable" ng-model="item.productoRenovacion.id">
+
+										<option ng-repeat="pr in productosRenova"
+											value="{{pr.producto.id}}">{{pr.producto.nombre}}</option>
+
+									</select>
+												</td>
+											</tr>
+										</table>
+									</div>
+
+									<div class="col-sm-1">
+										<label></label>
+									</div>
+									<div class="col-sm-5">
+										<table>
+											<br>
+											<tr>
+												<td>Aplica IVA:</td>
+												<td><input type="checkbox"
+													style="width: 18px; height: 18px"
+													ng-model="item.producto.aplicaImpuesto"></td>
+											</tr>
+										</table>
+									</div>
+								</div>
+
+								<div class="row">
+									<br>
+									<div class="col-sm-5">
+										<label>Descripci&oacute;n</label> <input type="text"
+											class="form-control  ng-pristine ng-invalid ng-invalid-required ng-touched"
+											ng-model="item.producto.descripcion">
+									</div>
+									<div class="col-sm-1">
+										<label></label>
+									</div>
+									<div class="col-sm-5">
+										<table>
+											<br>
+											<tr>
+												<td>Aplica Suscripci&oacute;n:</td>
+												<td><input type="checkbox"
+													style="width: 18px; height: 18px"
+													ng-model="item.producto.aplicaSuscripcion"></td>
+											</tr>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+</div>

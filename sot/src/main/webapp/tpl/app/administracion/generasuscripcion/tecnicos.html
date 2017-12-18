@@ -1,0 +1,68 @@
+<div class="modal-header">
+	<h3 class="modal-title">Responsables</h3>
+</div>
+<div ng-init="init()">
+
+	<div class="panel-body ">
+		<div class="wrapper">
+			<div class="row">
+				<div class="col-sm-8">
+					<label>T&eacute;cnico Ejecutor</label>
+					<div class="input-group w-md ">
+						<ui-select ng-model="objeto.responsable" theme="bootstrap"
+							required> <ui-select-match
+							placeholder="Seleccione un T&eacute;cnico..">{{$select.selected.nombres}}
+						{{$select.selected.apellidos}}</ui-select-match> <ui-select-choices
+							repeat="item in vendedores | filter: $select.search">
+
+						<div
+							ng-bind-html="item.nombres + ' ' + item.apellidos | highlight: $select.search"></div>
+						</ui-select-choices> </ui-select>
+						<span class="input-group-btn">
+							<button class="btn btn-default" type="button"
+								tooltip-placement="bottom" tooltip="Ninguno"
+								ng-click="resetResponsable()">
+								<i class="fa fa-trash-o"></i>
+							</button>
+						</span>
+
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-8">
+					<label>T&eacute;cnico en Entrenamiento</label>
+					<div class="input-group w-md ">
+						<ui-select ng-model="objeto.asistente" theme="bootstrap" required>
+						<ui-select-match placeholder="Seleccione un T&eacute;cnico..">{{$select.selected.nombres}}
+						{{$select.selected.apellidos}}</ui-select-match> <ui-select-choices
+							repeat="item in vendedores | filter: $select.search">
+
+						<div
+							ng-bind-html="item.nombres + ' ' + item.apellidos | highlight: $select.search"></div>
+						</ui-select-choices> </ui-select>
+						<span class="input-group-btn">
+							<button class="btn btn-default" type="button"
+								tooltip-placement="bottom" tooltip="Ninguno"
+								ng-click="resetAsistente()">
+								<i class="fa fa-trash-o"></i>
+							</button>
+						</span>
+
+					</div>
+
+
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+
+</div>
+
+<div class="modal-footer">
+
+	<button class="btn btn-default" ng-click="cancel()">Cancelar</button>
+	<button class="btn btn-primary" ng-click="aceptar()">Aceptar</button>
+</div>

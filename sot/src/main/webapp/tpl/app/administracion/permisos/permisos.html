@@ -1,0 +1,178 @@
+<div class="hbox hbox-auto-xs hbox-auto-sm" ng-controller="permisosCtrl">
+    <div class="col w-lg bg-light b-r bg-auto">
+        <div class="wrapper-md">
+
+            <h1 class="m-n font-thin h4"> <i class="fa fa-ticket"></i> Permisos</h1>
+            <br>
+            <a ng-click="crearPermisoPadre()" class="btn btn-success btn-xs">
+                <i class="fa fa-fw m-r-xs fa-plus"></i>Agregar Raiz
+            </a>
+            <br>
+
+            <div class="line b-b line-lg"></div>
+            <label>Elija una Empresa:</label>
+            <div>
+                <select class="form-control" ng-model="idProducto" required="required"
+                        ng-change="armarArbol()">
+                    <option ng-repeat="p in productos" value="{{p.id}}">{{p.nombre}}</option>
+                </select>
+            </div>
+            <br>
+
+
+            <a ng-click="try_adding_a_branch()"
+               class="btn btn-info btn-xs">
+                <i class="fa fa-fw m-r-xs fa-plus"></i> Nuevo
+            </a>
+
+
+
+
+
+        </div>
+    </div>
+ 
+    <div class="col-sm-12" ng-show="nuevo">
+        <div class="panel panel-default" draggable="true">
+            
+            <div class="panel-heading font-bold">Nuevo Permiso Padre</div>
+            <div class="panel-body">
+                <form name="form1"
+                      class="bs-example form-horizontal w-full wrapper-md form-validation ng-pristine ng-invalid ng-invalid-required ng-valid-pattern ng-valid-email ng-valid-validator">
+                    <div class="form-group" ng-show="nuevo">
+                        <label class="col-lg-2 control-label">Nombre</label>
+                        <div class="col-lg-10">
+                            <input class="form-control" type="text" placeholder="Nombre"
+                                   ng-model="permisoPadre.nombrePermiso" ng-maxlength="20" required></input>
+                            <span class="help-block m-b-none">(permite 'a-zA-Z0-9',
+                                5-20 longitud)</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">&Iacute;cono</label>
+                        <div class="col-lg-10">
+                            <input class="form-control" type="text" 
+                                   ng-model="permisoPadre.iconoPermiso" required></input>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">Orden</label>
+                        <div class="col-lg-10">
+                            <input class="form-control" type="text" placeholder="Orden"
+                                   ng-model="permisoPadre.ordenPermiso" ng-maxlength="3" required></input>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">Url</label>
+                        <div class="col-lg-10">
+                            <input class="form-control" type="text" placeholder="Url"
+                                   ng-model="permisoPadre.urlPermiso"></input>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">Estado</label>
+                        <div class="col-lg-10">
+                            <div class="checkbox">
+                                <label class="i-checks"> <input
+                                        ng-model="permisoPadre.estado" type="checkbox"><i></i>
+                                    Activo
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="panel-heading col-lg-offset-2 col-lg-10">
+                            <a class="btn m-b-xs btn-sm btn-info btn-addon" ng-show="edicion"
+                               ng-click="guardarPermisoPadre()" ng-disabled="form1.$invalid"
+                               disabled="disabled"><i class="fa fa-save"></i> Editar</a> <a
+                               class="btn m-b-xs btn-sm btn-info btn-addon" ng-show="!edicion"
+                               ng-hide="edicion" ng-click="guardarPermisoPadre()"
+                               ng-disabled="form1.$invalid" disabled><i class="fa fa-save"></i>
+                                Guardar</a> <a class="btn m-b-xs btn-sm btn-default btn-addon"
+                                           ng-show="nuevo" ng-click="cancelarPermisoPadre()"><i
+                                    class="fa fa-times"></i> Cancelar</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col" ng-hide="nuevo">
+        <div class="wrapper-md">
+            <div class="b-a bg-light dk r r-2x">
+                <span ng-if="doing_async">...cargando...</span>
+                <abn-tree tree-data="my_data" tree-control="my_tree"
+                          on-select="my_tree_handler(branch)" expand-level="2"
+                          initial-selection="Granny Smith" icon-leaf="fa fa-file-o"
+                          icon-expand="fa fa-plus" icon-collapse="fa fa-minus"> </abn-tree>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <!-- 		<div class="wrapper-md"> -->
+        <!-- 			<div class="alert alert-info">{{output}}</div> -->
+        <!-- 		</div> -->
+        <div class="panel panel-default wrapper-md" draggable="true"
+             ng-show="edicion">
+            <div class="panel-body">
+                <form name="form2"
+                      class="bs-example form-horizontal w-full wrapper-md form-validation ng-pristine ng-invalid ng-invalid-required ng-valid-pattern ng-valid-email ng-valid-validator">
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">Nombre</label>
+                        <div class="col-lg-10">
+                            <input class="form-control" type="text" placeholder="Nombre"
+                                   ng-model="permiso.nombrePermiso" ng-maxlength="20" required></input>
+                            <span class="help-block m-b-none">(permite 'a-zA-Z0-9',
+                                5-20 longitud)</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">Icono</label>
+                        <div class="col-lg-10">
+                            <input class="form-control" type="text" placeholder="Ã�cono"
+                                   ng-model="permiso.iconoPermiso" required></input>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">Orden</label>
+                        <div class="col-lg-10">
+                            <input class="form-control" type="text" placeholder="Orden"
+                                   ng-model="permiso.ordenPermiso" ng-maxlength="3" required></input>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">Url</label>
+                        <div class="col-lg-10">
+                            <input class="form-control" type="text" placeholder="Url"
+                                   ng-model="permiso.urlPermiso"></input>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">Estado</label>
+                        <div class="col-lg-10">
+                            <div class="checkbox">
+                                <label class="i-checks"> <input
+                                        ng-model="permiso.estado" type="checkbox"><i></i>
+                                    Activo
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="panel-heading col-lg-offset-2 col-lg-10">
+                            <a class="btn m-b-xs btn-sm btn-info btn-addon" ng-show="edicion"
+                               ng-click="guardarPermiso()" ng-disabled="form.$invalid"
+                               disabled="disabled"><i class="fa fa-save"></i> Guardar</a> <a
+                               class="btn m-b-xs btn-sm btn-info btn-addon" ng-show="!edicion"
+                               ng-hide="edicion" ng-click="guardarPermiso()"
+                               ng-disabled="form2.$invalid" disabled><i class="fa fa-save"></i>
+                                Guardar</a> <a class="btn m-b-xs btn-sm btn-default btn-addon"
+                                           ng-show="edicion" ng-click="cancelarPermiso()"><i
+                                    class="fa fa-times"></i> Cancelar</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

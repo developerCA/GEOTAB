@@ -1,0 +1,171 @@
+<div class="modal-header bg-info">
+	<h3 class="modal-title">Equipo</h3>
+</div>
+<div ng-init="init()">
+	<div class="bg-light lter b-b wrapper-md">
+		<h1 class="m-n font-thin h4">
+			<i class="icon-user"></i> {{obj.clienteFinal.nombres}}
+			{{obj.clienteFinal.apellidos}}
+		</h1>
+	</div>
+	
+	
+	<div class="wrapper-md" ng-show="!nuevo">
+		<div class="panel panel-info">
+			<div class="panel-heading">
+				<a class="btn m-b-xs btn-sm btn-success btn-addon"
+					ng-click="nuevoItem()"><i class="fa fa-plus"></i>Agregar</a> <a
+					class="btn m-b-xs btn-sm btn-default btn-addon" ng-click="cancel()"><i
+					class="fa fa-plus"></i>Cerrar</a>
+			</div>
+			<div class="table-responsive" ng-if="productos!=undefined||null">
+
+				<table class="table table-striped m-b-none">
+					<thead>
+						<tr>
+							<th>#</th>
+							<th>C&oacute;digo Equipo</th>
+							<th>Tipo Equipo</th>
+							
+							<th>Nombre</th>
+							<th>Descripci&oacute;n</th>
+							<th>Dimensi&oacute;n</th>
+							<th>Serie</th>
+							<th></th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="p in productos">
+							<td>{{$index+1}}</td>
+							<td>{{p.codigoEquipo}}</td>
+							<td>{{p.categoria.nombre}}</td>
+							
+							<td>{{p.nombre}}</td>
+							<td>{{p.descripcion}}</td>
+							<td>{{p.tipoProducto.nombre}}</td>
+							<td>{{p.serie}}</td>
+
+
+							<td><button class="btn btn-sm btn-icon btn-info"
+									ng-click="editarItem(p)" tooltip="Editar registro">
+									<i class="fa fa-pencil"></i>
+								</button></td>
+							<td style="width: 1px"><button
+									class="btn btn-sm btn-icon btn-danger"
+									ng-click="eliminarItem(p)" tooltip="Eliminar registro">
+									<i class="fa fa-times"></i>
+								</button></td>
+
+
+						</tr>
+					</tbody>
+				</table>
+
+			</div>
+		</div>
+	</div>
+
+	<!-- FORMULARIO -->
+	<div ng-show="nuevo">
+		<div class="panel panel-info" draggable="true">
+			<div class="panel-heading">
+				<a class="btn m-b-xs btn-sm btn-info btn-addon" ng-show="!editar"
+					ng-click="guardarItem()" ng-disabled="form.$invalid"
+					disabled="disabled"><i class="fa fa-save"></i> Guardar</a> <a
+					class="btn m-b-xs btn-sm btn-info btn-addon" ng-show="editar"
+					ng-click="actualizarItem()" ng-disabled="form.$invalid"
+					disabled="disabled"><i class="fa fa-save"></i> Editar</a> <a
+					class="btn m-b-xs btn-sm btn-default btn-addon" ng-show="nuevo"
+					ng-click="cancelarItem()"><i class="fa fa-times"></i> Cancelar</a>
+			</div>
+			<form name="form"
+				class="w-full wrapper-md form-validation ng-pristine ng-invalid ng-invalid-required ng-valid-pattern ng-valid-email ng-valid-validator">
+				<div class="col w-full bg-white-only">
+					<div class="padder">
+						<div class="panel-body">
+							<div class="form-group pull-in clearfix ">
+								<div class="row">
+
+									<div class="col-sm-5">
+										<label>Nombre</label> <input type="text"
+											class="form-control  ng-pristine ng-invalid ng-invalid-required ng-touched"
+											ng-model="producto.nombre" required>
+									</div>
+									<div class="col-sm-3">
+										<label>Serie</label> <input type="text"
+											class="form-control  ng-pristine ng-invalid ng-invalid-required ng-touched"
+											ng-model="producto.serie" required>
+									</div>
+									<div class="col-sm-3">
+										<label>N&uacute;mero Equipo</label> <input type="text"
+											class="form-control  ng-pristine ng-invalid ng-invalid-required ng-touched"
+											ng-model="producto.codigoEquipo" required>
+									</div>
+
+								</div>
+
+								<div class="row">
+									<div class="col-sm-5">
+										<label>Dimensi&oacute;n</label>
+										<div class="input-group m-b">
+											<span class="input-group-btn">
+												<button class="btn btn-success" type="button"
+													tooltip-placement="bottom"
+													tooltip="Agregar Dimensi&oacute;n"
+													ng-click="cargaDimensiones()">
+													<i class="fa fa-plus"></i>
+												</button>
+											</span> <select
+												class="form-control ng-pristine ng-invalid ng-invalid-required ng-touched"
+												ng-model="producto.tipoProducto.id" required>
+												<option ng-repeat="tp in tipoProductos" value="{{tp.id}}">{{tp.nombre}}</option>
+
+											</select>
+										</div>
+
+									</div>
+
+									<div class="col-sm-6">
+										<label>Descripci&oacute;n</label> <input type="text"
+											class="form-control  ng-pristine ng-invalid ng-invalid-required ng-touched"
+											ng-model="producto.descripcion">
+									</div>
+
+								</div>
+
+								<div class="row">
+									<div class="col-sm-9">
+										<label>Tipo de Equipo</label>
+										<ui-select ng-model="producto.categoria" theme="bootstrap"
+											 required> <ui-select-match
+											placeholder="Seleccione un tipo de equipo">{{$select.selected.nombre}}</ui-select-match>
+										<ui-select-choices
+											repeat="c in categorias | filter: $select.search">
+
+										<div ng-bind-html="c.nombre | highlight: $select.search"></div>
+										 </ui-select-choices> </ui-select>
+										
+										
+
+										
+
+									</div>
+								</div>
+
+							</div>
+
+
+
+						</div>
+
+
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+</div>
+
+

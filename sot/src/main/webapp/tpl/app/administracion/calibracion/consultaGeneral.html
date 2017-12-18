@@ -1,0 +1,183 @@
+<toaster-container
+	toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+<div ng-controller="calibracionCtrl" ng-init="initConsulta()">
+	<div class="bg-light lter b-b wrapper-md">
+		<h1 class="m-n font-thin h4">
+			<i class="fa fa-search"></i> Consulta de Calibraci&oacute;n de Instrumentos
+		</h1>
+	</div>
+	<div class="wrapper-md" ng-show="!nuevo">
+		<div class="panel panel-info">
+			<div class="panel-heading">
+				Listado de Calibraciones
+				<a ng-click="exportar()" type="button"
+					class="btn btn-xs btn-default pull-right">Excel</a>
+			</div>
+			<div class="table-responsive" ng-if="calibraciones!=undefined||null">
+				<div id="dvData">
+					<table ui-jq="dataTable" class="table table-striped m-b-none"
+						ui-options="{oLanguage: {sUrl: 'vendor/jquery/datatables/spanish.txt'}}">
+						<thead>
+							<tr>
+								<th>#</th>
+								<th>Serie</th>
+								<th>Nombre</th>
+								<th>Modelo</th>
+								<th>Fecha Calibraci&oacute;n</th>
+								<th>Fecha Proxima Calibraci&oacute;n</th>
+								<th>Dias</th>
+								<th>Dias Faltantes</th>
+
+
+								<th></th>
+								<th></th>
+								<th></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="p in calibraciones">
+								<td>{{$index+1}}</td>
+								<td>{{p.calibracion.instrumento.serie}}</td>
+								<td>{{p.calibracion.instrumento.nombre}}</td>
+								<td>{{p.calibracion.instrumento.modelo}}</td>
+								<td>{{p.calibracion.fechaCalibracion}}</td>
+								<td>{{p.calibracion.fechaCalibracionFutura}}</td>
+
+								<td>{{p.dias}}</td>
+								<td><span class="{{p.semaforo}}">{{p.diasFaltantes}}</span>
+								</td>
+
+								<td></td>
+								<td style="width: 1px"><button
+										class="btn btn-sm btn-icon btn-primary"
+										ng-click="verCalibraciones(p)" tooltip="Ver Calibraciones">
+										<i class="fa fa-list"></i>
+									</button></td>
+								<td style="width: 1px"><a download="{{cal.archivo}}"
+									ng-href="{{app.versionApp}}/files/{{p.calibracion.archivo}}"
+									class="btn btn-sm btn-icon btn-info"> <i
+										class="fa fa fa-download"></i></a></td>
+
+
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- FORMULARIO -->
+	<div class="col-sm-12" ng-show="nuevo">
+		<div class="panel panel-info" draggable="true">
+			<div class="panel-heading">
+				<a class="btn m-b-xs btn-sm btn-info btn-addon" ng-show="!editar"
+					ng-click="guardarCalibracion()" ng-disabled="form.$invalid"
+					disabled="disabled"><i class="fa fa-save"></i> Guardar</a> <a
+					class="btn m-b-xs btn-sm btn-info btn-addon" ng-show="editar"
+					ng-click="actualizarItem()" ng-disabled="form.$invalid"
+					disabled="disabled"><i class="fa fa-save"></i> Editar</a> <a
+					class="btn m-b-xs btn-sm btn-default btn-addon" ng-show="nuevo"
+					ng-click="cancelarItem()"><i class="fa fa-times"></i> Cancelar</a>
+			</div>
+			<form name="form"
+				class="w-full wrapper-md form-validation ng-pristine ng-invalid ng-invalid-required ng-valid-pattern ng-valid-email ng-valid-validator">
+				<div class="col w-full bg-white-only">
+					<div class="padder">
+						<div class="panel-body">
+							<div class="form-group pull-in clearfix ">
+								<div class="row">
+									<div class="col-sm-8">
+										<label>Instrumento</label>
+
+
+										<ui-select ng-model="cal.instrumento" theme="bootstrap"
+											required> <ui-select-match
+											placeholder="Seleccione un instrumento..">{{$select.selected.nombre}}</ui-select-match>
+										<ui-select-choices
+											repeat="i in instrumentos | filter: $select.search">
+
+										<div ng-bind-html="i.nombre | highlight: $select.search"></div>
+										<small> serie: {{i.serie}} - Modelo: <span
+											ng-bind-html="''+i.modelo | highlight: $select.search"></span>
+										</small> </ui-select-choices> </ui-select>
+
+
+									</div>
+
+
+
+
+								</div>
+
+								<div class="row">
+									<div class="col-sm-3">
+										<label>Fecha Calibraci&oacute;n</label>
+										<div class="col-sm-10" ng-controller="DatepickerDemoCtrl">
+											<div class="input-group w-md">
+												<input type="text" class="form-control"
+													datepicker-popup="{{format}}"
+													ng-model="cal.fechaCalibracion" is-open="opened"
+													datepicker-options="dateOptions" ng-required="true"
+													close-text="Cerrar" /> <span class="input-group-btn">
+													<button type="button" class="btn btn-default"
+														ng-click="open($event)">
+														<i class="glyphicon glyphicon-calendar"></i>
+													</button>
+												</span>
+											</div>
+										</div>
+
+
+									</div>
+
+									<div class="col-sm-3">
+										<label>Fecha Pr&oacute;xima Calibraci&oacute;n</label>
+										<div class="col-sm-10" ng-controller="DatepickerDemoCtrl">
+											<div class="input-group w-md">
+												<input type="text" class="form-control"
+													datepicker-popup="{{format}}"
+													ng-model="cal.fechaCalibracionFutura" is-open="opened"
+													datepicker-options="dateOptions" ng-required="true"
+													close-text="Cerrar" /> <span class="input-group-btn">
+													<button type="button" class="btn btn-default"
+														ng-click="open($event)">
+														<i class="glyphicon glyphicon-calendar"></i>
+													</button>
+												</span>
+											</div>
+										</div>
+
+
+									</div>
+									<div class="col-sm-2">
+										<label>Archivo</label>
+										<div>
+											<a class="btn btn-primary" ng-click="crearArchivo()">Subir
+												Archivo</a>
+										</div>
+
+									</div>
+									<div class="col-sm-4" ng-show="archivo!=null">
+										<label>Nombre del Archivo</label>
+										<div>
+											<a download="{{cal.archivo}}"
+												ng-href="{{app.versionApp}}/files/{{cal.archivo}}"
+												class="btn-dark btn-rounded btn-xs"> {{archivo}}</a>
+										</div>
+
+									</div>
+
+								</div>
+
+
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+</div>

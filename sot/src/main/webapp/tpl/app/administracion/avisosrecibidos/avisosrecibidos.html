@@ -1,0 +1,172 @@
+<toaster-container
+	toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+<div ng-controller="avisosRecibidosCtrl" ng-init="init()">
+	<div class="bg-light lter b-b wrapper-md">
+		<h4 class="m-n font-thin h4">
+			<i class="fa fa-barcode"></i> Avisos Recibidos
+		</h4>
+	</div>
+
+	<div class="col-sm-12">
+		<br />
+		<form name="frmDistribuidor"
+			class="w-full wrapper-md form-validation ng-pristine ng-invalid ng-invalid-required ng-valid-pattern ng-valid-email ng-valid-validator">
+
+			<div class="panel panel-info" draggable="true">
+				<div class="panel-heading">
+					<a class="btn m-b-xs btn-sm btn-info btn-addon"
+						ng-click="guardarAviso()" ng-disabled="frmDistribuidor.$invalid"
+						disabled="disabled"><i class="fa fa-save"></i> Guardar</a> <a
+						class="btn m-b-xs btn-sm btn-default btn-addon" ng-show="nuevo"
+						ng-click="cancelarItem()"><i class="fa fa-times"></i> Cancelar</a>
+				</div>
+				<div class="panel-body">
+					<!-- 				<div class="row"> -->
+					<div class="col-sm-12 connected" ui-jq="sortable"
+						ui-options="{items:'.panel', handle:'.panel-heading', connectWith:'.connected'}">
+						<div class="panel panel-info">
+							<div class="panel-heading">Lectura C&oacute;digo Barras</div>
+
+							<div class="panel-body">
+								<label>C&oacute;digo</label> <input type="text"
+									class="form-control ng-dirty ng-valid-parse ng-invalid ng-invalid-required ng-touched"
+									ng-model="recibido.codigo" ng-enter="mostrar()">
+
+							</div>
+						</div>
+					</div>
+					<div ng-show="ver">
+						<div class="col-sm-8 connected" ui-jq="sortable"
+							ui-options="{items:'.panel', handle:'.panel-heading', connectWith:'.connected'}">
+
+							<div class="panel panel-info">
+								<div class="panel-heading">
+									Aviso # <span class="badge">{{aviso[0].id}}</span>
+								</div>
+
+								<div class="panel-body">
+									<article class="media">
+										<div class="pull-left">
+											<span class="fa-stack fa-lg"> <i
+												class="fa fa-circle fa-stack-2x text-primary"></i> <i
+												class="fa fa-user fa-stack-1x text-white"></i>
+											</span>
+										</div>
+										<div class="media-body">
+											<a href class="h4">Cliente:
+												{{listaSuscripciones[0].clienteP.nombres}}
+												{{listaSuscripciones[0].clienteP.apellidos}} </a> <small
+												class="block m-t-xs"> Email:<b>{{listaSuscripciones[0].clienteP.email}}</b>
+												Direcci&oacute;n: <b>{{listaSuscripciones[0].clienteP.direccion}}</b>
+												/ Tel&eacute;fono:<b>{{listaSuscripciones[0].clienteP.telefono1}}</b>
+												/Celular: <b>{{listaSuscripciones[0].clienteP.celular1}}</b>
+												/ Ciudad:{{listaSuscripciones[0].clienteP.ciudad.nombre}}
+											</small> <em class="text-xs">C&eacute;dula: <span
+												class="text-success"><b>{{listaSuscripciones[0].clienteP.identificacion}}</b></span></em>
+										</div>
+																				
+									</article>
+									<article class="media">
+										<div class="pull-left">
+											<span class="fa-stack fa-lg"> <i
+												class="fa fa-circle fa-stack-2x text-success"></i> <i
+												class="fa fa-user fa-stack-1x text-white"></i>
+											</span>
+										</div>
+										<div class="media-body">
+											<a href class="h4">Contacto:
+												{{aviso[0].enlace.nombres}} {{aviso[0].enlace.apellidos}}
+												</a> <small
+												class="block m-t-xs"> Email:<b>{{aviso[0].enlace.email}}</b>
+												Direcci&oacute;n: <b>{{aviso[0].enlace.direccion}}</b>
+												/ Tel&eacute;fono:<b>{{aviso[0].enlace.telefono1}} {{aviso[0].enlace.telefono2}}</b>
+												/Celular: <b>{{aviso[0].enlace.celular}}</b>
+												/ Ciudad:{{aviso[0].enlace.ciudad.nombre}}
+											</small> <em class="text-xs">C&eacute;dula: <span
+												class="text-success"><b>{{aviso[0].enlace.identificacion}}</b></span></em>
+										</div>									
+									</article>
+									<div class="line pull-in"></div>
+									<article class="media">
+										<div class="pull-left">
+											<span class="fa-stack fa-lg"> <i
+												class="fa fa-circle fa-stack-2x text-info"></i> <i
+												class="fa fa-calendar fa-stack-1x text-white"></i>
+											</span>
+										</div>
+										<div class="media-body">
+											<a href class="h4">Rango de Fechas:
+												{{aviso[0].codigoFechasRenovacion.fechaInicio}} -
+												{{aviso[0].codigoFechasRenovacion.fechaFin}}</a>
+										</div>
+									</article>
+									<div class="line pull-in"></div>
+
+								</div>
+
+
+							</div>
+
+							<div class="panel panel-info">
+								<div class="panel-heading">Recepci&oacute;n</div>
+								<div class="panel-body">
+									<div class="col-sm-6">
+										<label>Nombre Recibe:</label>
+										<input type="text"
+										class="form-control  ng-pristine ng-invalid ng-invalid-required ng-touched"
+											ng-model="aviso[0].nombreRecibe" >
+									</div>
+									<div class="col-sm-6">
+										<label>Fecha de Entrega:</label> 
+									<input type="text"
+										class="form-control ng-dirty ng-valid-parse ng-invalid ng-invalid-required ng-valid-pattern ng-touched col-sm-3"
+										ng-model="aviso[0].fechaEntrega" placeholder="YYYY-MM-DD" ng-pattern="/[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])$/" required>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-sm-4 connected" ui-jq="sortable"
+							ui-options="{items:'.panel', handle:'.panel-heading', connectWith:'.connected'}">
+
+							<div class="panel panel-info">
+								<div class="panel-heading">
+									<span class="label bg-info">{{listaSuscripciones.length}}</span>
+									Suscripciones Generadas
+								</div>
+								<div class="panel-body">
+									<article class="media" ng-repeat="s in listaSuscripciones">
+
+										<div class="media-body">
+											<div class="pull-right text-center text-muted">
+												<strong class="h6"><i class="fa fa-calendar-o"></i>
+													{{toDate(s.fechaHoraRegistro)}}</strong>
+											</div>
+											<h4>
+												<span class="badge bg-info"> {{$index+1}}</span>
+												{{s.detalleNotaPedidoP.producto.nombre}}
+											</h4>
+
+											<div class="lter">
+												<small class="block m-t-sm">N&uacute;mero de meses:
+													<b>{{s.detalleNotaPedidoP.numeroMeses}}</b> /
+													Informaci&oacute;n Adicional: <b>{{s.detalleNotaPedidoP.producto.descripcion}}</b>
+												</small>
+											</div>
+										</div>
+									</article>
+									<div class="line pull-in"></div>
+
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+
+			</div>
+		</form>
+	</div>
+
+
+</div>

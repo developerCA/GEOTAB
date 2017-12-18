@@ -1,0 +1,102 @@
+<div class="modal-header bg-info">
+	<h3 class="modal-title">Nuevo Registro</h3>
+</div>
+<div class="modal-body wrapper-lg">
+	<div class="alert alert-info">
+		<i class="fa fa-info-circle"></i> Estimado usuario, en esta pantalla
+		puede a&ntilde;adir nuevos productos que el cliente desee para nuevas
+		suscripciones...
+	</div>
+	<div class="row">
+		<div class="modal-body m">
+			<div class="panel panel-info">
+				<div class="panel-heading">Registro de Producto</div>
+				<div class="panel-body" ng-init="init()">
+					<div class="row">
+						<div class="col-sm-6">
+							<label>Aviso:</label> <label>#<strong>{{avisoId}}</strong></label>
+						</div>
+					</div>
+					<br />
+					<div class="row">
+						<div class="col-sm-6">
+							<label>Producto</label> <select ng-change="verificar()"
+								class="form-control ng-pristine ng-invalid ng-invalid-required ng-touched"
+								ng-model="registro.producto.id" class="w-md" required>
+								<option value="0">Seleccione un producto...</option>
+								<option ng-repeat="p in productos" value="{{p.id}}">{{p.nombre}}</option>
+							</select>
+						</div>
+					</div>
+					<br />
+					<div class="row">
+						<div class="col-sm-6">
+							<label>Cantidad</label> <input type="number"
+								class="form-control  ng-pristine ng-invalid ng-invalid-required ng-touched"
+								ng-model="registro.cantidad" required style="text-align: right;">
+						</div>
+					</div>
+					<br />
+					<div class="row">
+						<div class="col-sm-6">
+							<label>Descuento</label>
+							<div class="input-group m-b">
+								<span class="input-group-addon">%</span>
+								<input type="number" ui-validate="'$value >= 0'"
+									class="form-control ng-pristine ng-invalid ng-invalid-required ng-touched"
+									ng-model="registro.descuento" style="text-align: right;">
+							</div>
+						</div>
+					</div>
+
+					<br />
+					<div class="row" ng-hide=ocultar>
+						<div class="col-sm-6">
+							<label>Cantidad de Accesos</label> <input type="text"
+								class="form-control  ng-pristine ng-invalid ng-invalid-required ng-touched"
+								ng-model="registro.cantidadAccesos" style="text-align: right;">
+						</div>
+					</div>
+
+				</div>
+				<div class="panel-footer">
+					<button class="btn btn-info" ng-click="agregar()">Agregar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="table-responsive" ng-if="lista!=undefined||null">
+			<table ui-jq="dataTable" class="table table-striped m-b-none"
+				ui-options="{oLanguage: {sUrl: 'vendor/jquery/datatables/spanish.txt'},
+						lengthMenu:[5],
+						lengthChange:false						
+						}">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>Aviso</th>
+						<th>Producto</th>
+						<th>Cantidad</th>
+						<th>Descuento</th>
+						<th>Cantidad Accesos</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="l in lista">
+						<td>{{$index+1}}</td>
+						<td>{{l.aviso}}</td>
+						<td>{{l.producto.nombre}}</td>
+						<td>{{l.cantidad}}</td>
+						<td>{{l.descuento}}</td>
+						<td>{{l.cantidadAccesos}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<div class="modal-footer">
+	<button class="btn btn-success" ng-click="aceptar()">Aceptar</button>
+	<button class="btn btn-default" ng-click="cancel()">Cerrar</button>
+</div>

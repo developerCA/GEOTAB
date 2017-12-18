@@ -1,0 +1,128 @@
+<toaster-container
+	toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+<div ng-controller="fechasRenovacionCtrl" ng-init="init()">
+	<div class="bg-light lter b-b wrapper-md">
+		<h1 class="m-n font-thin h4">
+			<i class="fa fa-calendar-o"></i> Fechas Renovaci&oacute;n
+		</h1>
+	</div>
+
+	<div class="wrapper-md" ng-show="!nuevo">
+		<div class="panel panel-info">
+			<div class="panel-heading">
+				<div class="panel-title text-center"></div>
+
+				<a class="btn m-b-xs btn-sm btn-success btn-addon"
+					ng-click="nuevoItem()"><i class="fa fa-plus"></i>Agregar</a> </span> <span
+					ng-hide="ultimaFecha[0].fechaInicio == null"> <label>Ultimo
+						rango procesado: <b>{{ultimaFecha[0].fechaInicio}} -
+							{{ultimaFecha[0].fechaFin}}</b>
+				</label> <span>Se sugiere comenzar por la fecha: <b>{{toDate(sugerirFecha)}}</b></span>
+				</span>
+			</div>
+
+			<div class="panel-body">
+				<div class="table-responsive"
+					ng-if="fechasRenovacion!=undefined||null">
+					<table ui-jq="dataTable"
+						class="table table-striped m-b-none example"
+						ui-options="{
+							oLanguage: {sUrl: 'vendor/jquery/datatables/spanish.txt'},
+							}">
+						<thead>
+							<tr>
+								<th>#</th>
+								<th style="width: 25%">Fecha Registro</th>
+								<th style="width: 25%">Fecha Inicio</th>
+								<th style="width: 25%">Fecha Fin</th>
+								<th style="width: 25%">Estado</th>
+								<th></th>
+								<th></th>
+								<th></th>
+								<th></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="i in fechasRenovacion">
+								<td>{{$index+1}}</td>
+								<td>{{toDate(i.fechaRegistro)}}</td>
+								<td>{{i.fechaInicio}}</td>
+								<td>{{i.fechaFin}}</td>
+								<td>{{i.estado.nombre}}</td>
+								<td ng-show="i.estado.sigla == 'FECFIN'"><i class="glyphicon glyphicon-thumbs-up"></i></td>
+								<td style="width: 1px"><button
+										class="btn btn-sm btn-icon btn-danger"
+										ng-show="i.estado.sigla == 'FECREG'"
+										ng-click="eliminarItem(i)" tooltip="Eliminar registro">
+										<i class="fa fa-times"></i>
+									</button></td>
+								<td><button class="btn btn-sm btn-icon btn-primary"
+										ng-show="i.estado.sigla == 'FECREG'"
+										ng-click="activarItem(i)" tooltip="Activar Fecha">
+										<i class="fa fa-check"></i>
+									</button></td>
+									<td><button class="btn btn-sm btn-icon btn-info"
+										ng-show="i.estado.sigla == 'FECACT'"
+										ng-click="finalizarItem(i)" tooltip="Finalizar fecha de aviso de renovaci&oacute;n">
+										<i class="glyphicon glyphicon-thumbs-down"></i>
+									</button></td>
+							</tr>
+						</tbody>
+					</table>
+
+				</div>
+			</div>
+
+			<div class="panel-footer text-left bg-light lter"></div>
+		</div>
+
+	</div>
+
+	<!-- FORMULARIO -->
+	<div class="col-sm-12" ng-show="nuevo">
+		<div class="panel panel-info" draggable="true">
+			<div class="panel-heading">
+				<a class="btn m-b-xs btn-sm btn-info btn-addon" ng-show="!editar"
+					ng-click="guardarItem()" ng-disabled="form.$invalid"
+					disabled="disabled"><i class="fa fa-save"></i> Guardar</a> <a
+					class="btn m-b-xs btn-sm btn-info btn-addon" ng-show="editar"
+					ng-click="actualizarItem()" ng-disabled="form.$invalid"
+					disabled="disabled"><i class="fa fa-save"></i> Editar</a> <a
+					class="btn m-b-xs btn-sm btn-default btn-addon" ng-show="nuevo"
+					ng-click="cancelarItem()"><i class="fa fa-times"></i> Cerrar</a>
+			</div>
+			<form name="form"
+				class="w-full wrapper-md form-validation ng-pristine ng-invalid ng-invalid-required ng-valid-pattern ng-valid-email ng-valid-validator">
+				<div class="col w-full bg-white-only">
+
+					<div class="padder">
+						<div class="form-group">
+							<div class="row">
+								<div class="col-sm-3">
+									<label>Fecha de Inicio</label> <input type="text"
+										class="form-control ng-dirty ng-valid-parse ng-invalid ng-invalid-required ng-valid-pattern ng-touched col-sm-3"
+										ng-model="fechaRenovacion.fechaInicio"
+										placeholder="YYYY-MM-DD"
+										ng-pattern="/[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])$/"
+										required>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-sm-3">
+									<label>Fecha Fin</label> <input type="text"
+										class="form-control ng-dirty ng-valid-parse ng-invalid ng-invalid-required ng-valid-pattern ng-touched"
+										ng-model="fechaRenovacion.fechaFin" placeholder="YYYY-MM-DD"
+										ng-pattern="/[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])$/"
+										required>
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+</div>

@@ -1,0 +1,527 @@
+<toaster-container
+	toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+<div ng-controller="gestionCtrl" ng-init="init()">
+	<div class="bg-light lter b-b wrapper-md">
+		<h1 class="m-n font-thin h4">
+			<i class="fa fa-phone"></i> Gesti&oacute;n Comercial
+		</h1>
+	</div>
+
+	<div class="wrapper-md">
+		<div class="panel panel-info">
+			<div class="panel-heading">Datos Generales</div>
+			<div class="panel-body">
+
+				<div ng-show="telerenovador==null" class="alert alert-warning"
+					role="alert">El usuario no tiene permisos para realizar la
+					gest&oacute;n comercial o no es un Telerenovador</div>
+
+				<article class="media" ng-show="telerenovador!=null">
+					<div class="pull-left">
+						<span class="fa-stack fa-lg"> <i
+							class="fa fa-circle fa-stack-2x text-primary"></i> <i
+							class="fa fa-user fa-stack-1x text-white"></i>
+						</span>
+					</div>
+
+					<div class="media-body">
+						<a href class="h4">Telerenovador: {{telerenovador.nombres}}
+							{{telerenovador.apellidos}} </a> <small class="block m-t-xs">
+							Sucursal: <b>{{telerenovador.sucursal.nombre}}</b>
+						</small>
+					</div>
+
+
+				</article>
+
+				<article class="media" ng-show="telerenovador!=null">
+					<div class="pull-left">
+						<span class="fa-stack fa-lg"> <i
+							class="fa fa-circle fa-stack-2x text-default"></i> <i
+							class="fa fa-calendar fa-stack-1x text-white"></i>
+						</span>
+					</div>
+
+					<div class="media-body">
+						<form class="form-inline" role="form">
+							<div class="form-group">
+								<label>Rango Fechas:</label> <select
+									class="form-control ng-pristine ng-invalid ng-invalid-required ng-touched"
+									ng-model="fecha" class="w-md" required
+									ng-options="f.fechaInicio +'-'+f.fechaFin   for f in fechas">
+
+
+								</select>
+
+								<button class="btn btn-primary btn-addon"
+									ng-click="buscarSuscripciones()">
+									<i class="fa fa-search"></i>Buscar suscripciones
+								</button>
+
+							</div>
+						</form>
+
+
+
+					</div>
+
+
+				</article>
+
+			</div>
+		</div>
+
+		<div class="panel panel-success"
+			ng-show="telerenovador!=null && listaGestion.length>0">
+			<div class="panel-heading">Detalle</div>
+			<div class="panel-body">
+				<accordion close-others="true">
+				<div ng-repeat="g in listaGestion">
+					<accordion-group> <accordion-heading>
+					<h5>
+						<a href><span
+							class="label bg-info pos-rlt m-r inline wrapper-xs"><i
+								class="arrow right arrow-info"></i>Cliente</span><span> <strong>
+									{{g.cliente.nombres}} {{g.cliente.apellidos}} </strong></span> </a>
+					</h5>
+					<h6>
+						<span class="block m-t-xs"> <b>Tipo:</b>
+							{{g.cliente.tipoCliente.nombre}} / <b>Nacionalidad:</b>
+							{{g.cliente.pais.nacionalidad}} / <b>Identificaci&oacute;n:</b>
+							{{g.cliente.identificacion}} / <b>Celulares:</b>
+							{{g.cliente.celular1}}, {{g.cliente.celular2}} / <b>Tel&eacute;fonos:</b>
+							{{g.cliente.telefono1}}, {{g.cliente.telefono2}},
+							{{g.cliente.telefonoTrabajo}} / <b>E-mail:</b>
+							{{g.cliente.email}}
+						</span>
+					</h6>
+					<h6>
+						<span class="block m-t-xs"> <b>Pa&iacute;s:</b>
+							{{g.cliente.pais.nombre}} / <b>Provincia:</b>
+							{{g.cliente.provincia.nombre}} / <b>Ciudad:</b>
+							{{g.cliente.ciudad.nombre}} / <b>Direcci&oacute;n:</b>
+							{{g.cliente.direccion}} / <b>Direcci&oacute;n Trabajo:</b>
+							{{g.cliente.direccionTrabajo}} / <b>Regi&oacute;n:</b>
+							{{g.cliente.region.nombre}}
+						</span>
+					</h6>
+					</accordion-heading>
+					<div style="float: right;">
+						<button type="button" ng-click="ingresarPedido(g)"
+							ng-show="g.isRenovar" class="btn btn-sm btn-success">
+							<i class="fa fa-arrow-right"> </i> Siguiente
+						</button>
+
+						<button type="button" ng-click="norenovar(g)"
+							ng-show="g.isRenovar" class="btn btn-sm btn-danger">
+							<i class="glyphicon glyphicon-remove"> </i> No Renovar
+						</button>
+
+						<button type="button" ng-click="renovar(g)" ng-show="!g.isRenovar"
+							class="btn btn-sm btn-info">
+							<i class="fa fa-exchange"> </i> Renovar
+						</button>
+
+						<button type="button" ng-click="cancelarRenovacion(g)"
+							ng-show="!g.isRenovar" class="btn btn-sm btn-default">
+							<i class="fa fa-times-circle"></i> Cancelar
+						</button>
+
+					</div>
+
+					<tabset class="tab-container"> <tab
+						heading="Renovaci&oacute;n" disabled="!g.pasoRenovacion"
+						active="g.pasoRenovacion">
+
+					<div class="bs-callout bs-callout-primary"
+						id="callout-alerts-dismiss-plugin">
+						<h4>Lista de Suscripciones</h4>
+						<p>Marque las suscripciones que desea renovar con la
+							opci&oacute;n que existe en la parte de la derecha</p>
+						<p>
+							<strong>Siguiente:</strong> Con esta opci&oacute;n continuamos
+							con el proceso de renovaci&oacute;n de suscripciones
+						</p>
+
+						<p>
+							<strong>No Renovar:</strong> No se renueva ninguna
+							suscripci&oacute;n del cliente
+						</p>
+
+					</div>
+
+
+					<div ng-repeat="detalleRenovacion in g.listaDistribuciones "
+						ng-if="detalleRenovacion.distribucion.suscripcion!=null">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<div style="float: right;" tooltip="Renovar">
+									<div class="checkbox">
+										<label class="i-checks m-b-none"> <input
+											type="checkbox" ng-model="detalleRenovacion.seleccion"
+											ng-checked="true"
+											ng-click="desactivarSuscripcion(detalleRenovacion)"><i></i>
+										</label>
+									</div>
+								</div>
+
+								<span class="label bg-success pos-rlt m-r inline wrapper-xs"><i
+									class="arrow right arrow-success"></i> Suscripci&oacute;n</span> <small>
+									<span class="badge bg-dark">{{detalleRenovacion.distribucion.suscripcion.id}}</span>
+								</small> <small class="block m-t-xs"> <strong>Enlace:</strong>
+									{{detalleRenovacion.distribucion.suscripcion.enlaceP.nombres}}
+									{{detalleRenovacion.distribucion.suscripcion.enlaceP.apellidos}}
+									/ <strong>Fecha Registro:</strong>
+									{{toDate(detalleRenovacion.distribucion.suscripcion.fechaHoraRegistro)}}
+									/ <strong>Fecha Inicio:</strong>
+									{{detalleRenovacion.distribucion.suscripcion.fechaInicio}} / <strong>Fecha
+										Vencimiento:</strong>
+									{{detalleRenovacion.distribucion.suscripcion.fechaVencimiento}}
+									/ <strong>Vendedor:</strong>
+									{{detalleRenovacion.distribucion.suscripcion.notaPedidoP.vendedor.nombres}}
+									{{detalleRenovacion.distribucion.suscripcion.notaPedidoP.vendedor.apellidos}}
+									/ <strong>Sucursal: </strong>
+									{{detalleRenovacion.distribucion.suscripcion.sucursal.nombre}}
+								</small> <small class="block m-t-xs"> <strong>Costo de
+										la suscripci&oacute;n:</strong>
+									${{decimales(detalleRenovacion.distribucion.suscripcion.detalleNotaPedidoP.total)}}
+								</small>
+							</div>
+
+							<div class="panel-body">
+								<span
+									class="label bg-warning pos-rlt m-r inline wrapper-xs text-dark"><i
+									class="arrow right arrow-warning"></i> <strong>Producto:</strong></span>
+								<small><strong>{{detalleRenovacion.renovacionDetalle.renovacionDetalle.codigoProducto.nombre}}</strong>
+								</small> <span class="label bg-primary pos-rlt m-r inline wrapper-xs "><i
+									class="arrow right arrow-primary"></i> <strong>Renovado
+										por:</strong></span> <small><strong>{{detalleRenovacion.renovacionDetalle.renovacionDetalle.productoRenovado.nombre}}</strong>
+								</small> <span class="wrapper-sm bg-info lter"
+									ng-show="detalleRenovacion.renovacionDetalle.renovacionDetalle.productoRenovado.id != detalleRenovacion.renovacionDetalle.renovacionDetalle.productoVenta.id">
+
+									<span class="label bg-info dker pos-rlt m-r inline wrapper-xs ">
+										<strong>Actualizado por:</strong>
+								</span> <small><strong>{{detalleRenovacion.renovacionDetalle.renovacionDetalle.productoVenta.nombre}}</strong>
+								</small> / Accesos : <span class="badge bg-primary">{{detalleRenovacion.renovacionDetalle.accesosRenovacion.length}}</span>
+									<button class="btn btn-danger btn-xs"
+										ng-click="eliminarActualizacion(detalleRenovacion)">
+										<i class="fa fa-trash-o"></i> Eliminar
+									</button>
+
+								</span>
+
+
+
+
+								<div style="float: right;">
+									<div class="btn-group">
+										<button type="button" class="btn btn-xs btn-info"
+											ng-click="cargaModalAccesos(detalleRenovacion)"
+											ng-disabled="!detalleRenovacion.renovacionDetalle.renovacionDetalle.codigoProducto.aplicaAccesos==true">
+											<i class="glyphicon glyphicon-retweet"></i> Cambiar producto
+										</button>
+										<button type="button" class="btn btn-xs btn-danger"
+											ng-click="norenovarIndividual(detalleRenovacion.distribucion)">
+											<i class="glyphicon glyphicon-remove"></i>No Renovar
+										</button>
+									</div>
+								</div>
+
+							</div>
+
+						</div>
+
+						<br>
+					</div>
+
+
+
+					</tab> <tab heading="Nota de pedido" disabled="g.pasoRenovacion"
+						active="g.pasoNP">
+					<div class="row">
+
+						<div class="col-sm-12">
+
+							<form name="frmNuevoPedido"
+								class="w-full wrapper-md form-validation ng-pristine ng-invalid ng-invalid-required ng-valid-pattern ng-valid-email ng-valid-validator">
+								<div class="panel panel-info">
+									<div class="panel-heading">
+										<div class="panel-title">Pedido de Renovaci&oacute;n</div>
+									</div>
+									<div class="panel-body">
+										<div class="form-group pull-in clearfix wrapper">
+											<div class="row">
+												<div class="col-sm-3">
+													<label>N&uacute;mero de Referencia</label> <input
+														type="text" maxlength="10"
+														class="form-control  ng-pristine ng-invalid ng-invalid-required ng-touched"
+														ng-model="g.pedidoDto.notaPedido.numeroReferencia"
+														required style="text-align: right;" disabled>
+												</div>
+
+												<div class="col-sm-3">
+													<label>Cliente</label> <input type="text"
+														class="form-control" placeholder="Seleccione uno..."
+														value="{{g.pedidoDto.notaPedido.cliente.nombres}} {{g.pedidoDto.notaPedido.cliente.apellidos}}"
+														disabled>
+
+												</div>
+
+												<div class="col-sm-3">
+													<label>Telerenovador</label> <input type="text"
+														class="form-control" placeholder="Seleccione uno..."
+														value="{{g.pedidoDto.notaPedido.telerenovador.nombres}} {{g.pedidoDto.notaPedido.telerenovador.apellidos}}"
+														disabled>
+												</div>
+
+												<div class="col-sm-3">
+													<label>Descuento</label> <input type="text"
+														style="color: green; font-weight: bold; text-align: right;"
+														class="form-control ng-pristine ng-invalid ng-invalid-required ng-touched"
+														ng-model="g.pedidoDto.notaPedido.descuento" disabled>
+												</div>
+
+											</div>
+
+
+											<div class="row">
+
+												<div class="col-sm-3">
+													<label>Subtotal 0%</label>
+													<div class="input-group m-b">
+														<span class="input-group-addon">$</span> <input
+															type="text"
+															style="color: green; font-weight: bold; text-align: right;"
+															class="form-control ng-pristine ng-invalid ng-invalid-required ng-touched"
+															ng-model="g.pedidoDto.notaPedido.valorImpuesto0" disabled>
+													</div>
+												</div>
+
+												<div class="col-sm-3">
+													<label>IVA</label>
+													<div class="input-group m-b">
+														<span class="input-group-addon">$</span> <input
+															type="text"
+															style="color: green; font-weight: bold; text-align: right;"
+															class="form-control ng-pristine ng-invalid ng-invalid-required ng-touched"
+															ng-model="g.pedidoDto.notaPedido.valorImpuesto" disabled>
+													</div>
+												</div>
+
+												<div class="col-sm-3">
+													<label>SubTotal 12%</label>
+													<div class="input-group m-b">
+														<span class="input-group-addon">$</span> <input
+															type="text"
+															style="color: green; font-weight: bold; text-align: right;"
+															class="form-control ng-pristine ng-invalid ng-invalid-required ng-touched"
+															ng-model="g.pedidoDto.notaPedido.subtotal" disabled>
+													</div>
+												</div>
+
+												<div class="col-sm-3">
+													<label>Total</label>
+													<div class="input-group m-b">
+														<span class="input-group-addon">$</span> <input
+															type="text"
+															style="color: green; font-weight: bold; text-align: right;"
+															class="form-control ng-pristine ng-invalid ng-invalid-required ng-touched"
+															ng-model="g.pedidoDto.notaPedido.total" disabled>
+													</div>
+												</div>
+
+											</div>
+
+										</div>
+
+									</div>
+
+								</div>
+							</form>
+
+							<form editable-form name="frmDetallePedido"
+								class="w-full wrapper-md form-validation ng-pristine ng-invalid ng-invalid-required ng-valid-pattern ng-valid-email ng-valid-validator">
+
+								<div class="panel panel-success">
+									<div class="panel-heading">
+										<div class="panel-title">Detalle Pedido</div>
+									</div>
+
+									<div class="panel-body">
+										<div class="form-group pull-in clearfix wrapper ">
+
+											<div class="row">
+												<div class="col-sm-5">
+													<label>Producto</label>
+													<ui-select ng-model="g.detallePedido.producto"
+														theme="bootstrap" ng-change="manejarProducto(g)" required>
+													<ui-select-match placeholder="Seleccione un producto...">{{$select.selected.nombre}}</ui-select-match>
+													<ui-select-choices
+														repeat="item in productos | filter: $select.search">
+													<div ng-bind-html="item.nombre | highlight: $select.search"></div>
+													</ui-select-choices> </ui-select>
+												</div>
+
+												<div class="col-sm-3">
+													<label>Cantidad</label> <input
+														style="color: green; font-weight: bold; text-align: right;"
+														class="form-control ng-pristine ng-invalid ng-invalid-required ng-touched"
+														placeholder="cantidad" ng-model="g.detallePedido.cantidad"
+														type="number" min="1" required
+														ng-disabled="detallePedido.producto.aplicaAccesos"
+														ng-keyup="calcula()" ui-validate="'$value >= 0'">
+												</div>
+
+												<div class="col-sm-3">
+													<label>N&uacute;mero de Accesos</label> <input
+														class="form-control ng-pristine ng-invalid ng-invalid-required ng-touched"
+														style="color: green; font-weight: bold; text-align: right;"
+														placeholder="accesos"
+														ui-validate="'validarMinMax($value)'"
+														ng-model="g.detallePedido.numeroAccesos" type="number"
+														ng-disabled="!g.detallePedido.producto.aplicaAccesos">
+												</div>
+
+
+<!-- 												<div class="col-sm-3"> -->
+<!-- 													<label>Cantidad Real</label> <input -->
+<!-- 														class="form-control ng-pristine ng-invalid ng-invalid-required ng-touched" -->
+<!-- 														placeholder="cantidad real" -->
+<!-- 														ng-model="g.detallePedido.cantidadReal" type="text" -->
+<!-- 														disabled style="text-align: right;"> -->
+<!-- 												</div> -->
+											</div>
+
+											<div class="row">
+												<div class="col-sm-5">
+													<label>N&uacute;mero de meses</label> <input
+														style="color: green; font-weight: bold; text-align: right;"
+														class="form-control ng-pristine ng-invalid ng-invalid-required ng-touched"
+														placeholder="numero de meses"
+														ng-model="g.detallePedido.numeroMeses" type="number"
+														disabled>
+												</div>
+
+												<div class="col-sm-3">
+													<label>Costo Unitario</label>
+													<div class="input-group m-b">
+														<span class="input-group-addon">$</span> <input
+															style="color: green; font-weight: bold; text-align: right;"
+															class="form-control ng-pristine ng-invalid ng-invalid-required ng-touched"
+															placeholder="costo unitario"
+															ng-model="g.detallePedido.costoUnitario" type="text"
+															disabled>
+													</div>
+												</div>
+
+												<div class="col-sm-3">
+													<label>Descuento</label>
+													<div class="input-group m-b">
+														<span class="input-group-addon">%</span> <input
+															style="color: green; font-weight: bold; text-align: right;"
+															class="form-control ng-pristine ng-invalid ng-invalid-required ng-touched"
+															placeholder="descuento"
+															ng-model="g.detallePedido.descuento" type="number"
+															ui-validate="'$value >= 0'">
+													</div>
+												</div>
+											</div>
+
+											<div class="m">
+												<button class="btn btn-success" ng-click="agregarDetalle(g)"
+													ng-disabled="frmDetallePedido.$invalid" disabled="disabled">Agregar</button>
+											</div>
+
+
+										</div>
+									</div>
+								</div>
+							</form>
+							<div class="line line-dashed b-b line-lg pull-in"></div>
+
+							<table
+								class="table table-bordered table-hover table-condensed bg-white-only"
+								style="font-size: smaller">
+								<thead>
+									<tr>
+										<th>#</th>
+										<th>Producto</th>
+										<th>Cant.</th>
+										<th>Accesos</th>
+										<th>Cant. Real</th>
+										<th>Meses</th>
+										<th>Costo Unit.</th>
+										<th>Valor</th>
+										<th>Desc</th>
+										<th>Subtotal</th>
+										<th>Impuesto</th>
+										<th>Total</th>
+										<th></th>
+										<th></th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="i in g.pedidoDto.detalles">
+										<td>{{$index+1}}</td>
+										<td>{{i.producto.nombre}}</td>
+										<td align="center">{{i.cantidad}}</td>
+										<td align="center">{{i.numeroAccesos}}</td>
+										<td align="center">{{i.cantidadReal}}</td>
+										<td align="center">{{i.numeroMeses}}</td>
+										<td align="right">{{decimales(i.costoUnitario)}}</td>
+										<td align="right">{{decimales(i.valorReal)}}</td>
+										<td align="right"><input type="number"
+											class="form-control" ng-model="i.descuento"
+											ng-disabled="i.visible==false" ui-validate="'$value >= 0'"
+											min="1"></td>
+
+
+										<td align="right">{{decimales(i.subtotal)}}</td>
+										<td align="right">{{decimales(i.valorImpuesto)}}</td>
+										<td align="right">{{decimales(i.total)}}</td>
+										<td style="width: 1px"><button
+												class="btn btn-sm btn-icon btn-danger"
+												ng-disabled="i.eliminaNotaPedido==false"
+												ng-click="eliminarDetalle(g,$index)"
+												tooltip="Eliminar registro">
+												<i class="fa fa-times"></i>
+											</button></td>
+										<td style="white-space: nowrap">
+
+											<div class="buttons" ng-show="!i.visible">
+												<button class="btn btn-sm btn-info"
+													ng-click="editarDetalle(i)">
+													<i class="glyphicon glyphicon-edit"></i>
+												</button>
+
+											</div>
+
+											<div class="buttons" ng-show="i.visible">
+												<button ng-click="actualizarNotaPedido(g,i)"
+													class="btn btn-sm btn-info">
+													<i class="fa fa-check"></i>
+												</button>
+												<button type="button" class="btn btn-sm btn-default"
+													ng-click="cancelaEdicion(i)">
+													<i class="fa fa-times-circle"></i>
+												</button>
+
+											</div>
+
+										</td>
+									</tr>
+								</tbody>
+							</table>
+
+
+
+						</div>
+					</div>
+
+					</tab> </tabset> </accordion-group>
+				</div>
+				</accordion>
+			</div>
+		</div>
+	</div>
+</div>

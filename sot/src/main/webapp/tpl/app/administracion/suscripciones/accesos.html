@@ -1,0 +1,253 @@
+<toaster-container
+	toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+
+<div class="" ng-show="!nuevo" ng-init="selectOperacion(2)">
+	<!-- hbox layout -->
+	<div class="hbox hbox-auto-xs bg-light " ng-init="listarClientes()">
+		<!-- column -->
+		<div class="col w-lg lt b-r" id="pnlClientes" ng-if="pnlVisible">
+			<div class="vbox">
+				<div class="wrapper-sm ">
+
+					<div class="h6">
+						<i class="icon-user"></i> Clientes Activos
+					</div>
+				</div>
+				<div class="wrapper b-t m-t-xxs">
+					<div class="input-group">
+						<span class="input-group-addon input-sm"><i
+							class="fa fa-search"></i></span> <input type="text" class="col-sm-7"
+							placeholder="search" ng-model="query">
+					</div>
+					<br>
+					<div class="input-group">
+						<accordion> <accordion-group
+							heading="Busqueda avanzada de clientes">
+						<div class="input-group">
+							<div class="panel-body">
+
+								<div class="form-group">
+									<label>Empresa/Nombre</label> <input type="text"
+										class="form-control" placeholder="Empresa/Nombre">
+								</div>
+								<div class="form-group">
+									<label>Apellidos</label> <input type="text"
+										class="form-control" placeholder="Apellidos">
+								</div>
+								<div class="form-group">
+									<label>Identificaci&oacute;n</label> <input type="text"
+										class="form-control" placeholder="Ruc/C&eacute;dula">
+								</div>
+								<br />
+								<button type="button" class="btn btn-sm btn-info">Buscar</button>
+
+							</div>
+
+						</div>
+						</accordion-group> </accordion>
+					</div>
+				</div>
+				<div class="row-row">
+					<div>
+						<div>
+							<div class="padder">
+								<div class="list-group col-sm-8">
+									<a
+										ng-repeat="c in clientes | filter:query | orderBy:'c.nombres':true"
+										class="list-group-item b-l-primary b-l-3x hover-anchor"
+										ng-class="{'hover': c.selected }" ng-click="selectCliente(c)">
+										<span class="block text-ellipsis">{{c.cliente.nombres}}
+											{{c.cliente.apellidos}}</span> <small class="text-muted">Identificaci&oacute;n:
+											{{c.cliente.identificacion }}</small> <small class="text">Suscripciones
+											Latentes: <span class="label label-success">{{c.numeroSuscripciones
+												}}</span>
+											<p>
+												<small class="text">Sucursal:
+													{{c.cliente.sucursal.nombre}} / Regional:
+													{{c.cliente.region.nombre}}</small>
+											</p>
+
+									</small>
+
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /column -->
+
+		<!-- column -->
+		<div class="col">
+			<div class="vbox">
+				<div class="wrapper-xs bg-light lt b-b">
+					<button type="button" class="btn btn-default btn-xs"
+						ng-click="togglePanel()">
+						<i class="fa fa-compress"></i>
+					</button>
+
+					<span>{{ cliente.cliente.nombres}}
+						{{cliente.cliente.apellidos}}</span>
+					<div class="m-l inline dropdown" dropdown>
+						<a class="v-middle pos-rlt inline bg-{{note.color}}"
+							dropdown-toggle style="width: 16px; height: 16px; top: -2px"></a>
+						<div class="dropdown-menu animated fadeInUp w wrapper">
+							<a ng-repeat="color in colors" class="inline m-xs bg-{{color}}"
+								style="width: 18px; height: 18px"
+								ng-click=" note.color = color "></a>
+						</div>
+					</div>
+				</div>
+				<div class="row-row">
+					<div class="cell">
+						<div class="col">
+							<br>
+							<div ng-show="muestraSuscripciones" class="col-sm-12 connected"
+								ui-jq="sortable"
+								ui-options="{items:'.panel', handle:'.panel-heading', connectWith:'.connected'}">
+								<div class="panel panel-success" ng-show="!muestraAccesos">
+									<div class="panel-heading">Suscripciones</div>
+									<article class="media">
+
+										<table st-table="rowCollectionBasic"
+											class="table table-bordered table-striped"
+											style="font-size: smaller">
+											<thead>
+												<tr>
+													<th style="width: 1%"># Suscrip.</th>
+													<th>#Nota Pedido</th>
+													<th>Inicio</th>
+													<th>Vencimiento</th>
+													<th>Estado</th>
+													<th>Producto</th>
+													<th></th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr ng-repeat="s in suscripciones">
+													<td>{{s.id}}</td>
+													<td>{{s.notaPedidoP.id}}</td>
+													<td>{{s.fechaInicio}}</td>
+													<td>{{s.fechaVencimiento}}</td>
+													<td>{{s.catalogoP.nombre}}</td>
+													<td>{{s.detalleNotaPedidoP.producto.nombre}}</td>
+													<td><a
+														ng-if="s.detalleNotaPedidoP.producto.aplicaAccesos"
+														class="btn btn-success btn-xs " tooltip="Accesos"
+														ng-click="buscarAccesos(s);togglePanel(false);"><i
+															class="fa fa-unlock-alt"></i> |
+															{{s.detalleNotaPedidoP.numeroAccesos}} </a></td>
+												</tr>
+											</tbody>
+										</table>
+
+									</article>
+
+								</div>
+
+								<div class="panel panel-default" ng-show="muestraAccesos">
+									<div class="panel-heading">
+										<span class="label bg-dark">{{accesos.length}}</span> Accesos
+										de la Suscripci&oacute;n <a ng-click="cerrarAccesos()"><span
+											class="pull-right "> <i class="fa fa-times"></i></span></a>
+
+									</div>
+
+									<div class="panel-body">
+										<a class="btn m-b-xs btn-sm btn-info btn-addon"
+											ng-click="procesarAccesos()"><i class="fa fa-save"></i>
+											Procesar</a> <a class="btn m-b-xs btn-sm btn-primary btn-addon"
+											ng-click="agregarObsequio()"><i class="fa fa-plus"></i>
+											Agregar acceso gratis</a> <a
+											class="btn m-b-xs btn-sm btn-success btn-addon"
+											ng-click="activarAccesosTmp()"><i
+											class="fa fa-check-square"></i> Activar Acceso Temporal</a> <a
+											class="btn m-b-xs btn-sm btn-danger btn-addon"
+											ng-click="desactivarAccesos()"><i
+											class="fa fa-times"></i> Desactivar Acceso</a> 
+											<a
+											class="btn m-b-xs btn-sm btn-dark btn-addon"
+											ng-click="cargarDatos()"><i
+											class="fa fa-upload"></i> Cargar Datos</a><a
+											class="btn m-b-xs btn-sm btn-default btn-addon"
+											ng-click="cerrarAccesos()"><i class="fa fa-times"></i>
+											Cerrar</a>
+
+									</div>
+									<article class="media">
+
+										<table st-table="rowCollectionBasic"
+											class="table table-bordered table-striped"
+											style="font-size: smaller">
+											<thead>
+												<tr>
+													<th></th>
+													<th style="width: 1%">#</th>
+													<th>Inicio</th>
+													<th>Vencimiento</th>
+													<th>Usuario</th>
+													<th>Clave</th>
+													<th>Estado</th>
+													<th>Enviado</th>
+													<th>Tipo</th>
+													<th ng-show="ver">Ip Inicial</th>
+													<th ng-show="ver">Ip Final</th>
+													<th ng-show="ver">Cantidad Ips</th>
+													<th>Email</th>
+													<th>Nombre</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr ng-repeat="a in accesos">
+													<td><a class="btn m-b-xs btn-sm btn-danger"
+														ng-click="resetarAccesos(a)" tooltip="Cambiar clave"><i
+															class="fa fa-unlock-alt"></i> </a></td>
+													<td>{{$index+1}}</td>
+													<td>{{a.fechaInicio}}</td>
+													<td>{{a.fechaVencimiento}}</td>
+													<td>{{a.usuario}}</td>
+													<td>{{a.clave}}</td>
+													<td>{{a.catalogoEstado.nombre}}</td>
+													<td>{{a.enviado ? "Si" : "No"}} </td>
+													<td><select
+														class="form-control ng-pristine ng-invalid ng-invalid-required ng-touched"
+														ng-model="a.catalogoTipoAcceso.id" class="w-md"
+														ng-change="visualizarTipo(a)" required>
+															<option value="">Seleccione un tipo...</option>
+															<option value="15">Normal</option>
+															<option value="45">Rango IP</option>
+													</select></td>
+													<td ng-show="ver"><input type="text"
+														ng-model="a.ipInicial"
+														ng-disabled="a.catalogoTipoAcceso.id != 45"></td>
+													<td ng-show="ver"><input type="text"
+														ng-model="a.ipFinal"
+														ng-disabled="a.catalogoTipoAcceso.id != 45"></td>
+													<td ng-show="ver"><input type="number"
+														ng-model="a.cantidadIps"
+														ng-disabled="a.catalogoTipoAcceso.id != 45"></td>	
+													<td><input type="email" ng-model="a.email"></td>
+													<td><input type="text" ng-model="a.nombre"></td>
+
+												</tr>
+											</tbody>
+										</table>
+
+									</article>
+								</div>
+
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /column -->
+	</div>
+
+	<!-- /hbox layout -->
+</div>
+

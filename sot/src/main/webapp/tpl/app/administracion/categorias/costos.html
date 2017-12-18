@@ -1,0 +1,121 @@
+<toaster-container
+	toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+<div ng-controller="categoriaCtrl" ng-init="traerItems()">
+	<div class="bg-light lter b-b wrapper-md">
+		<h1 class="m-n font-thin h4">
+			<i class="fa fa-dollar"></i> Costos de Servicios por Tipo de Equipos
+		</h1>
+
+	</div>
+	<div class="wrapper-md" ng-show="!nuevo">
+		<div class="panel panel-info">
+			<div class="panel-heading">
+				<span> Tipos </span>
+			</div>
+			<div class="table-responsive" ng-if="items!=undefined||null">
+
+				<table ui-jq="dataTable" class="table table-striped m-b-none"
+					ui-options="{oLanguage: {sUrl: 'vendor/jquery/datatables/spanish.txt'}}">
+					<thead>
+						<tr>
+							<th>#</th>
+							<th style="width: 50%">Nombre</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="i in items">
+							<td style="width: 1%">{{$index+1}}</td>
+							<td style="width: 90%">{{i.nombre}}</td>
+							<td align="right" style="width: 1px"><button
+									class="btn btn-sm btn-icon btn-success"
+									ng-click="agregarTareaItem(i)" tooltip="Agregar Servicios">
+									<i class="fa fa-plus"></i>
+								</button></td>
+
+						</tr>
+					</tbody>
+				</table>
+
+			</div>
+		</div>
+	</div>
+
+
+	<div class="wrapper-md" ng-show="nuevo">
+		<div class="panel panel-info">
+			<div class="panel-heading">
+				<a class="btn m-b-xs btn-sm btn-info btn-addon"
+					ng-click="guardarServicioItem()"><i class="fa fa-save"></i>Guardar </a> <a
+					class="btn m-b-xs btn-sm btn-default btn-addon"
+					ng-click="cerrarItem()"><i class="fa fa-times"></i>Cerrar </a>
+
+				<div class="h3 m-t-xs m-b-xs pull-right">
+					{{tipo.nombre}} <i
+						class="fa fa-circle text-success pull-right text-xs m-t-sm"></i>
+				</div>
+			</div>
+			<div class="table-responsive" ng-if="servicios!=undefined||null">
+
+				<table ui-jq="dataTable" class="table table-striped m-b-none">
+					<thead>
+						<tr>
+							<th>#</th>
+							<th style="width: 50%">Servicio</th>
+							<th style="width: 30%">Costo</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="s in servicios">
+							<td style="width: 1%">{{$index+1}}</td>
+							<td>{{s.tarea.nombre}}</td>
+							<td><input
+								class="ng-invalid ng-touched ng-dirty ng-invalid-number"
+								placeholder="Costo" ng-model="s.costo" required type="number"></td>
+
+
+						</tr>
+					</tbody>
+				</table>
+
+			</div>
+		</div>
+	</div>
+
+	<!-- 	<!-- FORMULARIO -->
+	-->
+	<!-- 		<div class="col-sm-12" ng-show="edit"> -->
+	<!-- 			<div class="panel panel-info" draggable="true"> -->
+	<!-- 				<div class="panel-heading"> -->
+	<!-- 					 <a class="btn m-b-xs btn-sm btn-info btn-addon" ng-show="!editar" -->
+	<!-- 						ng-click="guardarItem()" -->
+	<!-- 						ng-disabled="form.$invalid" disabled="disabled"><i -->
+	<!-- 						class="fa fa-save"></i>Guardar</a> -->
+
+	<!-- 					 <a class="btn m-b-xs btn-sm btn-info btn-addon" ng-show="editar" -->
+	<!-- 						ng-click="actualizarItem()" -->
+	<!-- 						ng-disabled="form.$invalid" disabled="disabled"><i -->
+	<!-- 						class="fa fa-save"></i>Editar</a>  -->
+
+	<!-- 					 <a class="btn m-b-xs btn-sm btn-default btn-addon" -->
+	<!-- 						ng-click="cancelarItem()"><i -->
+	<!-- 						class="fa fa-times"></i> Cancelar</a> -->
+	<!-- 				</div> -->
+	<!-- 				<form name="form" -->
+	<!-- 					class="w-full wrapper-md form-validation ng-pristine ng-invalid ng-invalid-required ng-valid-pattern ng-valid-email ng-valid-validator"> -->
+	<!-- 					<div class="col w-full bg-white-only" > -->
+	<!-- 						<div class="alert alert-danger" ng-show="status"> -->
+	<!-- 							<i class="fa fa-warning" ng-show="status"></i> {{msg}} -->
+	<!-- 						</div> -->
+	<!-- 						<div class="padder"> -->
+	<!-- 							<div class="form-group"> -->
+	<!-- 								<label>Nombre</label> <input type="text" -->
+	<!-- 									class="form-control  ng-pristine ng-invalid ng-invalid-required ng-touched" -->
+	<!-- 									ng-model="item.nombre"	required> -->
+	<!-- 							</div> -->
+	<!-- 						</div> -->
+	<!-- 					</div> -->
+	<!-- 				</form> -->
+	<!-- 			</div> -->
+	<!-- 		</div> -->
+</div>

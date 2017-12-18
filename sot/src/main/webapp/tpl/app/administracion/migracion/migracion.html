@@ -1,0 +1,34 @@
+<toaster-container
+	toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+
+<div ng-controller="migracionCtrl">
+	<div class="bg-light lter b-b wrapper-md">
+		<h1 class="m-n font-thin h4">
+			<i class="icon-directions"></i> Migracion
+		</h1>
+	</div>
+
+	<div class="wrapper-md">
+		<div class="panel panel-info">
+			<div class="panel-heading">
+				<a class="btn btn-success" ng-click="migrarClientes()">Migrar
+					Clientes</a> <a class="btn btn-primary" ng-click="migrarContactos()">Migrar
+					Contactos</a> <a class="btn btn-dark" ng-click="migrarProductos()">Migrar
+					Productos</a> 
+					<a class="btn btn-info" ng-click="migrarProductosRenovacion()">Migrar
+					Productos para renovacion</a> 
+					
+					<a class="btn btn-danger" ng-click="migrarContactos()">Migrar
+					Suscripciones</a> <a class="btn btn-warning" ng-click="migrarClientes()">Migrar
+					Accesos</a>
+
+
+			</div>
+
+			<div class="panel-body"></div>
+
+		</div>
+	</div>
+
+
+</div>

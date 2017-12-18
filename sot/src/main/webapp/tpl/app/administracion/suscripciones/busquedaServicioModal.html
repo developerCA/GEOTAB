@@ -1,0 +1,162 @@
+<div class="aside" tabindex="-1" role="dialog">
+	<div class="aside-dialog">
+		<div class="aside-content">
+			<div class="aside-header" ng-show="title">
+				<button type="button" class="close" ng-click="$hide()">&times;</button>
+				<h4 class="aside-title" ng-bind-html="title"></h4>
+			</div>
+			<div class="aside-body" ng-show="content">
+
+				<div class="panel panel-info">
+					<div class="panel-heading">
+						<i class="fa fa-filter"></i> Busqueda de Servicios por Equipos
+
+
+					</div>
+
+					<tabset class="tab-container wrapper-sm	 "> <tab
+						heading="Fechas">
+
+					<div class="form-group">
+
+						<label>Cliente</label>
+						<div class="input-group w-md ">
+							<ui-select ng-model="item.cliente" theme="bootstrap">
+							<ui-select-match placeholder="Seleccione un cliente">{{$select.selected.nombresCompletos}}</ui-select-match>
+							<ui-select-choices
+								repeat="c in clientes | filter: $select.search">
+
+							<div
+								ng-bind-html="c.nombresCompletos | highlight: $select.search"></div>
+							</ui-select-choices> </ui-select>
+							<span class="input-group-btn">
+								<button class="btn btn-default" type="button"
+									tooltip-placement="bottom" tooltip="Todos"
+									ng-click="resetCliente()">
+									<i class="fa fa-trash-o"></i>
+								</button>
+							</span>
+						</div>
+
+
+					</div>
+
+					<div class="form-group">
+
+
+						<label>Desde</label>
+						<div ng-controller="DatepickerDemoCtrl">
+							<div class="input-group w-md">
+								<input type="text" class="form-control"
+									datepicker-popup="{{format}}" ng-model="item.fechaDesde"
+									is-open="opened" datepicker-options="dateOptions"
+									ng-required="true" close-text="Cerrar" /> <span
+									class="input-group-btn" style="width: 20px">
+									<button type="button" class="btn btn-default"
+										ng-click="open($event)">
+										<i class="glyphicon glyphicon-calendar"></i>
+									</button>
+								</span>
+							</div>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label>Hasta</label>
+						<div ng-controller="DatepickerDemoCtrl">
+							<div class="input-group w-md">
+								<input type="text" class="form-control"
+									datepicker-popup="{{format}}" ng-model="item.fechaHasta"
+									is-open="opened" datepicker-options="dateOptions"
+									ng-required="true" close-text="Cerrar" /> <span
+									class="input-group-btn">
+									<button type="button" class="btn btn-default"
+										ng-click="open($event)">
+										<i class="glyphicon glyphicon-calendar"></i>
+									</button>
+								</span>
+							</div>
+						</div>
+
+
+					</div>
+					<div class="radio">
+						<label class="i-checks"> <input type="radio" name="a"
+							checked ng-model="item.tipo" value="4"> <i></i> Cierre
+						</label>
+					</div>
+					<div class="radio">
+						<label class="i-checks"> <input type="radio" name="a"
+							ng-model="item.tipo" value="5" checked> <i></i> Apertura
+						</label>
+					</div>
+					<button type="button" class="btn btn-sm btn-info"
+						ng-click="buscarOTEmpresaServicio()">Buscar</button>
+					</tab> <tab> <tab-heading> <i class="fa fa-filter"></i>
+					Filtros </tab-heading>
+
+					<div class="form-group">
+
+						<label>Cliente</label>
+						<div class="input-group w-md ">
+							<ui-select ng-model="item.cliente" theme="bootstrap">
+							<ui-select-match placeholder="Seleccione un cliente">{{$select.selected.nombresCompletos}}</ui-select-match>
+							<ui-select-choices
+								repeat="c in clientes | filter: $select.search">
+
+							<div
+								ng-bind-html="c.nombresCompletos | highlight: $select.search"></div>
+							</ui-select-choices> </ui-select>
+							<span class="input-group-btn">
+								<button class="btn btn-default" type="button"
+									tooltip-placement="bottom" tooltip="Todos"
+									ng-click="resetCliente()">
+									<i class="fa fa-trash-o"></i>
+								</button>
+							</span>
+						</div>
+
+
+					</div>
+
+					<div class="form-group">
+						<label>Equipo</label> <input type="text" class="form-control"
+							placeholder="Equipo" ng-model="item.equipo">
+					</div>
+					<div class="form-group">
+						<label>Serie</label> <input type="text" class="form-control"
+							placeholder="Serie" ng-model="item.serie">
+					</div>
+					<div class="form-group">
+						<label>Servicio</label> <input type="text" class="form-control"
+							placeholder="Servicio" ng-model="item.servicio">
+					</div>
+					<div class="form-group">
+						<label>N&uacute;mero de Orden(OET)</label> <input type="text"
+							class="form-control" placeholder="OET" ng-model="item.oet">
+					</div>
+					<div class="form-group">
+						<label>N&uacute;mero de Orden Interna(OIT)</label> <input
+							type="text" class="form-control" placeholder="OIT"
+							ng-model="item.oit">
+					</div>
+					<div class="form-group">
+						<label>N&uacute;mero de reporte</label> <input
+							type="text" class="form-control" placeholder="Reporte"
+							ng-model="item.reporte">
+					</div>
+					<button type="button" class="btn btn-sm btn-info"
+						ng-click="buscarOTFEmpresaServicio()">Buscar</button>
+					</tab> </tabset>
+
+				</div>
+
+
+			</div>
+			<div class="aside-footer">
+				<button type="button" class="btn btn-default" ng-click="$hide()">Cerrar</button>
+				
+			</div>
+		</div>
+	</div>
+</div>

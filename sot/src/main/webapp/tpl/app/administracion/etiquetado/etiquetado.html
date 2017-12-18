@@ -1,0 +1,63 @@
+<toaster-container
+	toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+<div ng-controller="etiquetadoCtrl" ng-init="init()">
+	<div class="bg-light lter b-b wrapper-md">
+		<h1 class="m-n font-thin h4">
+			<i class="fa fa-picture-o"></i> Etiquetado
+		</h1>
+	</div>
+
+	<div class="wrapper-md">
+		<div class="panel panel-info">
+			<div class="panel-heading">
+				<div class="panel-title text-center"></div>
+
+				<a class="btn m-b-xs btn-sm btn-success btn-addon"
+					ng-click="generar()" ng-disabled="frmEtiquetado.$invalid"><i
+					class="fa fa-plus"></i>Generar Reporte</a> </span>
+			</div>
+
+			<div class="panel-body">
+				<form class="w-full wrapper-md form-validation ng-pristine ng-invalid ng-invalid-required ng-valid-pattern ng-valid-email ng-valid-validator" name="frmEtiquetado">
+					<div class="row">
+						<div class="col-sm-3">
+							<label>Rango Fechas</label> <select ng-change="elegida()"
+								class="form-control ng-pristine ng-invalid ng-invalid-required ng-touched"
+								ng-model="filtros.rango" class="w-md" required>
+								<option value="">Seleccione un rango...</option>
+								<option ng-repeat="f in fechas" value="{{f.id}}">{{f.fechaInicio}}
+									- {{f.fechaFin}}</option>
+							</select>
+						</div>
+
+						<div class="col-sm-3">
+							<label>L&iacute;nea de Productos</label> <select
+								ng-change="elegida()"
+								class="form-control ng-pristine ng-invalid ng-invalid-required ng-touched"
+								ng-model="filtros.linea" class="w-md" required>
+								<option value="">Seleccione una linea de productos...</option>
+								<option ng-repeat="s in subcategorias" value="{{s.id}}">{{s.nombre}}</option>
+							</select>
+						</div>
+
+					</div>
+
+					<div class="row">
+						<div class="col-sm-6">
+							<label>Informaci&oacute;n Comercial</label>
+							<textarea class="form-control" ng-model="filtros.comercial"
+								rows="5"></textarea>
+						</div>
+					</div>
+					<br /> <br />
+					<div ng-if="mostrar == true">
+						<reporteador url="{{cadena.url}}" args="[]" ng-model="cadena.url"></reporteador>
+
+					</div>
+				</form>
+			</div>
+			<div class="panel-footer text-left bg-light lter"></div>
+		</div>
+
+	</div>
+</div>

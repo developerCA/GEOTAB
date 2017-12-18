@@ -1,0 +1,234 @@
+<toaster-container
+	toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+<div ng-controller="prefacturarCtrl" ng-init="init()">
+	<div class="bg-light lter b-b wrapper-md">
+		<h4 class="m-n font-thin h4">
+			<i class="fa fa-fax fa-rotate-90"></i> Prefacturar
+		</h4>
+	</div>
+
+	<div class="wrapper-md" ng-show="!nuevo">
+
+
+		<div class="panel panel-info">
+
+			<div class="panel-body">
+
+				<div class="table-responsive" ng-if="listaPedidos!=undefined||null">
+
+					<table id="dt" ui-jq="dataTable"
+						class="table table-striped m-b-none example"
+						ui-options="{
+						oLanguage: {sUrl: 'vendor/jquery/datatables/spanish.txt'},
+						lengthChange:false
+						}">
+						<thead>
+							<tr>
+								<th>#</th>
+								<td style="width: 1%"></td>
+								<th style="width: 13%">Referencia</th>
+								<th style="width: 30%">Cliente</th>
+								<th style="width: 30%">Vendedor</th>
+								<th style="width: 10%">Total</th>
+								<th style="width: 10%">Fecha</th>
+								<th style="width: 22%"></th>
+								<th></th>
+
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="i in listaPedidos">
+								<td>{{$index+1}}</td>
+								<td><i class="{{i.idCatalogo.icono}}"></i></td>
+								<td>{{i.numeroReferencia}}</td>
+								<td>{{i.cliente.nombres}} {{i.cliente.apellidos}}</td>
+								<td>{{i.vendedor.nombres}} {{i.vendedor.apellidos}}</td>
+								<td>{{i.total}}</td>
+								<td>{{toDate(i.fechaHoraRegistro)}}</td>
+								<td><button class="btn btn-sm btn-icon btn-success"
+										ng-click="enviar(i)" tooltip="Prefacturar">
+										<i class="fa fa-tasks"></i>
+									</button></td>
+								<td style="width: 1px"><button
+										class="btn btn-sm btn-icon btn-danger"
+										ng-click="eliminarItem(i)" tooltip="Cancelar Nota de Pedido">
+										<i class="fa fa-times"></i>
+									</button></td>
+
+
+							</tr>
+						</tbody>
+					</table>
+
+				</div>
+			</div>
+
+		</div>
+
+
+	</div>
+
+	<!-- FORMULARIO -->
+	<div class="col-sm-12" ng-show="nuevo">
+		<br />
+		<div class="panel panel-info" draggable="true">
+			<div class="panel-heading">
+				<a class="btn m-b-xs btn-sm btn-info btn-addon" ng-show="nuevo"
+					ng-click="enviarPrefactura()" ng-disabled="form.$invalid"
+					disabled="disabled"><i class="fa fa-save"></i> Enviar
+					Prefactura</a> &nbsp;&nbsp;&nbsp;&nbsp; <a
+					class="btn m-b-xs btn-sm btn-default btn-addon" ng-show="nuevo"
+					ng-click="cancelarItem()"><i class="fa fa-times"></i> Cancelar</a>
+
+			</div>
+			<div class="panel-body">
+				<div class="row">
+					<div class="col-sm-12 connected" ui-jq="sortable"
+						ui-options="{items:'.panel', handle:'.panel-heading', connectWith:'.connected'}">
+						<div class="panel panel-info">
+							<div class="panel-heading">
+								Nota de Pedido # <span class="badge">{{notaPedido.numeroReferencia}}</span>
+								<em class="text-xs">Fecha de Pedido <span
+									class="text-danger">{{toDate(notaPedido.fechaHoraRegistro)}}</span></em>
+							</div>
+
+							<div class="panel-body">
+								<article class="media">
+									<div class="pull-left">
+										<span class="fa-stack fa-lg"> <i
+											class="fa fa-user fa-stack-2x"></i>
+										</span>
+									</div>
+									<div class="media-body">
+										<a href class="h4">Cliente: {{notaPedido.cliente.nombres}}
+											{{notaPedido.cliente.apellidos}} </a> <small class="block m-t-xs">
+											<strong>Email:</strong>{{notaPedido.cliente.email}} <strong>Direcci&oacute;n:</strong>
+											{{notaPedido.cliente.direccion}} / <strong>Tel&eacute;fono:</strong>{{notaPedido.cliente.telefono1}}
+											/<strong>Celular:</strong> {{notaPedido.cliente.celular1}} /
+											<strong>Ciudad:</strong>{{notaPedido.cliente.ciudad.nombre}}
+										</small> <em class="text-xs"><strong>C&eacute;dula:</strong> <span
+											class="text-success">{{notaPedido.cliente.identificacion}}</span></em>
+									</div>
+								</article>
+								<div class="line pull-in"></div>
+								<article class="media">
+									<div class="pull-left">
+										<span class="fa-stack fa-lg"> <i
+											class="fa fa-circle fa-stack-2x text-info"></i> <i
+											class="fa fa-user fa-stack-1x text-white"></i>
+										</span>
+									</div>
+									<div class="media-body">
+										<a href class="h4">Vendedor:
+											{{notaPedido.vendedor.nombres}}
+											{{notaPedido.vendedor.apellidos}}</a> <small class="block m-t-xs"><strong>Email:</strong>
+											{{notaPedido.vendedor.email}} / <strong>T&eacute;lefono:</strong>
+											{{notaPedido.vendedor.telefono}} / <strong>Celular:</strong>
+											{{notaPedido.vendedor.celular}} / <strong>Direcci&oacute;n:</strong>
+											{{notaPedido.vendedor.direccion}}</small> <em class="text-xs"><strong>C&eacute;dula:</strong>
+											<span class="text-success">{{notaPedido.vendedor.cedula}}</span><br />
+										</em>
+									</div>
+								</article>
+
+								<div class="line pull-in"></div>
+
+								<article class="media">
+									<div class="pull-left">
+										<span class="fa-stack fa-lg"> <i
+											class="fa fa-circle fa-stack-2x text-info"></i> <i
+											class="fa fa-building-o fa-stack-1x text-white"></i>
+										</span>
+									</div>
+									<div class="media-body col-sm-6" >
+										<label>Bodega</label> <select
+											class="form-control ng-pristine ng-invalid ng-invalid-required ng-touched"
+											ng-model="bodegaSelected" class="w-md" ng-change="verificar()" required>
+											<option value="">Seleccione una bodega...</option>
+											<option ng-repeat="b in bodegas" value="{{b.id}}">{{b.nombre}}</option>
+										</select>
+
+									</div>
+								</article>
+
+							</div>
+
+
+						</div>
+						<div class="panel panel-info">
+							<div class="panel-heading">
+								Detalle del pedido <span class="badge bg-info">
+									{{detalleList.length}}</span> <strong> <em class="text">
+										/ TOTAL DEL PEDIDO <span class="text-danger">$
+											{{decimales(notaPedido.total)}}</span>
+								</em></strong>
+
+							</div>
+
+							<div class="panel-body">
+								<article class="media">
+
+
+									<table class="table table-striped bg-white b-a">
+										<thead>
+											<tr>
+												<th style="width: 60px">CANT</th>
+												<th style="width: 60px">APLICA SUSCRIPCION</th>
+												<th>PRODUCTO</th>
+												<th style="width: 70px">COSTO</th>
+												<th style="width: 70px">ACCESOS</th>
+												<th style="width: 90px">TOTAL</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr ng-repeat="d in detalleList">
+												<td>{{d.cantidad}}</td>
+												<td ng-hide="d.producto.aplicaSuscripcion">No</td>
+												<td ng-hide="!d.producto.aplicaSuscripcion">Si</td>
+												<td>{{d.producto.nombre}}</td>
+												<td>$ {{decimales(d.costoUnitario)}}</td>
+												<td>{{d.numeroAccesos}}</td>
+												<td align="right">$ {{decimales(d.subtotal)}}</td>
+											</tr>
+
+											<tr>
+												<td colspan="5" class="text-right"><strong>Subtotal</strong></td>
+												<td align="right">$ {{decimales(totales.subtotal)}}</td>
+											</tr>
+											<tr>
+												<td colspan="5" class="text-right no-border"><strong>Descuento</strong></td>
+												<td align="right">$ {{decimales(totales.descuento)}}</td>
+											</tr>
+											<tr>
+												<td colspan="5" class="text-right no-border"><strong>Impuesto
+														0% </strong></td>
+												<td align="right">$ {{decimales(totales.impuesto_0)}}</td>
+											</tr>
+											<tr>
+												<td colspan="5" class="text-right no-border"><strong>I.V.A
+												</strong></td>
+												<td align="right">$ {{decimales(totales.impuesto)}}</td>
+											</tr>
+
+											<tr>
+												<td colspan="5" class="text-right no-border"><strong>Total</strong></td>
+												<td align="right"><strong>$
+														{{decimales(totales.total)}}</strong></td>
+											</tr>
+										</tbody>
+									</table>
+
+								</article>
+
+
+							</div>
+
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,72 @@
+<toaster-container
+	toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+<div ng-controller="suscripcionesCtrl" ng-init="init()">
+	<div class="bg-light lter b-b wrapper-md">
+		<h4 class="m-n font-thin h4">
+			<i class="icon-directions"></i> Ordenes de Trabajo - <small>{{usuario.nombres}} {{usuario.apellidos}}</small> 
+		</h4>
+	</div>
+	<div class="wrapper" id="pnlItems">
+		<table>
+			<tr>
+				<td><a class="list-group-item b-l-primary b-l-3x hover-anchor"
+					ng-class="{'hover': selected1 }" 
+					ui-sref="app.suscripciones.aprobar"> <span
+						class="block text-ellipsis">Aprobaci&oacute;n de
+							Ordenes de Trabajo</span> <small class="text-muted">Ordenes de Trabajo en
+							estado LATENTE</small>
+				</a></td>
+<!-- 				<td><a class="list-group-item b-l-danger b-l-3x hover-anchor" -->
+<!-- 					ng-class="{'hover': selected4 }"  -->
+<!-- 					ui-sref="app.suscripciones.renovaciones"> <span -->
+<!-- 						class="block text-ellipsis">Renovaciones</span>  -->
+<!-- 						<small class="text-muted">Estado de renovaciones Pendientes</small> -->
+<!-- 				</a></td>				 -->
+<!-- 				<td><a class="list-group-item b-l-success b-l-3x hover-anchor" -->
+<!-- 					ng-class="{'hover': selected2 }"  -->
+<!-- 					ui-sref="app.suscripciones.accesos"> <span -->
+<!-- 						class="block text-ellipsis">Generaci&oacute;n de Accesos</span> <small -->
+<!-- 						class="text-muted">Notificaci&oacute;n de claves a los -->
+<!-- 							clientes</small> -->
+<!-- 				</a></td> -->
+				<td><a class="list-group-item b-l-warning b-l-3x hover-anchor"
+					ng-class="{'hover': selected3 }" 
+					ui-sref="app.suscripciones.consultas"> <span
+						class="block text-ellipsis">Consultas de Ordenes de Trabajo</span> <small
+						class="text-muted">Listado de Ordenes de Trabajo por Cliente</small>
+				</a></td>
+			</tr>
+		</table>
+
+	</div>
+
+
+	<div class="">
+		<div class="col">
+			<div class="vbox">
+				<div class="wrapper bg-light lt b-b">
+					<button type="button" class="btn btn-default btn-sm"
+						ui-toggle-class="hide" target="#pnlItems">
+						<i class="fa fa-compress"></i>
+					</button>
+
+					<span class="text"> {{operacion.titulo}}</span>
+					<div class="m-l inline dropdown" dropdown>
+						<a class="v-middle pos-rlt inline bg-{{operacion.color}}"
+							dropdown-toggle style="width: 16px; height: 16px; top: -2px"></a>
+
+					</div>
+				</div>
+				<div class="row-row">
+
+					<div class="cell-inner">
+						<div class="panel-body" ui-view></div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+</div>

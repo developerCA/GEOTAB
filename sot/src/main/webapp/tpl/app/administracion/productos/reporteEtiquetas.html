@@ -1,0 +1,22 @@
+<div class="modal-header bg-success">
+	<h3 class="modal-title">
+		<i class="fa fa-print"></i> Reporte
+	</h3>
+</div>
+<div class="modal-body wrapper-lg">
+	<div class="modal-body m" ng-init="init()">
+		<div class="row">
+			<div class="col-sm-12">
+				<reporteador url="http://10.0.2.118:8080/Birt/frameset?__report=report/aviso_actualizacion.rptdesign&Aviso={{aviso}}" args="[]" ng-model="url"></reporteador>
+			</div>
+
+		</div>
+
+		<div class="modal-footer">
+			<button class="btn btn-default btn-addon" ng-click="cerrar()">
+				<i class="fa fa-times"></i> Cerrar
+			</button>
+
+		</div>
+	</div>
+</div>

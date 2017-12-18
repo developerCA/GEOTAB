@@ -1,0 +1,100 @@
+<div class="modal-header bg-info">
+	<h3 class="modal-title">Seguimiento</h3>
+</div>
+<div class="modal-body wrapper-lg" ng-init="init()">
+
+
+
+	<div class="panel panel-info">
+		<div class="panel-heading">
+			Equipo <span class="badge">{{tarea.detalleNotaPedido.producto.nombre}}</span>
+			# Serie <span class="badge">{{tarea.detalleNotaPedido.producto.serie}}</span>
+			Servicio <span class="badge">{{tarea.tarea.nombre}}</span> <a
+				class="btn m-b-xs btn-sm btn-success btn-addon pull-right"
+				ng-click="nuevoItem()"><i class="fa fa-plus"></i> Agregar</a>
+
+		</div>
+
+		<div class="panel-body" ng-show="!nuevo">
+			<table class="table m-b-none" ui-jq="footable" data-filter="#filter"
+				data-page-size="5">
+				<thead>
+					<tr>
+						<th data-toggle="true">Fecha</th>
+						<th>Cant(Avance)</th>
+						<th >Observac&oacute;n</th>
+
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="s in seguimientos">
+						<td>{{s.fecha}}</td>
+						<td>{{s.cantidad}}</td>
+						<td data-value="1">{{s.observacion}}</td>
+
+
+					</tr>
+
+				</tbody>
+				<tfoot class="hide-if-no-paging">
+					<tr>
+						<td colspan="5" class="text-center">
+							<ul class="pagination"></ul>
+						</td>
+					</tr>
+				</tfoot>
+			</table>
+		</div>
+
+
+		<div class="panel-body" ng-show="nuevo">
+
+			<div class="col-sm-12" >
+				<div class="panel panel-info" draggable="true">
+					<div class="panel-heading">
+						<a class="btn m-b-xs btn-sm btn-info btn-addon" ng-show="!editar"
+							ng-click="guardarItem()" ng-disabled="form.$invalid"
+							disabled="disabled"><i class="fa fa-save"></i> Guardar</a> <a
+							class="btn m-b-xs btn-sm btn-info btn-addon" ng-show="editar"
+							ng-click="actualizarItem()" ng-disabled="form.$invalid"
+							disabled="disabled"><i class="fa fa-save"></i> Editar</a> <a
+							class="btn m-b-xs btn-sm btn-default btn-addon" ng-show="nuevo"
+							ng-click="cancelarItem()"><i class="fa fa-times"></i>
+							Cancelar</a>
+					</div>
+					<form name="form"
+						class="w-full wrapper-md form-validation ng-pristine ng-invalid ng-invalid-required ng-valid-pattern ng-valid-email ng-valid-validator">
+						<div class="col w-full bg-white-only">
+
+							<div class="padder">
+								<div class="form-group">
+									<label>Cantidad</label> <input type="number"
+										class="form-control  ng-pristine ng-invalid ng-invalid-required ng-touched"
+										ng-model="item.cantidad" required>
+								</div>
+								<div class="form-group">
+									<label>Observaci&oacute;n</label> <input type="text" multiple="multiple" 
+										class="form-control  ng-pristine ng-invalid ng-invalid-required ng-touched"
+										ng-model="item.observacion" required>
+								</div>
+
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+
+
+		</div>
+
+	</div>
+
+
+	<div class="row"></div>
+
+</div>
+
+<div class="modal-footer">
+	<button class="btn btn-default" ng-click="cancel()">Cerrar</button>
+
+</div>

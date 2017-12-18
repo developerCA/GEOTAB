@@ -1,0 +1,228 @@
+<toaster-container
+	toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+	<div ng-init="selectOperacion(4)"></div>
+<div ng-controller="renovacionesPendientesCtrl" ng-init="init()">
+
+	<div class="wrapper-md" ng-show="!nuevo">
+
+
+		<div class="panel panel-info">
+
+			<div class="panel-body">
+
+				<div class="table-responsive">
+
+					<table id="dt" ui-jq="dataTable"
+						ng-if="renovacionesPendientesList!=undefined||null"
+						class="table table-striped m-b-none example"
+						ui-options="{
+						oLanguage: {sUrl: 'vendor/jquery/datatables/spanish.txt'},
+						lengthChange:false
+						}">
+						<thead>
+							<tr>
+								<th>#</th>
+								<th style="width: 15%">Codigo Renovaci&oacute;n</th>
+								<th style="width: 35%">Identificaci&oacute;n</th>
+								<th style="width: 49%">Cliente</th>
+								<th></th>
+								<th></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="i in renovacionesPendientesList">
+								<td>{{$index+1}}</td>
+								<td>{{i.renovacion.id}}</td>
+								<td>{{i.renovacion.codigoAviso.cliente.identificacion}}</td>
+								<td>{{i.renovacion.codigoAviso.cliente.nombres}}
+									{{i.renovacion.codigoAviso.cliente.apellidos}}</td>
+								<td><button class="btn btn-sm btn-icon btn-success"
+										ng-click="traerSuscripcionesGeneradas(i.renovacion.id)"
+										tooltip="Aprobar Suscripci&oacute;n">
+										<i class="icon-check"></i>
+									</button></td>
+								<td style="width: 1px"><button
+										class="btn btn-sm btn-icon btn-danger"
+										ng-click="eliminarItem(i)"
+										tooltip="Eliminar Suscripci&oacute;n">
+										<i class="fa fa-times"></i>
+									</button></td>
+							</tr>
+						</tbody>
+					</table>
+
+				</div>
+			</div>
+
+		</div>
+
+
+	</div>
+
+	<!-- FORMULARIO -->
+	<div class="col-sm-12" ng-show="nuevo">
+		<br />
+		<div class="panel panel-info" draggable="true">
+			<div class="panel-heading">
+				<a class="btn m-b-xs btn-sm btn-info btn-addon" ng-show="nuevo"
+					ng-click="aprobarRenovaciones()" ng-disabled="form.$invalid"
+					disabled="disabled"><i class="icon-check"></i> Aprobar
+					Renovaci&oacute;n</a> <a
+					class="btn m-b-xs btn-sm btn-default btn-addon" ng-show="nuevo"
+					ng-click="cancelarItem()"><i class="fa fa-times"></i> Cancelar</a>
+			</div>
+			<div class="panel-body">
+
+				<div class="row">
+					<div class="col-sm-8 connected" ui-jq="sortable"
+						ui-options="{items:'.panel', handle:'.panel-heading', connectWith:'.connected'}">
+						<div class="panel panel-info">
+							<div class="panel-heading">
+								Renovaci&oacute;n Pendiente # <span class="badge">{{renovacionPendiente}}</span>
+							</div>
+
+							<div class="panel-body">
+								<article class="media">
+									<div class="pull-left">
+										<span class="fa-stack fa-lg"> <i
+											class="fa fa-user fa-stack-2x"></i>
+										</span>
+									</div>
+									<div class="media-body">
+										<a href class="h4">Cliente:
+											{{suscripcionesGeneradas.notaPedido.cliente.nombres}}
+											{{suscripcionesGeneradas.notaPedido.cliente.apellidos}} </a> <small
+											class="block m-t-xs"> <strong>Email</strong>:{{suscripcionesGeneradas.notaPedido.cliente.email}}
+											/ <strong>Direcci&oacute;n</strong>:
+											{{suscripcionesGeneradas.notaPedido.cliente.direccion}} / <strong>Tel&eacute;fono</strong>:{{suscripcionesGeneradas.notaPedido.cliente.telefono1}}
+											/ <strong>Celular</strong>:
+											{{suscripcionesGeneradas.notaPedido.cliente.celular1}} / <strong>Ciudad</strong>:{{suscripcionesGeneradas.notaPedido.cliente.ciudad.nombre}}
+										</small> <em class="text-xs"><strong>C&eacute;dula</strong>: <span
+											class="text-success">{{suscripcionesGeneradas.notaPedido.cliente.identificacion}}</span></em>
+
+									</div>
+								</article>
+								<div class="line pull-in"></div>
+							</div>
+						</div>
+
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								Detalle del pedido <span class="badge">
+									{{suscripcionesGeneradas.detalleNotaPedido.length}}</span> <strong>
+									<em class="text-xs"> / TOTAL DEL PEDIDO <span
+										class="text-danger">$
+											{{decimales(renovacionAprobada.objeto.total)}}</span>
+								</em>
+								</strong>
+
+							</div>
+
+							<div class="panel-body">
+								<article class="media">
+
+
+									<table class="table table-striped bg-white b-a">
+										<thead>
+											<tr>
+												<th style="width: 60px">CANT</th>
+												<th>PRODUCTO</th>
+												<th style="width: 90px">COSTO</th>
+												<th style="width: 50px">ACCESOS</th>
+												<th style="width: 90px">TOTAL</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr
+												ng-repeat="pa in renovacionAprobada.objeto.productoAccesos">
+												<td>{{1}}</td>
+												<td>{{pa.producto.nombre}}</td>
+												<td>$ {{decimales(pa.producto.costo)}}</td>
+												<td>{{pa.acceso}}</td>
+												<td align="right">${{decimales(pa.subtotal)}}</td>
+											</tr>
+
+											<tr>
+												<td colspan="4" class="text-right no-border"><strong>Subtotal</strong></td>
+												<td align="right">$
+													{{decimales(renovacionAprobada.objeto.subtotal)}}</td>
+											</tr>
+
+											<tr>
+												<td colspan="4" class="text-right no-border"><strong>Descuento</strong></td>
+												<td align="right">$
+													{{decimales(renovacionAprobada.objeto.descuento)}}</td>
+											</tr>
+											<tr>
+												<td colspan="4" class="text-right no-border"><strong>Impuesto
+														0% </strong></td>
+												<td align="right">$
+													{{decimales(renovacionAprobada.objeto.impuesto0)}}</td>
+											</tr>
+											<tr>
+												<td colspan="4" class="text-right no-border"><strong>I.V.A
+												</strong></td>
+												<td align="right">$
+													{{decimales(renovacionAprobada.objeto.impuesto)}}</td>
+											</tr>
+
+											<tr>
+												<td colspan="4" class="text-right no-border"><strong>Total</strong></td>
+												<td align="right"><strong>$
+														{{decimales(renovacionAprobada.objeto.total)}}</strong></td>
+											</tr>
+										</tbody>
+									</table>
+
+								</article>
+
+
+							</div>
+
+						</div>
+					</div>
+
+					<div class="col-sm-4 connected" ui-jq="sortable"
+						ui-options="{items:'.panel', handle:'.panel-heading', connectWith:'.connected'}">
+
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<span class="label bg-info">{{suscripcionesGeneradas.suscripciones.length}}</span>
+								Suscripciones Generadas
+							</div>
+							<div class="panel-body">
+								<article class="media"
+									ng-repeat="s in suscripcionesGeneradas.suscripciones">
+
+									<div class="media-body">
+										<div class="pull-right text-center text-muted">
+											<strong class="h6"><i class="fa fa-calendar-o"></i>
+												{{toDate(s.fechaHoraRegistro)}}</strong>
+										</div>
+										<h5>
+											<span class="badge bg-info"> {{$index+1}}</span>
+											{{s.detalleNotaPedidoP.producto.nombre}}
+										</h5>
+
+										<a href class="btn btn-success btn-rounded btn-xs"
+											ng-click="crearEnlace(s,'lg')">Contacto :</a> <small>{{s.enlaceP==undefined||null?'Ninguno':s.enlaceP.nombres
+											+' '+ s.enlaceP.apellidos }} </small> <small class="block m-t-sm">N&uacute;mero
+											de meses: {{s.detalleNotaPedidoP.numeroMeses}} /
+											Informaci&oacute;n Adicional:
+											{{s.detalleNotaPedidoP.producto.descripcion}} </small>
+									</div>
+								</article>
+								<div class="line pull-in"></div>
+
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+	</div>
+	<!-- FORMULARIO -->
+
+</div>

@@ -1,0 +1,259 @@
+<toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container> 
+<div class="app-content-body app-content-full fade-in-up ng-scope ">
+	<div class="hbox hbox-auto-xs hbox-auto-sm bg-light"
+		ng-controller="usuariosCtrl"
+		ng-init=" init(); app.settings.asideFixed = true;
+            app.settings.asideDock = false;
+            app.settings.container = false;
+            app.hideAside = false; 
+            app.hideFooter = true; ">
+		<!-- column -->
+		<div class="col w b-r">
+			<div class="vbox">
+				<div class="wrapper">
+					<div class="h4">
+						<b>Empresas</b>
+					</div>
+				</div>
+				<div class="row-row">
+					<div class="cell scrollable hover">
+						<div class="cell-inner">
+							<div class="padder">
+								<div class="list-group">
+									<a ng-repeat="item in productos"
+										class="list-group-item b-l-primary b-l-3x hover-anchor"
+										ng-class="{'hover': item.selected }"
+										ng-click="selectProducto(item)"> <span
+										class="block text-ellipsis">{{ item.nombre ?
+											item.nombre : 'No existen empresas' }}</span>
+
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<span
+					tooltip="Click sobre un Producto para listar los Usuarios por Perfil"
+					class="pull-right text-muted inline wrapper-xs m-r-sm"><i
+					class="fa fa-question"></i></span>
+			</div>
+		</div>
+		<!-- /column -->
+		<!-- column -->
+		<div class="col w-lg lter b-r">
+			<div class="vbox">
+				<div class="wrapper-xs b-b">
+					<div class="input-group m-b-xxs">
+						<div class="form-group">
+							<label class="col-sm-3 control-label"><b>PERFIL</b><br></label>
+							<div class="col-sm-10">
+								<!--   ui-jq="chosen"    -->
+								<select ng-model="perfilList"
+									ng-options="perfil.nombrePerfil for perfil in perfiles track by perfil.id"
+									class="w-md form-control" ng-change="cargarUsuarios()">
+								</select>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="wrapper-xs b-b">
+					<div class="input-group m-b-xxs">
+						<span class="input-group-addon input-sm no-border no-bg"><i
+							class="icon-magnifier text-md m-t-xxs"></i></span> <input type="text"
+							class="form-control input-sm no-border no-bg text-md"
+							placeholder="Buscar {{group.name ? group.name : ' Usuarios'}}"
+							ng-model="query">
+					</div>
+				</div>
+				<div class="row-row">
+					<div class="cell scrollable hover">
+						<div class="cell-inner">
+							<div class="m-t-n-xxs">
+								<div
+									class="list-group list-group-lg no-radius no-border no-bg m-b-none">
+									<a ng-model="item"
+										ng-repeat="item in usuarios | filter:{group:filter} | filter:query |orderBy:'first'"
+										class="list-group-item m-l"
+										ng-class="{'select m-l-none': item.selected }"
+										ng-click="selectUser(item)"> <span
+										class="block text-ellipsis m-l-n text-md"
+										ng-class="{'m-l-none': item.selected }"> {{
+											item.nombreUsuario }} <strong>{{
+												item.apellidoUsuario }}</strong> <span
+											ng-hide="item.nombreUsuario || item.apellidoUsuario">No
+												existe nombre</span>
+									</span>
+									</a>
+								</div>
+							</div>
+							<div class="text-center pos-abt w-full" style="top: 50%;"
+								ng-hide="(usuarios | filter:query).length">No existen
+								Usuarios</div>
+						</div>
+					</div>
+				</div>
+				<div class="wrapper b-t text-center">
+					<span tooltip="Escoja el Usuario y click en Editar"
+						class="pull-right text-muted inline wrapper-xs m-r-sm"> <i
+						class="fa fa-question"></i>
+					</span> <a href class="btn btn-sm btn-default btn-addon"
+						ng-disabled="!perfilList.nombrePerfil"
+						ng-click="clickCreateUser()"> <i
+						class="fa fa-plus fa-fw m-r-xs"></i> Nuevo Usuario
+					</a>
+				</div>
+			</div>
+		</div>
+		<!-- /column -->
+
+		<!-- column -->
+		<div class="col bg-white-only">
+			<div class="vbox">
+				<div class="row-row">
+					<div class="cell">
+						<div class="cell-inner">
+							<form name="form" class="form-validation">
+								<div class="wrapper-sm b-b">
+									<div class="m-t-n-xxs m-b-n-xxs m-l-xs">
+										<a class="btn btn-xs btn-default" ng-disabled="!item.username"
+											ng-hide="item.editing" ng-click="clickEditUser(item)"><i
+											class="fa fa-pencil"></i>&nbsp;&nbsp;Editar</a> <a type="submit"
+											ng-disabled="form.$invalid" class="btn btn-xs btn-default"
+											ng-show="item.editing" ng-click="clickGuardar(item)"><i
+											class="fa fa-save"></i>&nbsp;&nbsp;Guardar</a> <a
+											class="btn btn-xs btn-default" ng-show="item.editing"
+											ng-click="clickCancel(item)"><i class="icon-action-undo"></i>&nbsp;&nbsp;Cancelar</a>
+									</div>
+								</div>
+								<div class="wrapper-lg">
+									<div class="hbox h-auto m-b-lg">
+										<div class="col text-center w-sm">
+											<div class="thumb-lg avatar inline">
+												<img src="img/anonymous.jpg">
+											</div>
+										</div>
+
+										<div class="col v-middle h1 font-thin">
+											<div ng-hide="item.editing">{{item.nombreUsuario}}
+												{{item.apellidoUsuario}}</div>
+											<div ng-show="item.editing">
+												<input required type="text" placeholder="Nombres"
+													class="form-control w-auto input-lg m-b-n-xxs font-bold"
+													ng-model="item.nombreUsuario"> <input required
+													type="text" placeholder="Apellidos"
+													class="form-control w-auto input-lg font-bold"
+													ng-model="item.apellidoUsuario">
+											</div>
+										</div>
+									</div>
+									<!-- fields -->
+									<div class="form-horizontal">
+										<div class="form-group m-b-sm"
+											ng-hide="!nombreProductoSelected && !item.editing">
+											<label class="col-sm-3 control-label">Empresa</label>
+											<div class="col-sm-9">
+												<p class="form-control-static">{{nombreProductoSelected}}</p>
+											</div>
+										</div>
+
+										<div class="form-group m-b-sm"
+											ng-hide="!perfilList.nombrePerfil && !item.editing">
+											<label class="col-sm-3 control-label">Perfil</label>
+											<div class="col-sm-9">
+												<p class="form-control-static" ng-hide="item.editing">{{perfilList.nombrePerfil}}</p>
+												<select required ng-show="item.editing"
+													ng-model="perfilListUser"
+													ng-options="perfilUser.nombrePerfil for perfilUser in perfiles track by perfilUser.id"
+													class="w-md form-control" >
+												</select>
+											</div>
+										</div>
+
+									
+
+										
+
+										<div class="form-group m-b-sm"
+											ng-hide="!item.username && !item.editing">
+											<label class="col-sm-3 control-label">Usuario</label>
+											<div class="col-sm-9">
+												<p class="form-control-static" ng-show="!item.creating && !item.editing ">{{item.username}}</p>
+												<input required ng-pattern="/^[a-zA-Z0-9]{3,20}$/" type="text"
+													class="form-control"  ng-show="item.creating || item.editing"
+													ng-model="item.username">
+											</div>
+										</div>
+
+										<div class="form-group m-b-sm" ng-hide="!item.editing">
+											<label class="col-sm-3 control-label">Clave</label>
+											<div class="col-sm-7">
+												<input required ng-show="password != ' '" ng-readonly="true"
+													type="text" class="form-control" ng-model="password">
+												<a type="buttom" class="btn btn-sm btn-info"
+													ng-show="item.editing"
+													ng-click="clickGenerarPassword(item)"><i
+													class="fa fa-gear"></i>&nbsp;&nbsp;{{item.creating ?
+													'Generar' : 'Restablecer'}} Contrase&ntilde;a</a>
+											</div>
+										</div>
+
+										<div class="form-group m-b-sm"
+											ng-hide="!item.emailUsuario && !item.editing">
+											<label class="col-sm-3 control-label">Correo</label>
+											<div class="col-sm-9">
+												<p class="form-control-static" ng-hide="item.editing">{{item.emailUsuario}}</p>
+												<input required type="email" class="form-control"
+													ng-show="item.editing" ng-model="item.emailUsuario">
+											</div>
+										</div>
+										<div ng-hide="!item.selected" class="form-group m-b-sm">
+											<label class="col-sm-3 control-label">Estado</label>
+											<div class="col-sm-9">
+												<span ng-show="!item.editing"
+													class="label bg-{{item.estadoUsuario ? 'success' : 'light'  }}">{{item.estadoUsuario
+													? 'Activo' : 'Inactivo' }} </span>
+												<div ng-show="item.editing" class="">
+													<div class="col-sm-10">
+														<label class="i-switch m-t-xs m-r"> <input
+															ng-model="item.estadoUsuario" type="checkbox"> <i></i>
+														</label>
+													</div>
+												</div>
+											</div>
+										</div>
+
+										<div class="form-group m-b-sm"
+											ng-hide="!item.emailUsuario && !item.editing">
+											<label class="col-sm-3 control-label">Cliente</label>
+											<div class="col-sm-9">
+												<p class="form-control-static" ng-hide="item.editing">{{item.cliente.nombres}}
+													{{item.cliente.apellidos }}</p>
+
+
+												<div class="input-group m-b" ng-show="item.editing">
+													<span class="input-group-btn"> <i class="icon-users"></i>
+													</span>
+													<ui-select ng-model="item.cliente" theme="bootstrap"
+														required> <ui-select-match
+														placeholder="Seleccione un cliente">{{item.cliente.nombres}} {{item.cliente.apellidos}} </ui-select-match>
+													<ui-select-choices
+														repeat="c in clientes | filter: $select.search">
+
+													<div ng-bind-html="c.nombres | highlight: $select.search"></div>
+													<small> email: {{c.email}} </small> </ui-select-choices> </ui-select>
+												</div>
+											</div>
+										</div>
+										<!-- / fields -->
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- /column -->
+		</div>
+	</div>

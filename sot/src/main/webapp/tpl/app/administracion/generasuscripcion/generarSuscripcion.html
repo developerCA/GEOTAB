@@ -1,0 +1,326 @@
+<toaster-container
+	toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+<div ng-controller="suscripcionCtrl" ng-init="init()">
+	<div class="bg-light lter b-b wrapper-md">
+		<h4 class="m-n font-thin h4">
+			<i class="fa fa-bars"></i> Gestionar Ordenes de Trabajo
+		</h4>
+	</div>
+
+	<div class="wrapper-md" ng-show="!nuevo">
+
+
+		<div class="panel panel-info">
+
+			<div class="panel-body">
+
+
+    
+				<div class="table-responsive" ng-if="notasPedido!=undefined||null">
+
+					<table id="dt" ui-jq="footable"
+						class="table table-striped m-b-none example"
+						ui-options="{
+						oLanguage: {sUrl: 'vendor/jquery/datatables/spanish.txt'},
+						lengthChange:false
+						}">
+						<thead>
+							<tr>
+								<th>#</th>
+								<td style="width: 1%" data-toggle="true"></td>
+								<th>O.I.T</th>
+								<th data-hide="phone,tablet">O.E.T</th>
+								<th data-hide="phone,tablet">Cliente</th>
+								<th data-hide="phone,tablet">Responsable</th>
+
+								<th data-hide="phone,tablet">Fecha</th>
+								<th data-hide="phone,tablet"></th>
+								<th data-hide="phone,tablet"></th>
+
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="i in notasPedido">
+								<td>{{$index+1}}</td>
+								<td><i class="{{i.idCatalogo.icono}}"></i></td>
+								<td>{{i.ordenInterna}}</td>
+								<td>{{i.numeroReferencia}}</td>
+								<td>{{i.cliente.nombres}} {{i.cliente.apellidos}}</td>
+								<td>{{i.vendedor.nombres}} {{i.vendedor.apellidos}}</td>
+
+								<td>{{toDate(i.fechaHoraRegistro)}}</td>
+								<td><button class="btn btn-sm btn-icon btn-success"
+										ng-click="generarSuscripcion(i)"
+										tooltip="Gestionar Orden de Trabajo">
+										<i class="fa fa-tasks"></i>
+									</button></td>
+								<td style="width: 1px"><button
+										class="btn btn-sm btn-icon btn-danger"
+										ng-click="eliminarItem(i)" tooltip="Cancelar Orden de Trabajo">
+										<i class="fa fa-times"></i>
+									</button></td>
+
+
+							</tr>
+						</tbody>
+						<tfoot class="hide-if-no-paging">
+							<tr>
+								<td colspan="5" class="text-center">
+									<ul class="pagination"></ul>
+								</td>
+							</tr>
+						</tfoot>
+					</table>
+
+				</div>
+			</div>
+
+		</div>
+
+
+	</div>
+
+
+	<!-- FORMULARIO -->
+	<div class="col-sm-12" ng-show="nuevo">
+		<br />
+		<div class="panel panel-info" draggable="true">
+			<div class="panel-heading">
+				<a class="btn m-b-xs btn-sm btn-info btn-addon" ng-show="nuevo"
+					ng-click="guardarSuscripcion()" ng-disabled="form.$invalid"
+					disabled="disabled"><i class="fa fa-save"></i> Gestionar</a> <a
+					class="btn m-b-xs btn-sm btn-danger btn-addon" ng-show="nuevo"
+					ng-click="revisarNotaPedido('lg')"><i class="fa fa-eye"></i>
+					Revisar</a> &nbsp;&nbsp;&nbsp;&nbsp; <a
+					class="btn m-b-xs btn-sm btn-default btn-addon" ng-show="nuevo"
+					ng-click="cancelarItem()"><i class="fa fa-times"></i> Cerrar</a>
+
+			</div>
+			<div class="panel-body">
+
+				<div class="row">
+					<div class="col-sm-7 connected" ui-jq="sortable"
+						ui-options="{items:'.panel', handle:'.panel-heading', connectWith:'.connected'}">
+						<div class="panel panel-info">
+							<div class="panel-heading">
+								Orden de Trabajo Cliente# <span class="badge">{{dto.notaPedido.numeroReferencia}}</span>
+								Orden de Trabajo Interna# <span class="badge">{{dto.notaPedido.ordenInterna}}</span>
+								<em class="text-xs">Fecha de Orden <span
+									class="text-danger">{{toDate(dto.notaPedido.fechaHoraRegistro)}}</span></em>
+							</div>
+
+							<div class="panel-body">
+								<article class="media">
+									<div class="pull-left">
+										<span class="fa-stack fa-lg"> <i
+											class="fa fa-user fa-stack-2x"></i>
+										</span>
+									</div>
+									<div class="media-body">
+										<a href class="h4">Cliente:
+											{{dto.notaPedido.cliente.nombres}}
+											{{dto.notaPedido.cliente.apellidos}} </a> <small
+											class="block m-t-xs">
+											Email:{{dto.notaPedido.cliente.email}} Direcci&oacute;n:
+											{{dto.notaPedido.cliente.direccion}} /
+											Tel&eacute;fono:{{dto.notaPedido.cliente.telefono1}}
+											/Celular: {{dto.notaPedido.cliente.celular1}} /
+											Ciudad:{{dto.notaPedido.cliente.ciudad.nombre}} </small> <em
+											class="text-xs">C&eacute;dula: <span
+											class="text-success">{{dto.notaPedido.cliente.identificacion}}</span></em>
+
+
+									</div>
+								</article>
+								<div class="line pull-in"></div>
+								<article class="media">
+									<div class="pull-left">
+										<span class="fa-stack fa-lg"> <i
+											class="fa fa-circle fa-stack-2x text-info"></i> <i
+											class="fa fa-user fa-stack-1x text-white"></i>
+										</span>
+									</div>
+									<div class="media-body">
+										<a href class="h4">Responsable:
+											{{dto.notaPedido.vendedor.nombres}}
+											{{dto.notaPedido.vendedor.apellidos}}</a> <small
+											class="block m-t-xs">Email:
+											{{dto.notaPedido.vendedor.email}} / T&eacute;lefono:
+											{{dto.notaPedido.vendedor.telefono}} / Celular:
+											{{dto.notaPedido.vendedor.celular}} / Cargo:
+											{{dto.notaPedido.vendedor.cargo}}</small> <em class="text-xs">C&eacute;dula:
+											<span class="text-success">{{dto.notaPedido.vendedor.cedula}}</span><br />
+
+
+										</em>
+									</div>
+								</article>
+								<div class="line pull-in"></div>
+								<div class="form-group">
+									<label class="col-sm-2 control-label">Fecha Fin de
+										Gesti&oacute;n</label>
+									<div class="col-sm-10" ng-controller="DatepickerDemoCtrl">
+										<div class="input-group w-md">
+											<input type="text" class="form-control"
+												datepicker-popup="{{format}}"
+												ng-model="dto.notaPedido.fechaGestion" is-open="opened"
+												datepicker-options="dateOptions" ng-required="true"
+												close-text="Cerrar" /> <span class="input-group-btn">
+												<button type="button" class="btn btn-default"
+													ng-click="open($event)">
+													<i class="glyphicon glyphicon-calendar"></i>
+												</button>
+											</span>
+										</div>
+									</div>
+								</div>
+
+							</div>
+
+
+						</div>
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h4>
+									Detalle de la Orden de Trabajo - Equipos <span
+										class="badge bg-primary"> {{dto.detalles.length}}</span> <a
+										class="btn btn-xs btn-info pull-right"
+										download="{{dto.notaPedido.archivoReal}}"
+										ng-href="{{app.versionApp}}/files/{{dto.notaPedido.archivoReal}}">Descargar
+										Orden Cliente</a>
+								</h4>
+
+							</div>
+
+							<div class="panel-body">
+								<article class="media">
+
+
+									<table class="table table-striped bg-white b-a">
+										<thead>
+											<tr>
+												<th>CANT.</th>
+												<th>EQUIPOS</th>
+												<th>SERIE</th>
+												<th style="width: 70px">SERVICIOS</th>
+
+											</tr>
+										</thead>
+										<tbody>
+											<tr ng-repeat="d in dto.detalles">
+												<td>{{d.cantidad}}</td>
+
+												<td>{{d.producto.nombre}}</td>
+												<td>{{d.producto.serie}}</td>
+												<td>
+													<div class="wrapped">
+														<table>
+															<tr>
+																<td align="left">
+																	<ul>
+																		<!-- BEGIN: Inner ngRepeat. -->
+																		<li ng-repeat="t in d.tareas"><span
+																			class="label bg-primary">{{t.nombre}}</span></li>
+
+																	</ul>
+																</td>
+
+															</tr>
+														</table>
+
+													</div>
+												</td>
+
+											</tr>
+
+
+										</tbody>
+									</table>
+
+								</article>
+
+
+							</div>
+
+						</div>
+					</div>
+
+					<div class="col-sm-5 connected" ui-jq="sortable"
+						ui-options="{items:'.panel', handle:'.panel-heading', connectWith:'.connected'}">
+
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<span class="label bg-info">{{dto.detalleServicio.length}}</span>
+								Reporte de Servicios Generados
+
+							</div>
+							<div class="panel-body">
+								<article class="media" ng-repeat="s in dto.detalleServicio">
+
+									<div class="media-body">
+										<div class="pull-right text-center text-muted"></div>
+										<h4>
+											<span class="badge bg-info"> {{$index+1}}</span>
+											{{s.detalleNotapedido.producto.nombre}} / Serie: <small>{{s.detalleNotapedido.producto.serie}}</small>
+										</h4>
+
+										<table>
+											<tr ng-repeat="r in s.listaTareas">
+												<td colspan="6">
+													<table class="table m-b-none" ui-jq="footable"
+														data-page-size="5">
+														<tr>
+															<td data-hide="phone,tablet"><a
+																ng-click="ejecutar(r)"><span
+																	class="label bg-success">Propagar</span></a></td>
+															<td data-hide="phone,tablet"><button
+																	ng-class="mirarEstadoResponsable(r.responsable)" ng-click="tecnicos(r)"
+																	tooltip="Responsables">
+																	<i class="glyphicon glyphicon-user"></i>
+																</button></td>
+															<td data-toggle="true"><strong>QR :</strong>
+																{{r.id}} <br> <strong>RPT :</strong>
+																{{r.codigoReporte}}</td>
+															<td data-hide="phone,tablet"><span
+																class="label bg-primary">{{r.tarea.nombre}}</span></td>
+
+
+														</tr>
+														<tr>
+															<td><a href class="btn-info btn-rounded btn-xs"
+																ng-click="crearArchivo(r,$index)"> Archivo</a></td>
+															<td colspan="5"><small>{{r.archivoTarea}}</small></td>
+														</tr>
+<tr>
+															<td>Alcance:</td>
+															<td colspan="5"><small>{{r.alcance}}</small></td>
+														</tr>
+													</table>
+
+												</td>
+
+
+											</tr>
+										</table>
+										<div></div>
+									</div>
+								</article>
+								<div class="line pull-in"></div>
+
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+			</div>
+
+
+
+
+
+		</div>
+	</div>
+
+
+</div>

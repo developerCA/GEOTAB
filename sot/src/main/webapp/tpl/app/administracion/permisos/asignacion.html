@@ -1,0 +1,62 @@
+<div class="hbox hbox-auto-xs hbox-auto-sm"
+	ng-controller="asignacionPermisosCtrl">
+	<div class="col w-lg bg-light b-r bg-auto">
+		<div class="wrapper-md">
+			<div class="line b-b line-lg"></div>
+			<h1>Asignación Permisos</h1>
+			<div class="line b-b line-lg"></div>
+			<label>Elija una Empresa:</label>
+			<div>
+				<select class="w-md" ng-model="idProducto" required="required"
+					ng-change="cambiaProducto()">
+					<option ng-repeat="p in productos" value="{{p.id}}">{{p.nombre}}</option>
+				</select>
+			</div>
+			<br> <label>Elija un Perfil:</label>
+			<div>
+				<select class="w-md" ng-model="idPerfilProducto" required="required"
+					ng-change="armarArbol2()">
+					<option ng-repeat="p in perfiles" value="{{p.id}}">{{p.nombrePerfil}}</option>
+				</select>
+			</div>
+
+
+		</div>
+	</div>
+
+	<div class="col">
+		<div class="wrapper-md">
+			<div class="b-a bg-light dk r r-2x">
+				<span ng-if="doing_async">...cargando...</span>
+				<abn-tree tree-data="my_data" tree-control="my_tree"
+					on-select="my_tree_handler(branch)" expand-level="2"
+					initial-selection="Granny Smith" icon-leaf="fa fa-file-o"
+					icon-expand="fa fa-plus" icon-collapse="fa fa-minus"> </abn-tree>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="col">
+
+		<br> <br> <br> <a
+			class="btn m-b-xs btn-sm btn-info btn-addon" ng-click="guardarItem()"><i
+			class="fa fa-arrow-right"></i>Agregar Permiso </a> <br> <a
+			class="btn m-b-xs btn btn-sm btn-primary btn-addon"
+			ng-click="eliminarItem()"><i class="fa fa-arrow-left "></i>Remover
+			Permiso</a>
+	</div>
+
+	<div class="col">
+		<div class="wrapper-md">
+			<div class="b-a bg-light dk r r-2x">
+				<span ng-if="doing_async">...cargando...</span>
+				<abn-tree tree-data="my_data_2" tree-control="my_tree_2"
+					on-select="my_tree_handler2(branch)" expand-level="2"
+					initial-selection="Granny Smith" icon-leaf="fa fa-file-o"
+					icon-expand="fa fa-plus" icon-collapse="fa fa-minus"> </abn-tree>
+			</div>
+		</div>
+	</div>
+
+</div>

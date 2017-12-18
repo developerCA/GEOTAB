@@ -1,0 +1,192 @@
+<div class="hbox hbox-auto-xs hbox-auto-sm"
+	ng-init="
+    app.settings.asideFolded = false; 
+    app.settings.asideDock = false;
+  ">
+	<!-- main -->
+	<div class="col" ng-controller="getGrants" ng-init="init()">
+		<!-- main header -->
+		<div class="bg-light lter b-b wrapper-md">
+			<div class="row">
+				<div class="col-sm-6 col-xs-12">
+					<h1 class="m-n font-thin h3 text-black">Fast Report System</h1>
+					<small class="text-muted">Bienvenido al resumen de
+						actividades</small>
+				</div>
+
+			</div>
+		</div>
+
+		<div class="wrapper-md">
+			<!-- stats -->
+			<div class="row">
+				<div class="col-md-5">
+					<div class="row row-sm text-center">
+						<div class="col-xs-6">
+							<div class="panel padder-v item">
+								<div class="h1 text-info font-thin h1">{{total}}</div>
+								<span class="text-muted text-xs">Ordenes Creadas</span>
+								<div class="top text-right w-full">
+									<i class="fa fa-caret-down text-warning m-r-sm"></i>
+								</div>
+							</div>
+						</div>
+						<div class="col-xs-6">
+							<a href class="block panel padder-v bg-primary item"> <span
+								class="text-white font-thin h1 block">{{equipos}}</span> <span
+								class="text-muted text-xs">Equipos Inspeccionados</span> <span
+								class="bottom text-right w-full"> <i
+									class="fa fa-cloud-upload text-muted m-r-sm"></i>
+							</span>
+							</a>
+						</div>
+						<div class="col-xs-6">
+							<a href class="block panel padder-v bg-info item"> <span
+								class="text-white font-thin h1 block">{{servicios}}</span> <span
+								class="text-muted text-xs">Servicios Ejecutados</span> <span
+								class="top text-left"> <i
+									class="fa fa-caret-up text-warning m-l-sm"></i>
+							</span>
+							</a>
+						</div>
+						<div class="col-xs-6">
+							<div class="panel padder-v item">
+								<div class="font-thin h1">{{poraprobar}}</div>
+								<span class="text-muted text-xs">Ordenes por Aprobar</span>
+								<div class="bottom text-left">
+									<i class="fa fa-caret-up text-warning m-l-sm"></i>
+								</div>
+							</div>
+						</div>
+						<div class="col-xs-12 m-b-md">
+							<div class="r bg-light dker item hbox no-border">
+								<div class="col w-xs v-middle hidden-md">
+									<div ui-jq="sparkline"
+										ui-options="{{data1}}, {type:'pie', height:40, sliceColors:['{{app.color.warning}}','#fff']}"
+										class="sparkline inline"></div>
+								</div>
+								<div class="col dk padder-v r-r">
+									<div class="text-primary-dk font-thin h1">
+										<span>{{cerradas}}</span>
+									</div>
+									<span class="text-muted text-xs">Ordenes Cerradas</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-7" >
+					<div class="panel wrapper">
+						
+						<h4 class="font-thin m-t-none m-b text-muted"> <i class="glyphicon glyphicon-minus text-danger"></i> Ordenes /
+							<i class="glyphicon glyphicon-minus text-success"></i> Equipos / <i class="glyphicon glyphicon-minus text-info"></i>Servicios /</h4>
+					
+					 <div class="panel-body">
+            <div ui-jq="plot" ng-if="d!=undefined||null"  ui-options="
+              [
+                { data: {{d}}, color:['{{app.color.danger}}'], points: { show: true, radius: 6}, splines: { show: true, tension: 0.45, lineWidth: 5, fill: 0 } },
+                { data: {{d2}}, color:['{{app.color.success}}'], points: { show: true, radius: 6}, splines: { show: true, tension: 0.45, lineWidth: 5, fill: 0 } },
+                { data: {{d3}}, color:['{{app.color.info}}'], points: { show: true, radius: 6}, splines: { show: true, tension: 0.45, lineWidth: 5, fill: 0 } },
+              
+                
+                
+              ], 
+              {
+                colors: ['{{app.color.success}}'],
+                series: { shadowSize: 3 },
+                xaxis:{ 
+                  font: { color: '#ccc' },
+                  position: 'bottom',
+                  ticks: {{ticks}}
+                },
+                yaxis:{ font: { color: '#ccc' } },
+                grid: { hoverable: true, clickable: true, borderWidth: 0, color: '#ccc' },
+                tooltip: true,
+                tooltipOpts: { content: '%x.1 is %y.4',  defaultTheme: false, shifts: { x: 0, y: 20 } }
+              }
+            " style="height:240px" >
+            </div>
+          </div>
+					</div>
+				</div>
+			</div>
+			<!-- / stats -->
+
+
+
+			<!-- tasks -->
+			<div class="panel wrapper">
+				<div class="row">
+					<div class="col-md-6 b-r b-light no-border-xs">
+						<a ng-href="/#/app/suscripciones"
+							class="text-muted pull-right text-lg"><i
+							class="icon-arrow-right"></i></a>
+						<h4 class="font-thin m-t-none m-b-md text-muted">Mis Ordenes
+							Pendientes</h4>
+						<div class=" m-b">
+							<table class="table table-striped m-b-none">
+								<tr ng-repeat="o in ordenes">
+									<td><div class="m-b">
+											<span class="label text-base bg-info pos-rlt m-r"><i
+												class="arrow right arrow-info"></i> # Orden Cliente :
+												{{o.numeroReferencia}} </span>
+										</div></td>
+									<td><a href><i class="icon-user"></i>
+											{{o.cliente.nombres}} {{o.cliente.apellidos}} </a></td> <td>{{toDate(o.fechaApertura)}}</td>
+								</tr>
+							</table>
+
+
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="row row-sm">
+							<div class="col-xs-6 text-center">
+								<div ui-jq="easyPieChart"
+									ui-options="{
+                    percent: {{porcerradas}},
+                    lineWidth: 4,
+                    trackColor: '{{app.color.light}}',
+                    barColor: '{{app.color.primary}}',
+                    scaleColor: false,
+                    size: 115,
+                    rotate: 90,
+                    lineCap: 'butt'
+                  }"
+									class="inline m-t">
+									<div>
+										<span class="text-primary h4">{{porcerradas}} %</span>
+									</div>
+								</div>
+								<div class="text-muted font-bold text-xs m-t m-b">Cerradas</div>
+							</div>
+							<div class="col-xs-6 text-center">
+								<div ui-jq="easyPieChart"
+									ui-options="{
+                    percent: {{porabiertas}},
+                    lineWidth: 4,
+                    trackColor: '{{app.color.light}}',
+                    barColor: '{{app.color.info}}',
+                    scaleColor: false,
+                    size: 115,
+                    rotate: 180,
+                    lineCap: 'butt'
+                  }"
+									class="inline m-t">
+									<div>
+										<span class="text-info h4">{{porabiertas}} %</span>
+									</div>
+								</div>
+								<div class="text-muted font-bold text-xs m-t m-b">Abiertas</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- / tasks -->
+
+
+		</div>
+
+	</div>
+</div>

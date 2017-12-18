@@ -1,0 +1,77 @@
+<div class="modal-header bg-info">
+	<h3 class="modal-title">Clientes</h3>
+</div>
+<div class="modal-body wrapper-lg">
+	<div class="row">
+
+	<div class="modal-body m">
+		<div class="row">			
+			<div class="col-sm-3">
+				<input type="text"
+					class="form-control ng-pristine ng-invalid ng-touched" tooltip="Ingrese número de cédula/RUC a buscar"
+					ng-model="datosCliente.cedula" placeholder="Cédula/RUC">
+			</div>
+			<div class="col-sm-3">
+<!-- 				<label>Nombres</label>  -->
+				<input type="text"
+					class="form-control ng-pristine ng-invalid ng-touched" tooltip="Ingrese el(los) nombre(s) o parte de este a buscar"
+					ng-model="datosCliente.nombres" placeholder="Nombres">
+			</div>
+			<div class="col-sm-3">
+<!-- 				<label>Apellidos</label>  -->
+				<input type="text"
+					class="form-control  ng-pristine ng-invalid ng-touched" tooltip="Ingrese el(los) apellido(s) o parte de este a buscar"
+					ng-model="datosCliente.apellidos" placeholder="Apellidos">
+			</div>
+			
+			<div class="col-sm-3">
+<!-- 				<label></label> -->
+				<button class="v-bottom btn btn-info"
+					ng-click="buscar()" style="vertical-align: bottom;">Buscar</button>
+					<button class="v-bottom btn btn-success"
+					ng-click="agregar()" style="vertical-align: bottom;">Agregar</button>
+			</div>
+		</div>
+
+		<div class="line line-dashed b-b line-lg pull-in"></div>
+
+		<div class="table-responsive" ng-if="clientes!=undefined||null">
+			<table ui-jq="dataTable" class="table table-striped m-b-none"
+				ui-options="{oLanguage: {sUrl: 'vendor/jquery/datatables/spanish.txt'}
+				}">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>C&eacute;dula/RUC</th>
+						<th>Cliente</th>
+						<th style="width: 5%">E-mail</th>
+						<th>Actividad Econ&oacute;mica</th>
+						<th>Seleccionar</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="i in clientes">
+						<td>{{$index+1}}</td>
+						<td>{{i.identificacion}}</td>
+						<td>{{i.nombres}} {{i.apellidos}}</td>
+						<td>{{i.email}}</td>
+						<td>{{i.actividadEconomica}}</td>
+						<td style="width: 1px"><button
+								class="btn btn-sm btn-icon btn-info" ng-click="ok(i)"
+								tooltip="Seleccionar registro">
+								<i class="fa fa-thumb-tack"></i>
+							</button></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	
+		
+	</div>
+</div>
+
+<div class="modal-footer">
+	<button class="btn btn-default" ng-click="cancel()">Cerrar</button>
+	
+</div>

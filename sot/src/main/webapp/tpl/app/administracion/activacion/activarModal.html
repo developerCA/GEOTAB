@@ -1,0 +1,51 @@
+<div class="modal-header bg-info">
+	<h3 class="modal-title">Activar Suscripci&oacute;n</h3>
+</div>
+<div class="modal-body wrapper-lg">
+	<div class="alert alert-info">
+		<i class="fa fa-info-circle"></i> Estimado usuario, en esta pantalla
+		puede activar la suscripci&oacute;n de forma definitiva...
+	</div>
+	<div class="panel panel-success">
+		<div class="panel-heading">
+			Suscripci&oacute;n # <span class="badge">{{suscripcion.id}}</span> <em
+				class="text-xs">Producto: <span class="text-dark"
+				style="font-weight: bold;">{{suscripcion.detalleNotaPedidoP.producto.nombre}}</span></em>
+			/ <em class="text-xs">Contacto: <span class="text-dark">{{suscripcion.enlaceP==undefined||null?'Ninguno':suscripcion.enlaceP.nombres
+					+' '+ suscripcion.enlaceP.apellidos}}</span></em> / <em class="text-xs">N&uacute;mero
+				de meses: <span class="text-dark">{{suscripcion.detalleNotaPedidoP.numeroMeses}}</span>
+			</em> / <em class="text-xs">Categor&iacute;a: <span class="text-dark">{{suscripcion.detalleNotaPedidoP.producto.categoria.nombre}}</span></em>
+		</div>
+		<div class="panel-body">
+			<div class="row">
+				<div class=form-group>
+					<span class="col-sm-3"> <label class="i-checks"> <input
+							type="checkbox" value="" checked> <i></i> Fecha Inicio
+					</label>
+
+					</span> <span class="col-sm-3"> <input type="text"
+						ng-model="suscripcion.fechaInicio" disabled>
+					</span>
+
+				</div>
+
+			</div>
+			<div class="row">
+				<div class="form-group">
+					<span class="col-sm-3"> <label class="i-checks"> <input
+							type="checkbox" value="" checked> <i></i> Fecha
+							Vencimiento
+					</label>
+					</span> <span class="col-sm-3"> <input type="text"
+						ng-model="suscripcion.fechaVencimiento" disabled>
+					</span>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal-footer">
+	<button class="btn btn-success" ng-click="activar()">Activar</button>
+	<button class="btn btn-default" ng-click="cancel()">Cerrar</button>
+</div>

@@ -1,0 +1,147 @@
+<toaster-container
+	toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+
+<div ng-controller="vendedorCtrl" ng-init="init()">
+	<div class="bg-light lter b-b wrapper-md">
+		<h1 class="m-n font-thin h3">Responsables</h1>
+	</div>
+
+
+	<div ng-init="init()">
+
+		<div class="wrapper-md" ng-show="!nuevo">
+			<div class="panel panel-info">
+				<div class="panel-heading">
+					<a class="btn m-b-xs btn-sm btn-success btn-addon"
+						ng-click="nuevoItem()"><i class="fa fa-plus"></i>Agregar</a> 
+
+				</div>
+				<div class="table-responsive" ng-if="vendedores!=undefined||null">
+
+					<table ui-jq="dataTable" class="table table-striped m-b-none"
+						ui-options="{oLanguage: {sUrl: 'vendor/jquery/datatables/spanish.txt'}}">
+						<thead>
+							<tr>
+								<th style="width: 1%">#</th>
+
+
+								<th style="width: 5%">C&eacute;dula</th>
+								<th>Nombres</th>
+								<th>Apellidos</th>
+								<th style="width: 5%">Tel&eacute;fono</th>
+								<th style="width: 5%">Celular</th>
+								<th style="width: 10%">Email</th>
+
+								<th style="width: 1%"></th>
+								<th style="width: 1%"></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="i in vendedores">
+								<td>{{$index+1}}</td>
+
+								<td>{{i.cedula}}</td>
+								<td>{{i.nombres}}</td>
+								<td>{{i.apellidos}}</td>
+								<td>{{i.telefono}}</td>
+								<td>{{i.celular}}</td>
+								<td>{{i.email}}</td>
+
+								<td style="width: 1px"><button
+										class="btn btn-sm btn-icon btn-info" ng-click="editarItem(i)"
+										tooltip="Editar registro">
+										<i class="fa fa-pencil"></i>
+									</button></td>
+								<td style="width: 1px"><button
+										class="btn btn-sm btn-icon btn-danger"
+										ng-click="eliminarItem(i)" tooltip="Eliminar registro">
+										<i class="fa fa-times"></i>
+									</button></td>
+
+							</tr>
+						</tbody>
+					</table>
+
+				</div>
+			</div>
+		</div>
+
+		<!-- FORMULARIO -->
+		<div ng-show="nuevo">
+			<div class="panel panel-info" draggable="true">
+				<div class="panel-heading">
+					<a class="btn m-b-xs btn-sm btn-info btn-addon"
+						ng-click="guardarItem()" ng-disabled="form.$invalid"
+						ng-show="!editar" disabled="disabled"><i class="fa fa-save"></i>
+						Guardar</a> <a class="btn m-b-xs btn-sm btn-info btn-addon"
+						ng-click="actualizarItem()" ng-disabled="form.$invalid"
+						ng-show="editar" disabled="disabled"><i class="fa fa-edit"></i>
+						Editar</a> <a class="btn m-b-xs btn-sm btn-default btn-addon"
+						ng-click="cancelarItem()"><i class="fa fa-times"></i> Cancelar</a>
+				</div>
+				<form name="form"
+					class="w-full wrapper-md form-validation ng-pristine ng-invalid ng-invalid-required ng-valid-pattern ng-valid-email ng-valid-validator">
+					<div class="col w-full bg-white-only">
+						<div class="alert alert-danger" ng-show="status">
+							<i class="fa fa-warning" ng-show="status"></i> {{msg}}
+						</div>
+						<div class="form-group wrapper-md pull-in clearfix ">
+							<div class="row">
+								<div class="col-sm-6">
+									<label>Nombres</label> <input type="text"
+										class="form-control  ng-pristine ng-invalid ng-invalid-required ng-touched"
+										ng-model="item.nombres" required ng-maxlength="30">
+								</div>
+								<div class="col-sm-6">
+									<label>Apellidos</label> <input type="text"
+										class="form-control  ng-pristine ng-invalid ng-invalid-required ng-touched"
+										ng-model="item.apellidos" required ng-maxlength="30">
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-sm-3">
+									<label>C&eacute;dula</label> <input type="text"
+										ng-pattern="/^[0-9]+$/"
+										class="form-control  ng-pristine ng-invalid ng-invalid-required ng-touched"
+										ng-model="item.cedula" required ng-maxlength="13">
+								</div>
+
+								<div class="col-sm-3">
+									<label>Tel&eacute;fono</label> <input type="text"
+										ng-pattern="/^[0-9]+$/"
+										class="form-control  ng-pristine ng-invalid ng-invalid-required ng-touched"
+										ng-model="item.telefono" required ng-maxlength="10">
+								</div>
+								<div class="col-sm-3">
+									<label>Celular</label> <input type="text"
+										ng-pattern="/^[0-9]+$/"
+										class="form-control  ng-pristine ng-invalid ng-invalid-required ng-touched"
+										ng-model="item.celular" required ng-maxlength="10">
+								</div>
+
+							</div>
+
+							<div class="row">
+								<div class="col-sm-6">
+									<label>Email</label> <input type="email"
+										class="form-control  ng-pristine ng-invalid ng-invalid-required ng-touched"
+										ng-model="item.email" required>
+								</div>
+								<div class="col-sm-6">
+									<label>Cargo</label> <input type="text"
+										class="form-control  ng-pristine ng-invalid ng-invalid-required ng-touched"
+										ng-model="item.cargo" required ng-maxlength="60">
+								</div>
+
+							</div>
+
+
+						</div>
+
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>

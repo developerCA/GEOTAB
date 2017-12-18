@@ -1,0 +1,234 @@
+
+
+<toaster-container
+	toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+
+<div ng-controller="consultaCtrl" ng-init="initSeguimiento()">
+	<div class="bg-light lter b-b wrapper-md">
+		<h4 class="m-n font-thin h4">
+			<i class="glyphicon glyphicon-th"></i> Seguimiento de Ordenes de
+			Trabajo
+		</h4>
+	</div>
+
+
+
+
+
+	<div class="wrapper-md">
+		<div class="row">
+
+
+			<div class="col-sm-12 connected" ui-jq="sortable"
+				ui-options="{items:'.panel', handle:'.panel-heading', connectWith:'.connected'}">
+				<div class="panel panel-info" ng-show="!muestraContacto">
+					<div class="panel-heading">
+						<button type="button" class="btn btn-primary "
+							data-template-url="tpl/app/administracion/suscripciones/busquedaSeguimiento.html"
+							data-placement="left" data-animation="am-slide-left"
+							bs-aside="aside" data-container="body">Busqueda de
+							Ordenes de Trabajo</button>
+
+
+						<button ng-click="exportar()" type="button"
+							class="btn btn-xs btn-default pull-right">Excel</button>
+					</div>
+					<div id="tbl">
+						<table id="idTbl" ui-jq="dataTable"
+							class="table table-bordered table-striped"
+							style="font-size: smaller">
+							<thead>
+								<tr>
+									<th># O.E.T.</th>
+									<th># O.I.T.</th>
+									<th>Fecha Apertura</th>
+									<th style="width: 200px">Cliente</th>
+									<th style="width: 200px">Responsable</th>
+									<th>Estado</th>
+									<th># Equipos</th>
+									<th># Servicios</th>
+									<th></th>
+
+
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="s in lista">
+									<td>{{s.notaPedido.numeroReferencia}}</td>
+									<td>{{s.notaPedido.ordenInterna}}</td>
+
+									<td>{{toDate(s.notaPedido.fechaApertura)}}</td>
+									<td>{{s.notaPedido.cliente.nombres}}
+										{{s.notaPedido.cliente.apellidos}}</td>
+									<td>{{s.notaPedido.vendedor.nombres}}
+										{{s.notaPedido.vendedor.apellidos}}</td>
+									<td><span class="badge bg-info">{{s.notaPedido.idCatalogo.nombre}}</span></td>
+									<td><span class="badge bg-success">{{s.notaPedido.cantidadEquipos}}</span></td>
+									<td><span class="badge bg-danger">{{s.totalServicios}}</span></td>
+									<td><a class="btn btn-success btn-xs "
+										tooltip="Orden de trabajo" ng-click="verOrden(s)"><i
+											class="fa fa-navicon"></i> Seguimiento </a></td>
+
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div class="panel panel-default" ng-show="muestraContacto">
+					<div class="panel-heading">
+						Orden de Trabajo
+						<div class="pull-right">
+							<!-- 							<button class="btn m-b-xs btn-sm btn-primary btn-addon " ng-print -->
+							<!-- 								print-element-id="{{id}}"> -->
+							<!-- 								<i class="fa fa-print"></i> Imprimir -->
+							<!-- 							</button> -->
+							<a class="btn m-b-xs btn-xs btn-default btn-addon "
+								ng-click="cerrarItem()"><i class="fa fa-times"></i> Cerrar</a>
+						</div>
+
+					</div>
+					<div class="panel-body" id={{id}}>
+
+						<div class="panel panel-info">
+							<div class="panel-heading">
+								Orden de Trabajo Cliente# <span class="badge">{{dto.notaPedido.numeroReferencia}}</span>
+								Orden de Trabajo Interna# <span class="badge">{{dto.notaPedido.ordenInterna}}</span>
+								<em class="text-xs">Fecha de Orden <span
+									class="text-danger">{{toDate(dto.notaPedido.fechaHoraRegistro)}}</span></em>
+							</div>
+
+							<div class="panel-body">
+								<article class="media">
+									<div class="pull-left">
+										<span class="fa-stack fa-lg"> <i
+											class="fa fa-user fa-stack-2x"></i>
+										</span>
+									</div>
+									<div class="media-body">
+										<a href class="h4">Cliente:
+											{{dto.notaPedido.cliente.nombres}}
+											{{dto.notaPedido.cliente.apellidos}} </a> <small
+											class="block m-t-xs">
+											Email:{{dto.notaPedido.cliente.email}} Direcci&oacute;n:
+											{{dto.notaPedido.cliente.direccion}} /
+											Tel&eacute;fono:{{dto.notaPedido.cliente.telefono1}}
+											/Celular: {{dto.notaPedido.cliente.celular1}} /
+											Ciudad:{{dto.notaPedido.cliente.ciudad.nombre}} </small> <em
+											class="text-xs">C&eacute;dula: <span
+											class="text-success">{{dto.notaPedido.cliente.identificacion}}</span></em>
+
+
+									</div>
+								</article>
+								<div class="line pull-in"></div>
+								<article class="media">
+									<div class="pull-left">
+										<span class="fa-stack fa-lg"> <i
+											class="fa fa-circle fa-stack-2x text-info"></i> <i
+											class="fa fa-user fa-stack-1x text-white"></i>
+										</span>
+									</div>
+									<div class="media-body">
+										<a href class="h4">Responsable:
+											{{dto.notaPedido.vendedor.nombres}}
+											{{dto.notaPedido.vendedor.apellidos}}</a> <small
+											class="block m-t-xs">Email:
+											{{dto.notaPedido.vendedor.email}} / T&eacute;lefono:
+											{{dto.notaPedido.vendedor.telefono}} / Celular:
+											{{dto.notaPedido.vendedor.celular}} / Cargo:
+											{{dto.notaPedido.vendedor.cargo}}</small> <em class="text-xs">C&eacute;dula:
+											<span class="text-success">{{dto.notaPedido.vendedor.cedula}}</span><br />
+
+
+										</em>
+									</div>
+								</article>
+								<div class="line pull-in"></div>
+
+
+							</div>
+
+
+						</div>
+
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<span class="label bg-info">{{dto.detalleServicio.length}}</span>
+								Seguimiento de Servicios Generados <a
+									class="btn btn-xs btn-info pull-right"
+									download="{{dto.notaPedido.archivoReal}}"
+									ng-href="{{app.versionApp}}/files/{{dto.notaPedido.archivoReal}}">Descargar
+									Orden Cliente</a>
+
+							</div>
+							<div class="panel-body">
+								<table class="table table-striped bg-white b-a">
+									<tr>
+										<th>Cantidad</th>
+										<th colspan='4'>Equipo</th>
+
+									</tr>
+
+									<tr>
+									<tr ng-repeat="s in dto.detalleServicio">
+										<td>{{s.detalleNotapedido.cantidad}}</td>
+										<td><strong>{{s.detalleNotapedido.producto.nombre}}
+												/ Serie: <small>{{s.detalleNotapedido.producto.serie}}</small>
+										</strong></td>
+										<td colspan='3'>
+											<table class="table table-striped bg-white b-a">
+
+												<tr>
+													<th style="width: 30%">Servicio</th>
+													<th style="width: 30%">Avance(Cantidad)</th>
+													<th style="width: 20%">Estado</th>
+													<th style="width: 20%" align="center"></th>
+													<th style="width: 20%" align="center"></th>
+												<tr>
+												<tr ng-repeat="r in s.listaTareas">
+													<td><span class="label bg-primary">{{r.tarea.nombre}}</span></td>
+													<td><span class="label bg-warning"
+														ng-if="r.seguimiento.cantidad != null">{{r.seguimiento.cantidad}}</span>
+														<span class="label bg-warning"
+														ng-if="r.seguimiento.cantidad == null && r.archivoTarea == null">0</span>
+														<span class="label bg-success"
+														ng-if="r.archivoTarea != null ">{{s.detalleNotapedido.cantidad}}</span></td>
+													<td><span ng-show="r.archivoTarea!=null"
+														class="label bg-success">COMPLETADO </span> <span
+														ng-show="r.archivoTarea==null" class="label bg-warning">EN
+															PROCESO </span></td>
+
+													<td><a ng-if="r.archivoTarea!=null"
+														download="{{r.archivoReal}}"
+														ng-href="{{app.versionApp}}/files/{{r.archivoReal}}"
+														class="btn-success btn-rounded btn-xs"
+														ng-click="crearArchivo(r,$index)"
+														ng-show="r.archivoReal!=null"> Descargar</a> <a
+														ng-if="r.archivoTarea==null" ng-disabled="true"
+														class="btn-default btn-rounded btn-xs"> Descargar</a></td>
+													<td><a class="btn-info btn-rounded btn-xs"
+														ng-click="crearSeguimiento(r)">
+															 Seguimiento</a></td>
+
+												</tr>
+											</table>
+										</td>
+									<tr>
+								</table>
+
+
+							</div>
+
+						</div>
+					</div>
+				</div>
+
+
+
+
+			</div>
+
+
+		</div>
+	</div>
+</div>

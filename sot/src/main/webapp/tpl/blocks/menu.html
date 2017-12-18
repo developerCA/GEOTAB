@@ -1,0 +1,55 @@
+<!-- list ng-controller="getGrants"-->
+    <div class="clearfix hidden-xs text-center " id="aside-user">
+    
+    
+      <div class="dropdown wrapper" >
+        <a ui-sref="app.dashboard-v1">
+          <span class="thumb-lg w-auto-folded avatar m-t-sm">
+            <img src="{{logo}}" class="img-full" alt="...">
+          </span>
+        </a>
+        <a href class=" hidden-folded" >
+          <span class="clear">
+            <span class="block m-t-sm">
+              <strong class="font-bold text-lt">{{nombres}}</strong> 
+              
+            </span>
+            <span class="text-muted text-xs block">{{email}}</span>
+          </span>
+        </a>
+        
+      </div>
+      <div class="line dk hidden-folded"></div>
+    </div>
+
+<ul class="nav" ng-if="grants!=undefined||null">
+	<!--<li class="hidden-folded padder m-t m-b-sm text-muted text-xs">
+    <span translate="aside.nav.HEADER">Navigation</span>
+  </li>-->
+	<li ng-repeat="grant in grants"><a href class="auto"> <span
+			class="pull-right text-muted" ng-if="grant.permisos"> <i
+				class="fa fa-fw fa-angle-right text"></i> <i
+				class="fa fa-fw fa-angle-down text-active"></i>
+		</span> <i class="{{grant.iconoPermiso}} icon text-info-lter"></i> <span
+			class="font-bold">{{grant.nombrePermiso}}</span>
+	</a>
+		<ul class="nav nav-sub dk">
+			<li class="nav-sub-header"><a href> <i
+					class="{{item.iconoPermiso}} icon text-info-lter"></i> <span>{{grant.nombrePermiso}}</span>
+			</a></li>
+			<li ui-sref-active="active" ng-repeat="item in grant.permisos">
+				<!-- <a ui-sref="{{item.urlPermiso}}"> --> <a
+				ui-sref="{{item.urlPermiso?item.urlPermiso:'.'}}"> <i
+					class="{{item.iconoPermiso}} icon text-info-lter"></i> <span>{{item.nombrePermiso}}</span>
+			</a>
+			</li>
+		</ul></li>
+
+	
+
+
+	
+</ul>
+
+
+<!-- / list -->

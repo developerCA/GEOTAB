@@ -1,0 +1,464 @@
+<div class="modal-header bg-info">
+	<h3 class="modal-title">Contactos</h3>
+</div>
+<div class="modal-body wrapper">
+	<div class="row">
+
+		<div class="panel-body" ng-init="buscaEnlances()">
+			<article class="media">
+				<div class="pull-left">
+					<span class="fa-stack fa-lg"> <i
+						class="fa fa-user fa-stack-2x"></i>
+					</span>
+				</div>
+				<div class="media-body">
+					<a href class="h4">Cliente: {{suscripcion.clienteP.nombres}}
+						{{suscripcion.clienteP.apellidos}} </a> <small class="block m-t-xs">
+						Email:{{suscripcion.clienteP.email}} Direcci&oacute;n:
+						{{suscripcion.clienteP.direccion}} /
+						Tel&eacute;fono:{{suscripcion.clienteP.telefono1}} /Celular:
+						{{suscripcion.clienteP.celular1}} /
+						Ciudad:{{suscripcion.clienteP.ciudad.nombre}} </small> <em class="text-xs">C&eacute;dula:
+						<span class="text-success">{{suscripcion.clienteP.identificacion}}</span>
+					</em>
+
+
+				</div>
+			</article>
+			<div class="line pull-in"></div>
+
+
+
+			<!-- hbox layout -->
+			<div class="hbox hbox-auto-xs hbox-auto-sm bg-light"
+				ng-init="
+  	app.settings.asideFixed = true;
+  	app.settings.asideDock = false;
+  	app.settings.container = false;
+  	app.hideAside = false;
+  	app.hideFooter = true;">
+
+				<!-- column -->
+				<div class="col w-lg lter b-r">
+					<div class="vbox">
+						<div class="wrapper-xs b-b">
+							<div class="input-group m-b-xxs">
+								<span class="input-group-addon input-sm no-border no-bg"><i
+									class="icon-magnifier text-md m-t-xxs"></i></span> <input type="text"
+									class="form-control input-sm no-border no-bg text-md"
+									placeholder="Busqueda Contactos" ng-model="query">
+							</div>
+						</div>
+						<div class="row-row">
+							<div class="cell scrollable hover">
+								<div class="cell-inner">
+									<div class="m-t-n-xxs">
+										<div
+											class="list-group list-group-lg no-radius no-border no-bg m-b-none">
+											<a
+												ng-repeat="item in items  | orderBy:'apellidos' | filter:query "
+												class="list-group-item m-l"
+												ng-class="{'select m-l-none': item.selected }"
+												ng-click="selectItem(item)"> <span
+												class="block text-ellipsis m-l-n text-md"
+												ng-class="{'m-l-none': item.selected }"> {{
+													item.apellidos }} <strong>{{ item.nombres }}</strong> <span
+													ng-hide="item.apellidos || item.nombres">No existe
+														datos</span>
+											</span>
+											</a>
+										</div>
+									</div>
+									<div class="text-center pos-abt w-full" style="top: 50%;"
+										ng-hide="(items | filter:query).length">No existe datos</div>
+								</div>
+							</div>
+						</div>
+						<div class="wrapper b-t text-center">
+							<a href class="btn btn-sm btn-info btn-addon"
+								ng-click="createItem()"><i class="fa fa-plus fa-fw m-r-xs"></i>
+								Nuevo Contacto</a>
+						</div>
+					</div>
+				</div>
+				<!-- /column -->
+
+
+				<!-- column -->
+				<div class="col bg-white-only"">
+					<div class="vbox">
+						<div class="wrapper-sm" ng-show="visualizar">
+							<div class="panel panel-info" draggable="true">
+								<div class="panel-heading">
+									<div class="m-t-n-xxs m-b-n-xxs m-l-xs">
+
+										<a href="" class="btn btn-success btn-xxs"
+											ng-disabled="form.$invalid" disabled="disabled" ng-click="doneEditing()" ng-show="editing">Guardar</a>
+										<a href="" class="btn btn-success btn-xxs"
+											ng-disabled="form.$invalid" disabled="disabled" ng-click="editarItem()" ng-show="!editing">Editar</a>
+												
+										<a href="" class="btn btn-default btn-xxs"
+											ng-click="cancelar()" ng-show="editing">Cancelar</a>
+
+										<button class="btn btn-info btn-xxs" ng-click="ok()" ng-show="!editing">Seleccionar</button>
+
+									</div>
+
+								</div>
+								<form name="form" class="form-validation">
+									<div class="panel-body">
+
+										<tabset class="tab-container"> <tab> <tab-heading>
+										<i class="icon-user"></i> Datos generales </tab-heading>
+
+										<div class="panel-body">
+											<div class="form-group m-b-sm"
+												ng-hide="!item.nombres && !editing">
+
+												<label class="col-sm-3 control-label">Nombres:</label>
+
+												<div class="col-sm-9">
+
+													<p class="form-control-static" ng-hide="editing">{{item.nombres}}</p>
+
+													<input type="text" class="form-control" ng-show="editing"
+														ng-model="item.nombres" required="required" ng-pattern="/^[a-zA-Z0-9]{3,100}$/">
+
+												</div>
+
+											</div>
+
+											<div class="form-group m-b-sm"
+												ng-hide="!item.apellidos && !editing">
+
+												<label class="col-sm-3 control-label">Apellidos:</label>
+
+												<div class="col-sm-9">
+
+													<p class="form-control-static" ng-hide="editing">{{item.apellidos}}</p>
+
+													<input type="text" class="form-control" ng-show="editing"
+														ng-model="item.apellidos" required="required" ng-pattern="/^[a-zA-Z0-9]{0,100}$/">
+
+												</div>
+
+											</div>
+
+
+
+											<div class="form-group m-b-sm"
+												ng-hide="!item.identificacion && !editing">
+
+												<label class="col-sm-3 control-label">Identificaci&oacute;n:</label>
+
+												<div class="col-sm-9">
+
+													<p class="form-control-static" ng-hide="editing">{{item.identificacion}}</p>
+
+													<input type="text" class="form-control" ng-show="editing"
+														ng-model="item.identificacion" ng-minlength="10" ng-pattern="/^[0-9]+$/" >
+
+												</div>
+
+											</div>
+
+
+
+											<div class="form-group m-b-sm"
+												ng-hide="!item.profesion && !editing">
+
+												<label class="col-sm-3 control-label">Profesi&oacute;n:</label>
+
+												<div class="col-sm-9">
+
+													<p class="form-control-static" ng-hide="editing">{{item.profesionE.nombre}}</p>
+
+													<select
+														class="form-control ng-pristine ng-invalid ng-invalid-required ng-touched"
+														ng-model="item.profesionE.id" ng-show="editing" required>
+
+														<option value="">Seleccione una profesion...</option>
+
+														<option ng-repeat="p in profesiones" value="{{p.id}}">{{p.nombre}}</option>
+
+													</select>
+
+												</div>
+
+											</div>
+
+											<div class="form-group m-b-sm"
+												ng-hide="!item.email && !editing">
+
+												<label class="col-sm-3 control-label">Email:</label>
+
+												<div class="col-sm-9">
+
+													<p class="form-control-static" ng-hide="editing">{{item.email}}</p>
+
+													<input type="email" class="form-control" ng-show="editing"
+														ng-model="item.email" required>
+
+												</div>
+
+											</div>
+
+
+										</div>
+
+
+										</tab> <tab> <tab-heading> <i
+											class="icon-call-end"></i> Contacto </tab-heading>
+										<div class="panel-body">
+											<div class="form-group m-b-sm"
+												ng-hide="!item.email && !editing">
+
+												<label class="col-sm-3 control-label">Direcci&oacute;n:</label>
+
+												<div class="col-sm-9">
+
+													<p class="form-control-static" ng-hide="editing">{{item.direccion}}</p>
+
+													<textarea class="form-control" ng-show="editing" required
+														ng-model="item.direccion" rows="1"></textarea>
+
+												</div>
+
+											</div>
+
+
+											<div class="form-group m-b-sm"
+												ng-hide="!item.telefono1 && !editing">
+
+												<label class="col-sm-3 control-label">Tel&eacute;fono
+													1:</label>
+
+												<div class="col-sm-9">
+
+													<p class="form-control-static" ng-hide="editing">{{item.telefono1}}</p>
+
+													<input type="text" class="form-control" ng-show="editing"
+														ng-model="item.telefono1" required ng-pattern="/^[0-9]+$/">
+
+												</div>
+
+											</div>
+
+
+											<div class="form-group m-b-sm"
+												ng-hide="!item.telefono2 && !editing">
+
+												<label class="col-sm-3 control-label">Tel&eacute;fono
+													2:</label>
+
+												<div class="col-sm-9">
+
+													<p class="form-control-static" ng-hide="editing">{{item.telefono2}}</p>
+
+													<input type="text" class="form-control" ng-show="editing"
+														ng-model="item.telefono2" ng-pattern="/^[0-9]+$/">
+
+												</div>
+
+											</div>
+
+
+											<div class="form-group m-b-sm"
+												ng-hide="!item.extension && !editing">
+
+												<label class="col-sm-3 control-label">Extensi&oacute;n:</label>
+
+												<div class="col-sm-9">
+
+													<p class="form-control-static" ng-hide="editing">{{item.extension}}</p>
+
+													<input type="text" class="form-control" ng-show="editing"
+														ng-model="item.extension" ng-pattern="/^[0-9]+$/">
+
+												</div>
+
+											</div>
+
+
+											<div class="form-group m-b-sm"
+												ng-hide="!item.celular && !editing">
+
+												<label class="col-sm-3 control-label">Celular:</label>
+
+												<div class="col-sm-9">
+
+													<p class="form-control-static" ng-hide="editing">{{item.celular}}</p>
+
+													<input type="text" class="form-control" ng-show="editing"
+														ng-model="item.celular" ng-pattern="/^[0-9]+$/">
+
+												</div>
+
+											</div>
+
+
+										</div>
+										</tab> <tab> <tab-heading> <i class="icon-globe"></i>
+										Localizaci&oacute;n </tab-heading>
+										<div class="panel-body">
+											<div class="form-group m-b-sm"
+												ng-hide="!item.paisE && !editing">
+
+												<label class="col-sm-3 control-label">Pais:</label>
+
+												<div class="col-sm-9">
+
+													<p class="form-control-static" ng-hide="editing">{{item.paisE.nombre}}</p>
+
+													<select
+														class="form-control ng-pristine ng-invalid ng-invalid-required ng-touched"
+														ng-model="item.paisE.id" ng-show="editing" >
+
+														<option value="">Seleccione un pais...</option>
+
+														<option ng-repeat="p in paises" value="{{p.id}}">{{p.nombre}}</option>
+
+													</select>
+
+												</div>
+
+											</div>
+
+											<div class="form-group m-b-sm"
+												ng-hide="!item.provinciaE && !editing">
+
+												<label class="col-sm-3 control-label">Provincia:</label>
+
+												<div class="col-sm-9">
+
+													<p class="form-control-static" ng-hide="editing">{{item.provinciaE.nombre}}</p>
+
+													<select
+														class="form-control ng-pristine ng-invalid ng-invalid-required ng-touched"
+														ng-model="item.provinciaE.id" ng-show="editing" >
+
+														<option value="">Seleccione una provincia...</option>
+
+														<option ng-repeat="p in provincias" value="{{p.id}}">{{p.nombre}}</option>
+
+													</select>
+
+												</div>
+
+											</div>
+
+											<div class="form-group m-b-sm"
+												ng-hide="!item.ciudadE && !editing">
+
+												<label class="col-sm-3 control-label">Ciudad:</label>
+
+												<div class="col-sm-9">
+
+													<p class="form-control-static" ng-hide="editing">{{item.ciudadE.nombre}}</p>
+
+													<select
+														class="form-control ng-pristine ng-invalid ng-invalid-required ng-touched"
+														ng-model="item.ciudadE.id" ng-show="editing" >
+
+														<option value="">Seleccione una ciudad...</option>
+
+														<option ng-repeat="c in ciudades" value="{{c.id}}">{{c.nombre}}</option>
+
+													</select>
+
+
+												</div>
+
+											</div>
+
+										</div>
+
+										</tab> <tab> <tab-heading> <i
+											class="glyphicon glyphicon-list-alt"></i> Adicionales </tab-heading>
+										<div class="panel-body">
+											<div class="form-group m-b-sm"
+												ng-hide="!item.departamentoTrabajo && !editing">
+
+												<label class="col-sm-3 control-label">Departamento:</label>
+
+												<div class="col-sm-9">
+
+													<p class="form-control-static" ng-hide="editing">{{item.departamentoTrabajo}}</p>
+
+													<input type="text" class="form-control" ng-show="editing"
+														ng-model="item.departamentoTrabajo">
+
+												</div>
+
+											</div>
+
+											<div class="form-group m-b-sm"
+												ng-hide="!item.horarioAtencion && !editing">
+
+												<label class="col-sm-3 control-label">Horario:</label>
+
+												<div class="col-sm-9">
+
+													<p class="form-control-static" ng-hide="editing">{{item.horarioAtencion}}</p>
+
+													<input type="text" class="form-control" ng-show="editing"
+														ng-model="item.horarioAtencion">
+
+
+												</div>
+
+											</div>
+
+											<div class="form-group m-b-sm"
+												ng-hide="!item.observaciones && !editing">
+
+												<label class="col-sm-3 control-label">Observaciones:</label>
+
+												<div class="col-sm-9">
+
+													<p class="form-control-static" ng-hide="editing">{{item.observaciones}}</p>
+
+													<input type="text" class="form-control" ng-show="editing"
+														ng-model="item.observaciones">
+
+
+
+												</div>
+
+											</div>
+
+										</div>
+										</tab> </tabset>
+
+
+									</div>
+
+
+								</form>
+
+							</div>
+
+
+						</div>
+
+
+
+
+
+					</div>
+					<!-- VBOX -->
+
+				</div>
+				<!-- /COLUMN -->
+
+			</div>
+			<!-- /hbox layout -->
+		</div>
+
+	</div>
+</div>
+
+<div class="modal-footer">
+	<button class="btn btn-default" ng-click="cancel()">Cerrar</button>
+
+</div>

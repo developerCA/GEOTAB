@@ -1,0 +1,59 @@
+<div class="modal-header">
+	<h3 class="modal-title">Resumen de Calibraciones</h3>
+</div>
+<div class="modal-body wrapper-lg" ng-init="init()">
+	<div class="row">
+		<div class="table-responsive" ng-if="calibraciones!=undefined||null">
+
+			<table ui-jq="dataTable" class="table table-striped m-b-none"
+				ui-options="{oLanguage: {sUrl: 'vendor/jquery/datatables/spanish.txt'}}">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>Serie</th>
+						<th>Nombre</th>
+						<th>Modelo</th>
+						<th>Fecha Calibraci&oacute;n</th>
+						<th>Fecha Verificaci&oacute;n</th>
+						<th>Fecha Proxima Calibraci&oacute;n</th>
+
+						<th></th>
+						<th></th>
+
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="p in calibraciones">
+						<td>{{$index+1}}</td>
+						<td>{{p.calibracion.instrumento.serie}}</td>
+						<td>{{p.calibracion.instrumento.nombre}}</td>
+						<td>{{p.calibracion.instrumento.modelo}}</td>
+						<td>{{p.calibracion.fechaCalibracion}}</td>
+						<td>{{p.calibracion.fechaVerificacionIntermedia}}</td>
+						<td>{{p.calibracion.fechaCalibracionFutura}}</td>
+
+
+
+						<td style="width: 1px"><a download="{{cal.archivo}}" tooltip="Archivo de Calibraci&oacute;n"
+							ng-href="{{version}}/files/{{p.calibracion.archivo}}"
+							class="btn btn-sm btn-icon btn-info"> <i
+								class="fa fa fa-download"></i></a></td>
+						<td style="width: 1px"><a download="{{cal.archivoVerificacion}}" tooltip="Archivo de Verificaci&oacute;n"
+							ng-href="{{version}}/files/{{p.calibracion.archivoVerificacion}}"
+							class="btn btn-sm btn-icon btn-success"> <i
+								class="fa fa fa-download"></i></a></td>
+
+					</tr>
+				</tbody>
+			</table>
+
+		</div>
+
+	</div>
+
+</div>
+
+<div class="modal-footer">
+	<button class="btn btn-default" ng-click="cancel()">Cancelar</button>
+	<button class="btn btn-primary" ng-click="ok()">Aceptar</button>
+</div>

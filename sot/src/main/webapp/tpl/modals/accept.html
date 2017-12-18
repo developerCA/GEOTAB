@@ -1,0 +1,7 @@
+<div class="modal-header bg-{{modalOptions.type}} b-{{modalOptions.type}}">
+    <h4 class="modal-title">{{modalOptions.headerText}}</h4>
+</div>
+<div class="modal-body" ng-bind-html="modalOptions.bodyText"></div>
+<div class="modal-footer">                  
+     <button class="btn btn-{{modalOptions.type}}" ng-click="modalOptions.ok()">Aceptar</button>
+</div>
