@@ -10,7 +10,7 @@ import com.tecnolpet.ot.model.FechasRenovacion;
 import com.tecnolpet.ot.model.Suscripcion;
 
 /**
- * @author Armando Ariel Suárez Pons
+ * @author Armando Ariel Suárez Pons ss
  *
  */
 public class AvisoDto implements Serializable{
