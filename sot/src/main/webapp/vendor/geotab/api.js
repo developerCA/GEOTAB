@@ -517,7 +517,6 @@ var GeotabApi = function (getCredentialsCallback, newOptions, customCredentialSt
     };
 };
 
-//console.log(GeotabApi);
 if (typeof define !== 'undefined' && define.amd) {
     // AMD. Register as an anonymous module.
     define(function () {

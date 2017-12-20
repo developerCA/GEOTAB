@@ -16,28 +16,63 @@
 				<div class="form-inline ng-pristine ng-valid">
 
 					<div class="col-sm-3">
-						<label>Seleccionar Cliente : </label>
-						<div class="input-group m-b">
+<!--						<label>
+							Seleccionar Cliente :
+						</label>
+-->						<div class="input-group m-b">
 							<span class="input-group-btn">
 								<button class="btn btn-info" type="button"
 									ng-click="cargaModalFinal('lg')">
 									<i class="fa fa-search"></i>
 								</button>
-							</span> <input type="text" class="form-control"
+							</span>
+							<input type="text" class="form-control"
 								placeholder="Seleccione uno..."
 								value="{{obj.clienteFinal.nombres}} {{obj.clienteFinal.apellidos}}"
 								disabled required>
 						</div>
 					</div>
+<!--
 					<a class="btn m-b-xs btn-sm btn-success btn-addon"
-						ng-click="nuevoItem()"><i class="fa fa-plus"></i>Agregar</a>
-
-
+						ng-click="nuevoItem()">
+						<i class="fa fa-plus"></i>
+						Agregar
+					</a>
+-->					<a class="btn m-b-xs btn-sm btn-success btn-addon"
+						ng-click="sincronizar()">
+						<i class="fa fa-plus"></i>
+						Sincronizar
+					</a>
 				</div>
-
-
 			</div>
 
+			<table class="table table-striped m-b-none"
+				ng-if="lista!=undefined||null">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>Nombre</th>
+						<th>Fecha de activaci&oacute;n</th>
+						<th>Modelo</th>
+						<th>Grupo</th>
+						<th>Placa</th>
+						<th>Lugar</th>
+						<th>Serie</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="p in lista">
+						<td>{{$index+1}}</td>
+						<td>{{p.name}}</td>
+						<td>{{p.activeFrom}}</td>
+						<td>{{p.comment}}</td>
+						<td>{{p.deviceType}}</td>
+						<td>{{p.licensePlate}}</td>
+						<td>{{p.licenseState}}</td>
+						<td>{{p.serialNumber}}</td>
+					</tr>
+				</tbody>
+			</table>
 
 			<table class="table table-striped m-b-none"
 				ng-if="productos!=undefined||null">
@@ -81,7 +116,6 @@
 					</tr>
 				</tbody>
 			</table>
-
 
 		</div>
 	</div>

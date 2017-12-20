@@ -17,10 +17,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
         function initializeGeotabApi() {
             api = GeotabApi(function (detailsCallback) {
-                authenticationCallback = detailsCallback;
+                detailsCallback(debug.server, debug.database, debug.email, debug.password, function (error) {
+                    alert(error);
+                    signOut();
+                });
+                //authenticationCallback = detailsCallback;
 
-                document.getElementById("signin-content").style.display = "block";
-                document.getElementById("example-content").style.display = "none";
+                //document.getElementById("signin-content").style.display = "block";
+                //document.getElementById("example-content").style.display = "none";
             }, {
                 rememberMe: false,
                 jsonp: true
@@ -206,7 +210,7 @@ document.addEventListener("DOMContentLoaded", function () {
         return function () {
             this.initialize = function () {
                 initializeGeotabApi();
-                intializeInterface();
+                //intializeInterface();
             }
         };
 

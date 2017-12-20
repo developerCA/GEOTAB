@@ -61,7 +61,7 @@ public class EnviarCorreoService {
 		
 		helper.setSubject(subject);
 		helper.setTo(to);
-		helper.setFrom("fast@tecnolpet.com");
+		helper.setFrom("geotab@globaltech.com.ec");
 		helper.setText(body, true);
 
 		javaMailSender.send(message);
@@ -96,10 +96,10 @@ public class EnviarCorreoService {
 		html.append("<p><span style='font-size:14px;'><span style='font-family:verdana,geneva,sans-serif;'>Se asignado una orden de trabajo </span></span></p>");
 		html.append("<p><span style='font-size:14px;'><span style='font-family:verdana,geneva,sans-serif;'>Servicio requerido para el cliente <strong>").append(notaPedido.getCliente().getNombresCompletos()).append(" </strong> </span></span></p>");
 
-		html.append("<p>Revisar en su bandeja de ordenes de trabajo usando el sistema Fast Report &nbsp;System.</p>");
+		html.append("<p>Revisar en su bandeja de ordenes de trabajo usando el sistema GEOTAB Report &nbsp;System.</p>");
 
 		html.append("<p>Gracias.</p>");
-		html.append("<p>Fast RS</p>");
+		html.append("<p>GeoTab RS</p>");
 
 		html.append("<p>&nbsp;</p>");
 		html.append("</body>");
@@ -135,7 +135,7 @@ public class EnviarCorreoService {
 		html.append("<p><span style='font-size:14px;'><span style='font-family:verdana,geneva,sans-serif;'>Se envió la orden de trabajo a su bandeja, por favor revisar para su aprobación </span></span></p>");
 
 		html.append("<p>Gracias.</p>");
-		html.append("<p>Fast RS</p>");
+		html.append("<p>GeoTab RS</p>");
 		html.append("<p>&nbsp;</p>");
 		html.append("</body>");
 		html.append("</html>");
@@ -177,7 +177,7 @@ public class EnviarCorreoService {
 				.append("</span></span></p>");
 
 		html.append("<p>Gracias.</p>");
-		html.append("<p>Fast RS</p>");
+		html.append("<p>GeoTab RS</p>");
 		html.append("<p>&nbsp;</p>");
 		html.append("</body>");
 		html.append("</html>");
@@ -193,7 +193,7 @@ public class EnviarCorreoService {
 			MailSendException, UnsupportedEncodingException, MessagingException {
 
 		StringBuilder html = new StringBuilder();
-		String subject = "Fast Resport System - Acceso al Sistema ";
+		String subject = "GEOTAB Resport System - Acceso al Sistema ";
 
 		html.append("<html>");
 		html.append("<head>");
@@ -204,7 +204,7 @@ public class EnviarCorreoService {
 				"<h2 style='font-style:italic;'><font face='verdana, geneva, sans-serif'><span style='font-size: 14px;'>Bienvenido ")
 				.append(nombre).append("</span></font></h2>");
 
-		html.append("<p>Hola, te damos la m&aacute;s cordial bienvenida al Sistema Fast Report Sytem &nbsp;en L&iacute;nea de Tecnolpet. Te sugerimos que realices tu cambio de clave.</p>");
+		html.append("<p>Hola, te damos la m&aacute;s cordial bienvenida al Sistema GEOTAB Report Sytem &nbsp;en L&iacute;nea de Tecnolpet. Te sugerimos que realices tu cambio de clave.</p>");
 
 		html.append("<p>&nbsp;</p>");
 
@@ -227,7 +227,7 @@ public class EnviarCorreoService {
 			MailSendException, UnsupportedEncodingException, MessagingException {
 
 		StringBuilder html = new StringBuilder();
-		String subject = "Fast Resport System - Cambio de Clave ";
+		String subject = "GEOTAB Resport System - Cambio de Clave ";
 
 		html.append("<html>");
 		html.append("<head>");
@@ -238,7 +238,7 @@ public class EnviarCorreoService {
 				"<h2 style='font-style:italic;'><font face='verdana, geneva, sans-serif'><span style='font-size: 14px;'>Bienvenido ")
 				.append(nombre).append("</span></font></h2>");
 
-		html.append("<p>Hola, te damos la m&aacute;s cordial bienvenida al Sistema Fast Report Sytem &nbsp;en L&iacute;nea de Tecnolpet. Su clave se ha cambiado correctamente.</p>");
+		html.append("<p>Hola, te damos la m&aacute;s cordial bienvenida al Sistema GEOTAB Report Sytem &nbsp;en L&iacute;nea de Tecnolpet. Su clave se ha cambiado correctamente.</p>");
 
 		html.append("<p>&nbsp;</p>");
 
@@ -282,7 +282,7 @@ Usuario usuarioReg=usuarioRepository.findOne(notaPedido.getUsuarioRegistro());
 		
 				
 		html.append("<p>Gracias.</p>");
-		html.append("<p>Fast RS</p>");
+		html.append("<p>GeoTab RS</p>");
 		html.append("<p>&nbsp;</p>");
 		html.append("</body>");
 		html.append("</html>");

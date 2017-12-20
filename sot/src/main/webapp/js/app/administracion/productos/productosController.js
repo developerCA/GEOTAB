@@ -184,7 +184,46 @@ app.controller("productoCtrl",["$scope", "productoFactory", "$timeout","categori
 			$scope.editar = false;
 			
 		};
-		
+
+		$scope.sincronizar = function(){
+			//console.log("cargar Dispositivos");
+            api.call("Get", {
+                typeName: "Device"
+            }, function(result) {
+            	console.log(result);
+                if (result !== undefined && result.length > 0) {
+                	$scope.lista = result;
+                	return;
+                    //var select = document.getElementById("device");
+                    //var now = new Date();
+                    for (var i = 0; i < result.length; i++) {
+                        if (new Date(result[i].activeTo) > now) {
+                            var option = new Option();
+                            option.text = result[i].name;
+                            option.setAttribute("data-deviceid", result[i].id);
+                            select.add(option);
+                        }
+                    }
+                } else {
+                    alert("Could not retrieve devices");
+                }
+            }, function(error) {
+                alert(error);
+            });
+/*			if ($scope.obj.clienteFinal==null){
+				toaster
+				.pop(
+						"error",
+						"Equipo",
+						"Seleccione un cliente");
+				
+				return;
+			}
+			$scope.producto = null;
+			$scope.nuevo = true;
+			$scope.editar = false;
+*/		};
+
 		$scope.cargaDimensiones=function(){
 			var modalInstance = $modal.open({
 		        templateUrl: 'tpl/app/administracion/productos/modalDimension.html',

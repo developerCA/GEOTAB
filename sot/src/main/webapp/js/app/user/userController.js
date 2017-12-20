@@ -149,6 +149,9 @@ app.controller('getGrants', [ '$scope', 'commonService', '$timeout','notaPedidoF
    			}
    		   });
 
+    	   $scope.totalVehiculos = 399;
+    	   $scope.totalUsuarios = 50;
+
     	   console.log(api);
            api.call("GetCountOf", {
                typeName: "Device"
@@ -164,14 +167,11 @@ app.controller('getGrants', [ '$scope', 'commonService', '$timeout','notaPedidoF
                typeName: "User"
            }, function (result) {
                if (result) {
-            	   $scope.totalVehiculos = result;
+            	   $scope.totalUsuarios = result;
                }
            }, function (error) {
                alert(error);
            });
-
-    	   //$scope.totalVehiculos = 345;
-    	   //$scope.totalUsuarios = 21;
        };
       
 } ]);

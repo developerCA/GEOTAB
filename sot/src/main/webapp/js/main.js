@@ -16,7 +16,7 @@ angular.module('app')
       
       // config
       $scope.app = {
-        name: 'Fast RS',
+        name: 'GeoTab RS',
         version: '0.0.1',
         versionApp:'/sot-1.0',
         //versionApp:'/',
