@@ -1,5 +1,5 @@
 app.controller('permisosCtrl', function($scope, $timeout, permisosResource,
-		empresaFactory, toaster) {
+		cooperativaFactory, toaster) {
 
 	treedata_avm = [ {
 		"label" : "Cargando...",
@@ -61,7 +61,7 @@ app.controller('permisosCtrl', function($scope, $timeout, permisosResource,
 	};
 
 	iniciar = function() {
-		empresaFactory.list().then(function(r) {
+		cooperativaFactory.list().then(function(r) {
 			$scope.productos = r;
 			
 			$scope.idProducto = $scope.productos[0].id;

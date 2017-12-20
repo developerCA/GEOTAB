@@ -128,7 +128,7 @@ app.controller('getGrants', [ '$scope', 'commonService', '$timeout','notaPedidoF
     	   
     	   //$scope.d = [ [1,6.5],[2,6.5]];
     	   $scope.d2 = [ [5,7.5],[6,7],[7,6.8],[8,7],[9,7.2],[10,7],[11,6.8],[12,7] ];
-    	   console.log($scope.xaxis);
+    	   //console.log($scope.xaxis);
     	   
     	   $scope.ordenes();
     	   $scope.ticksOrdenes();
@@ -144,14 +144,34 @@ app.controller('getGrants', [ '$scope', 'commonService', '$timeout','notaPedidoF
    				$scope.porcerradas=Math.round( ($scope.cerradas * 100 ) / $scope.total);
    				$scope.porabiertas=Math.round( ($scope.abiertas * 100 ) / $scope.total);
    				$scope.porfaltante=100-$scope.porcerradas;
-   				
-   				
-   				
+
    				$scope.data1=[$scope.porcerradas,$scope.porfaltante];
-   		   				
    			}
    		   });
-    	   
+
+    	   console.log(api);
+           api.call("GetCountOf", {
+               typeName: "Device"
+           }, function (result) {
+               if (result) {
+            	   $scope.totalVehiculos = result;
+               }
+           }, function (error) {
+               alert(error);
+           });
+
+           api.call("GetCountOf", {
+               typeName: "User"
+           }, function (result) {
+               if (result) {
+            	   $scope.totalVehiculos = result;
+               }
+           }, function (error) {
+               alert(error);
+           });
+
+    	   //$scope.totalVehiculos = 345;
+    	   //$scope.totalUsuarios = 21;
        };
       
 } ]);

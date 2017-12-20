@@ -1,4 +1,4 @@
-app.factory("empresaFactory", ["Restangular", function (Restangular) {
+app.factory("cooperativaFactory", ["Restangular", function (Restangular) {
 	
     var service = Restangular.service("/empresa");
 

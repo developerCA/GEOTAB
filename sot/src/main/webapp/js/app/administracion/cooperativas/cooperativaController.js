@@ -1,15 +1,15 @@
 app
 .controller(
-            "empresaCtrl",
+            "cooperativaCtrl",
             [
                 "$scope",
                 "toaster",
-                "empresaFactory",   
+                "cooperativaFactory",   
                 "$timeout",  
                 "asignacioPermisoResource",
                 "perfilesFactory",
                 
-                function($scope, toaster, empresaFactory, $timeout, asignacioPermisoResource, perfilesFactory) {
+                function($scope, toaster, cooperativaFactory, $timeout, asignacioPermisoResource, perfilesFactory) {
                      
                     $scope.perfiles = {}; 
                     $scope.perfilesProducto = {}; 
@@ -47,7 +47,7 @@ app
                     }
  
                     $scope.traerItems = function() { 
-                        empresaFactory.list().then(function(r){
+                        cooperativaFactory.list().then(function(r){
                         	console.log(r);
                             $scope.items = r;
                         });
@@ -113,7 +113,7 @@ app
                             });        
                         });   
                            
-                        empresaFactory.agregarPerfilProducto(item).then( 
+                        cooperativaFactory.agregarPerfilProducto(item).then( 
                             function(request) {  
                                     if (request.estado == true) { 
                                         toaster.pop("info", "Asignación Perfil Producto", "Registro guardado satisfactoriamente");
@@ -124,7 +124,7 @@ app
                     };                         
 
                     $scope.guardarItem = function() {
-                    	empresaFactory
+                    	cooperativaFactory
                             .create($scope.item)
                             .then(function(r) {
 
@@ -148,7 +148,7 @@ app
                     };
 
                     $scope.actualizarItem = function() {
-                    	empresaFactory
+                    	cooperativaFactory
                             .update($scope.item)
                             .then(function(r) { 
 
@@ -177,7 +177,7 @@ app
                     
                     $scope.removerPerfilProducto = function() {
                             
-                    	empresaFactory.removerPerfilProducto($scope.itemPerfilProducto).then( 
+                    	cooperativaFactory.removerPerfilProducto($scope.itemPerfilProducto).then( 
                             function(request) {  
                                     if (request.estado == true) { 
                                         toaster.pop("info", "Remover Perfil Producto", "Registro removido satisfactoriamente");
@@ -190,7 +190,7 @@ app
 
                     $scope.desactivarItem = function(item) {
 
-                    	empresaFactory
+                    	cooperativaFactory
                             .desactivar(item)
                             .then(function(r) {
 

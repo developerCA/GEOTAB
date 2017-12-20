@@ -1,7 +1,7 @@
-app.controller("usuariosCtrl", [ "$scope", "$filter", "empresaFactory", "usuariosFactory", "regionResource",
+app.controller("usuariosCtrl", [ "$scope", "$filter", "cooperativaFactory", "usuariosFactory", "regionResource",
                                 "sucursalesFactory", "asignacioPermisoResource", "toaster","clienteFactory",
  
-    function($scope, $filter, empresaFactory, usuariosFactory, regionResource, sucursalesFactory, asignacioPermisoResource, toaster,clienteFactory) {
+    function($scope, $filter, cooperativaFactory, usuariosFactory, regionResource, sucursalesFactory, asignacioPermisoResource, toaster,clienteFactory) {
 
         $scope.filter = '';  
         $scope.productos = null; 
@@ -28,7 +28,7 @@ app.controller("usuariosCtrl", [ "$scope", "$filter", "empresaFactory", "usuario
         };
  
         $scope.listProductos = function(){	
-        	empresaFactory.list().then(function(request) {
+        	cooperativaFactory.list().then(function(request) {
                 $scope.productos = request;
                 $scope.idProducto = $scope.productos[0].id;
             })    

@@ -65,7 +65,7 @@ angular
 																						'js/app/administracion/usuarios/usuariosController.js',
 																						'js/app/administracion/usuarios/usuariosFactory.js',
 																						'js/app/administracion/perfiles/perfilesFactory.js',
-																						'js/app/administracion/empresas/empresaFactory.js',
+																						'js/app/administracion/cooperativas/cooperativaFactory.js',
 																						'js/app/administracion/regiones/regionesFactory.js',
 																						'js/app/administracion/clientes/clienteFactory.js',
 																						'js/app/administracion/sucursales/sucursalesFactory.js',
@@ -136,10 +136,10 @@ angular
 												}
 											})
 									.state(
-											'app.empresas',
+											'app.cooperativas',
 											{
-												url : '/empresas',
-												templateUrl : 'tpl/app/administracion/empresas/empresas.html',
+												url : '/cooperativas',
+												templateUrl : 'tpl/app/administracion/cooperativas/cooperativas.html',
 												resolve : {
 													deps : [
 															'$ocLazyLoad',
@@ -152,8 +152,8 @@ angular
 																						'js/app/administracion/notaPedido/notaPedidoFactory.js',
 																						'js/app/administracion/usuarios/usuariosFactory.js',
 																						'js/app/user/userController.js',
-																						'js/app/administracion/empresas/empresaController.js',
-																						'js/app/administracion/empresas/empresaFactory.js',
+																						'js/app/administracion/cooperativas/cooperativaController.js',
+																						'js/app/administracion/cooperativas/cooperativaFactory.js',
 																						'js/app/administracion/permisos/asignacionPermisoFactory.js',
 																						'js/app/administracion/perfiles/perfilesFactory.js',
 																						'angularBootstrapNavTree'
@@ -216,7 +216,7 @@ angular
 																						'js/app/user/userController.js',
 																						'js/app/administracion/permisos/permisosController.js',
 																						'js/app/administracion/permisos/permisosFactory.js',
-																						'js/app/administracion/empresas/empresaFactory.js',
+																						'js/app/administracion/cooperativas/cooperativaFactory.js',
 																						'angularBootstrapNavTree' ])
 																		.then(
 																				function() {
@@ -530,8 +530,8 @@ angular
 									.state(
 											'app.producto',
 											{
-												url : '/equipo',
-												templateUrl : 'tpl/app/administracion/productos/equipos.html',
+												url : '/dispositovos',
+												templateUrl : 'tpl/app/administracion/productos/dispositovos.html',
 												resolve : {
 													deps : [
 															'$ocLazyLoad',

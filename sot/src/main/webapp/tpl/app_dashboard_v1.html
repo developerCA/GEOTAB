@@ -1,3 +1,5 @@
+<script src="js/server/api.js"></script>
+<script src="js/server/login.js"></script>
 <div class="hbox hbox-auto-xs hbox-auto-sm"
 	ng-init="
     app.settings.asideFolded = false; 
@@ -9,16 +11,44 @@
 		<div class="bg-light lter b-b wrapper-md">
 			<div class="row">
 				<div class="col-sm-6 col-xs-12">
-					<h1 class="m-n font-thin h3 text-black">Fast Report System</h1>
-					<small class="text-muted">Bienvenido al resumen de
-						actividades</small>
+					<h1 class="m-n font-thin h3 text-black">
+						Fast Report System
+					</h1>
+					<small class="text-muted">
+						Bienvenido al resumen de actividades
+					</small>
 				</div>
-
 			</div>
 		</div>
 
 		<div class="wrapper-md">
 			<!-- stats -->
+			<div class="row">
+				<div class="col-md-12">
+					<div class="row row-sm text-center">
+						<div class="col-xs-2">
+							<div class="panel padder-v item">
+								<div class="h1 text-info font-thin h1">
+									{{ totalVehiculos }}
+								</div>
+								<span class="text-muted text-xs">
+									Total de vehiculos
+								</span>
+							</div>
+						</div>
+						<div class="col-xs-2">
+							<div class="panel padder-v item">
+								<div class="h1 text-info font-thin h1">
+									{{ totalUsuarios }}
+								</div>
+								<span class="text-muted text-xs">
+									Total de usuarios
+								</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 			<div class="row">
 				<div class="col-md-5">
 					<div class="row row-sm text-center">
