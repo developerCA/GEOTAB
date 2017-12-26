@@ -210,19 +210,71 @@ app.controller("productoCtrl",["$scope", "productoFactory", "$timeout","categori
             }, function(error) {
                 alert(error);
             });
-/*			if ($scope.obj.clienteFinal==null){
-				toaster
-				.pop(
-						"error",
-						"Equipo",
-						"Seleccione un cliente");
-				
-				return;
+		};
+
+		$scope.grupoSincronizar = function(){
+			api.call("Get", {
+			    "typeName": "Group"
+			}, function(result) {
+			    console.log("Done: ", result);
+			    this.grupoCargarLista(result);
+			    this.grupoRelacionarPadre(result);
+			    this.grupoRelacionarNivel(0, 0);
+			    console.log($scope.nGrupo);
+			}, function(e) {
+			    console.error("Failed:", e);
+			});
+		}
+
+		$scope.grupoCargarLista = function(grupos) {
+			$scope.nGrupo = [];
+			for (var i = 0; i < grupos.length; i++) {
+				var tGrupo = {
+					id = grupos[i].id,
+					nombre = grupos[i].name,
+					reference = grupos[i].reference,
+					comments = grupos[i].comments,
+					colora = grupos[i].color.a,
+					colorb = grupos[i].color.b,
+					colorg = grupos[i].color.g,
+					colorr = grupos[i].color.r,
+					padre = null,
+					nivel = null
+				};
+				$scope.nGrupo.push(tGrupo);
 			}
-			$scope.producto = null;
-			$scope.nuevo = true;
-			$scope.editar = false;
-*/		};
+		}
+
+		$scope.grupoRelacionarPadre = function(grupos) {
+			for (var i = 0; i < grupos.length; i++) {
+				for (var c = 0; c < grupos[i].children.length; c++) {
+					var p = this.grupoBuscarId(grupos[i].children[c].id)
+					$scope.nGrupo[p].padre = i;
+				}
+				$scope.nGrupo
+			}
+		}
+
+		$scope.grupoRelacionarNivel = function(fuenteId, fuenteNivel) {
+			var lista = [];
+			for (var i = 0; i < $scope.nGrupo.length; i++) {
+				if ($scope.nGrupo[i].padre == $scope.nGrupo[fuenteId].id) {
+					lista.push(i);
+				}
+			}
+			for (var i = 0; i < $scope.nGrupo.length; i++) {
+				
+			}
+		}
+
+		$scope.grupoBuscarId = function(id) {
+			for (var i = 0; i < $scope.nGrupo.length; i++) {
+				if ($scope.nGrupo[i].id == id) {
+					return i;
+				}
+			}
+			return null;
+		}
 
 		$scope.cargaDimensiones=function(){
 			var modalInstance = $modal.open({

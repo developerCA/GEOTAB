@@ -5,6 +5,13 @@ public class SotApp {
 	public final static Integer APP_ID = 1;
 	public final static Integer CLIENTE= 3;
 
+	public static class GeoTab{
+		public static final String SERVER_NAME="my49.geotab.com";
+		public static final String DATABASE="mobility"; 
+		public static final String USUARIO="raul.mediavilla@mobility.com.ec";
+		public static final String CLAVE="adri1979";
+		
+	}
 	public static class AlgoritmoClaves {
 		public static final String GENERACLAVE = "012345678abcdefghijklm9ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	
