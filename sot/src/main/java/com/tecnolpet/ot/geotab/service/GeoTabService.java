@@ -49,6 +49,13 @@ public class GeoTabService {
 		sincronizarCooperativas();
 
 	}
+	
+	public List<Ruta> devolverRutas(Integer codigoEmpresa){
+		Empresa empresa=empresaRepository.findOne(codigoEmpresa);
+		
+		return rutaRepository.findByEmpresa(empresa);
+		
+	}
 
 	private void establecerNiveles() {
 		GeotabGrupo geotabGrupo = geoTabGrupoRepository.buscarPorIdentificador(SotApp.GeoTab.NIVEL_INICIAL_GRUPO);
