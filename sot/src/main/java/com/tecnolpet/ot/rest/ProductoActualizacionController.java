@@ -17,7 +17,6 @@ import com.tecnolpet.ot.model.Producto;
 import com.tecnolpet.ot.seguridad.UsuarioAuthenticate;
 import com.tecnolpet.ot.service.ProductoActualizacionService;
 import com.tecnolpet.ot.service.ProductoService;
-import com.tecnolpet.ot.service.SuscripcionService;
 
 @RestController
 @RequestMapping("/api/productoactualizacion")
@@ -25,16 +24,16 @@ public class ProductoActualizacionController {
 
 	private final ProductoActualizacionService productoActualizacionService;
 	private final ProductoService productoService;
-	private final SuscripcionService suscripcionService;
+	
 
 	@Autowired
 	public ProductoActualizacionController(
 			ProductoActualizacionService productoActualizacionService,
-			ProductoService productoService,
-			SuscripcionService suscripcionService) {
+			ProductoService productoService
+			) {
 		this.productoActualizacionService = productoActualizacionService;
 		this.productoService = productoService;
-		this.suscripcionService = suscripcionService;
+		
 	}
 
 	@RequestMapping(value = "/productos", method = RequestMethod.GET)
@@ -42,11 +41,7 @@ public class ProductoActualizacionController {
 		return productoService.getProductosActualizables();
 	}
 
-	@RequestMapping(value = "/suscripciones", method = RequestMethod.PUT)
-	public ActualizacionProductoDto traerSuscripcionesPorProducto(
-			@RequestBody int idSuscripcion) {
-		return suscripcionService.traerPorProductoActualizable(idSuscripcion);
-	}
+
 
 	@RequestMapping(value = "/actualizar", method = RequestMethod.POST)
 	@ResponseStatus(value = HttpStatus.CREATED)

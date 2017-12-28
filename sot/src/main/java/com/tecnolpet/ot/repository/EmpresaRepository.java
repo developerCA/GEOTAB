@@ -11,6 +11,8 @@ import com.tecnolpet.ot.model.Empresa;
 public interface EmpresaRepository extends JpaRepository<Empresa, Integer>{
 	
 	public List<Empresa> findByEstado(Boolean estado);
+	
+	public Empresa findByCodigoCooperativa(String codigoCooperativa);
 
 }
 

@@ -35,7 +35,7 @@ public class SigpaUserDetailsService implements UserDetailsService {
 		usuarioAuthenticate.setEmail(user.getEmailUsuario());
 		usuarioAuthenticate.setPassword(user.getPassword());
 		usuarioAuthenticate.setPerfil_empresa(user.getPerfilEmpresa().getId());
-		usuarioAuthenticate.setCliente(user.getCliente());
+		usuarioAuthenticate.setRuta(user.getRuta());
 		usuarioAuthenticate.setPermisos(usuarioService.getPermisos(
 				user.getPerfilEmpresa(), user.getPerfilEmpresa().getEmpresa()
 						.getId()));

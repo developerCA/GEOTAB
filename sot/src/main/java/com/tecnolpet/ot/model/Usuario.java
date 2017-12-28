@@ -82,11 +82,11 @@ public class Usuario implements Serializable {
 	private Sucursal sucursal;
 	
 	@ManyToOne
-	@JoinColumn(name="codigo_cliente")
+	@JoinColumn(name="codigo_ruta")
 	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	@RestResource(exported=false)		
 	@JsonView(ViewOT.PublicView.class)
-	private Cliente cliente;
+	private Ruta ruta;
 	
 
 	// bi-directional many-to-one association to UsuarioRol
@@ -205,12 +205,14 @@ public class Usuario implements Serializable {
 		this.sucursal = sucursal;
 	}
 
-	public Cliente getCliente() {
-		return cliente;
+	public Ruta getRuta() {
+		return ruta;
 	}
 
-	public void setCliente(Cliente cliente) {
-		this.cliente = cliente;
+	public void setRuta(Ruta ruta) {
+		this.ruta = ruta;
 	}
+
+	
 
 }

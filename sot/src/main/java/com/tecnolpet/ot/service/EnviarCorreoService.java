@@ -140,12 +140,12 @@ public class EnviarCorreoService {
 		html.append("</body>");
 		html.append("</html>");
 
-		List<Usuario> usuarios = usuarioRepository.findUsuariosByCliente(
+		/*List<Usuario> usuarios = usuarioRepository.findUsuariosByCliente(
 				notaPedido.getEmpresa(), notaPedido.getCliente());
 
 		for (Usuario usuario : usuarios) {
 			send(usuario.getEmailUsuario(),usuarioReg.getEmailUsuario(), subject, html.toString());
-		}
+		}*/
 
 	}
 
@@ -287,12 +287,12 @@ Usuario usuarioReg=usuarioRepository.findOne(notaPedido.getUsuarioRegistro());
 		html.append("</body>");
 		html.append("</html>");
 
-		List<Usuario> usuarios = usuarioRepository.findUsuariosByCliente(
+		/*List<Usuario> usuarios = usuarioRepository.findUsuariosByCliente(
 				notaPedido.getEmpresa(), notaPedido.getCliente());
 
 		for (Usuario usuario : usuarios) {
 			send(usuario.getEmailUsuario(),usuarioReg.getEmailUsuario(), subject, html.toString());
-		}
+		}*/
 
 	}
 

@@ -3,17 +3,15 @@ app.factory("productoFactory", ["Restangular", function (Restangular) {
 	var service = Restangular.service("/producto");
 	
 	return{
+        
 		
 		 list: function() {
              return service.getList();
          },
          listProductos: function(idCliente) {
-        	
         	 return Restangular.allUrl("producto/listado").getList({idCliente:idCliente});
          },
-         
          listCategorias: function() {
-         	
         	 return Restangular.allUrl("producto/categorias").getList();
          },
          create: function(item){
@@ -44,6 +42,10 @@ app.factory("productoFactory", ["Restangular", function (Restangular) {
          listTareas: function() {
              return Restangular.allUrl("producto/tareas").getList();
          }, 
+         
+         sincronizarGrupos:function(items){
+        	 return Restangular.allUrl("geotab/sincronizar").customPOST(items);
+         },
         
 	}
 	

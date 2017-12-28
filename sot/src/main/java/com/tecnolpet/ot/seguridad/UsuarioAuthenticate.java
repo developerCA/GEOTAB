@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import com.tecnolpet.ot.dto.MenuDto;
-import com.tecnolpet.ot.model.Cliente;
+import com.tecnolpet.ot.model.Ruta;
 
 public class UsuarioAuthenticate implements Serializable {
 
@@ -21,7 +21,7 @@ public class UsuarioAuthenticate implements Serializable {
 	protected String password;
 	protected Integer perfil_empresa;
 	protected Integer sucursal;
-	protected Cliente cliente;
+	protected Ruta ruta;
 	
 	
 	protected List<MenuDto> permisos;
@@ -99,13 +99,15 @@ public class UsuarioAuthenticate implements Serializable {
 		this.perfil_empresa = perfil_empresa;
 	}
 
-	public Cliente getCliente() {
-		return cliente;
+	public Ruta getRuta() {
+		return ruta;
 	}
 
-	public void setCliente(Cliente cliente) {
-		this.cliente = cliente;
+	public void setRuta(Ruta ruta) {
+		this.ruta = ruta;
 	}
+
+
 
 	
 

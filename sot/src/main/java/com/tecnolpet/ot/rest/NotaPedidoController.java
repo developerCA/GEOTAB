@@ -22,16 +22,12 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.tecnolpet.ot.dto.PedidoDto;
 import com.tecnolpet.ot.dto.ReporteDto;
 import com.tecnolpet.ot.dto.RespuestaDto;
-import com.tecnolpet.ot.dto.SuscripcionPedidoDto;
 import com.tecnolpet.ot.jview.ViewOT;
 import com.tecnolpet.ot.model.DetalleNotaPedido;
-import com.tecnolpet.ot.model.Enlace;
 import com.tecnolpet.ot.model.NotaPedido;
 import com.tecnolpet.ot.model.Tarea;
-import com.tecnolpet.ot.model.TareaDetalleNotaPedido;
 import com.tecnolpet.ot.seguridad.UsuarioAuthenticate;
 import com.tecnolpet.ot.service.NotaPedidoService;
-import com.tecnolpet.ot.service.SuscripcionService;
 import com.tecnolpet.ot.service.TareaService;
 
 /**
@@ -44,17 +40,16 @@ import com.tecnolpet.ot.service.TareaService;
 public class NotaPedidoController {
 
 	private final NotaPedidoService notaPedidoService;
-	private final SuscripcionService suscripcionService;
-	private final TareaService tareaService;
+		private final TareaService tareaService;
 
 	@Autowired
 	private Environment env;
 
 	@Autowired
 	public NotaPedidoController(NotaPedidoService notaPedidoService,
-			SuscripcionService suscripcionService, TareaService tareaService) {
+			TareaService tareaService) {
 		this.notaPedidoService = notaPedidoService;
-		this.suscripcionService = suscripcionService;
+	
 		this.tareaService = tareaService;
 
 	}
@@ -75,17 +70,7 @@ public class NotaPedidoController {
 		return notaPedidoService.getNotasPedidoRegistradas(usuario);
 	}
 
-	@RequestMapping(value = "/datainicial", method = RequestMethod.GET)
-	public List<Object> traerData(
-			@AuthenticationPrincipal UsuarioAuthenticate usuario) {
-		return notaPedidoService.traerDataInicial(usuario);
-	}
-	@JsonView(ViewOT.PublicView.class)
-	@RequestMapping(value = "/ordenes", method = RequestMethod.GET)
-	public List<NotaPedido> traerOrdenes(
-			@AuthenticationPrincipal UsuarioAuthenticate usuario) {
-		return notaPedidoService.traerOrdenes(usuario);
-	}
+	
 
 	@RequestMapping(value = "/ticks", method = RequestMethod.GET)
 	public List<Object> traerTicks(
@@ -93,39 +78,11 @@ public class NotaPedidoController {
 		return notaPedidoService.traerDataTick(usuario);
 	}
 
-	@RequestMapping(value = "/valueticks1", method = RequestMethod.GET)
-	public List<Object> traerValueTicksOrdenes(
-			@AuthenticationPrincipal UsuarioAuthenticate usuario) {
-		return notaPedidoService.traerValueTick(usuario);
-	}
+	
 
-	@RequestMapping(value = "/valueticksEquipos", method = RequestMethod.GET)
-	public List<Object> traerValueTicksEquipos(
-			@AuthenticationPrincipal UsuarioAuthenticate usuario) {
-		return notaPedidoService.traerValueEquipos(usuario);
-	}
+	
 
-	@RequestMapping(value = "/valueticksServicios", method = RequestMethod.GET)
-	public List<Object> traerValueTicksServicios(
-			@AuthenticationPrincipal UsuarioAuthenticate usuario) {
-		return notaPedidoService.traerValueServicios(usuario);
-	}
-
-	@JsonView(ViewOT.PublicView.class)
-	@RequestMapping(value = "/aprobadas", method = RequestMethod.GET)
-	public List<NotaPedido> traerNotaPedidoAprobadas(
-			@AuthenticationPrincipal UsuarioAuthenticate usuario) {
-		return notaPedidoService.getNotasPedidoAprobadasSuscripcion(usuario);
-	}
-	@JsonView(ViewOT.PublicView.class)
-	@RequestMapping(value = "/suscripcion", method = RequestMethod.PUT)
-	public SuscripcionPedidoDto traerSuscripciones(@RequestBody Integer idPedido) {
-
-		SuscripcionPedidoDto suscripcionDto = suscripcionService
-				.generarSuscripcion(idPedido);
-
-		return suscripcionDto;
-	}
+	
 
 	@RequestMapping(value = "/ordenInterna", method = RequestMethod.PUT)
 	public Integer traerOrdenInterna(
@@ -170,84 +127,8 @@ public class NotaPedidoController {
 
 		return usuario;
 	}
-	@JsonView(ViewOT.PublicView.class)
-	@RequestMapping(value = "/suscripcion/aprobadas", method = RequestMethod.PUT)
-	public SuscripcionPedidoDto traerSuscripcionesAprobadas(
-			@RequestBody Integer idPedido) {
 
-		SuscripcionPedidoDto suscripcionDto = suscripcionService
-				.traerSuscripciones(idPedido);
-
-		return suscripcionDto;
-	}
-
-	@RequestMapping(value = "/suscripcion/crear", method = RequestMethod.POST)
-	@ResponseStatus(value = HttpStatus.CREATED)
-	public RespuestaDto crearSuscripciones(
-			@RequestBody SuscripcionPedidoDto suscripcionPedidoDto,
-			@AuthenticationPrincipal UsuarioAuthenticate usuario) {
-		RespuestaDto respuesta = new RespuestaDto();
-
-		try {
-
-			suscripcionService.creaSuscripciones(suscripcionPedidoDto, usuario);
-			respuesta.setEstado(Boolean.TRUE);
-			respuesta.setMensaje("Ok");
-			respuesta.setObjeto(suscripcionPedidoDto);
-
-		} catch (Exception ex) {
-			respuesta.setEstado(false);
-			respuesta.setMensaje(ex.getMessage());
-		}
-		return respuesta;
-
-	}
-
-	@RequestMapping(value = "/suscripcion/aprobar", method = RequestMethod.POST)
-	@ResponseStatus(value = HttpStatus.CREATED)
-	public RespuestaDto aprobarSuscripciones(
-			@RequestBody SuscripcionPedidoDto suscripcionPedidoDto,
-			@AuthenticationPrincipal UsuarioAuthenticate usuario) {
-		RespuestaDto respuesta = new RespuestaDto();
-
-		try {
-
-			suscripcionService.aprobarSuscripciones(suscripcionPedidoDto,
-					usuario.getId());
-			respuesta.setEstado(Boolean.TRUE);
-			respuesta.setMensaje("Ok");
-			respuesta.setObjeto(suscripcionPedidoDto);
-
-		} catch (Exception ex) {
-			respuesta.setEstado(false);
-			respuesta.setMensaje(ex.getMessage());
-			respuesta.setObjeto(suscripcionPedidoDto);
-
-		}
-		return respuesta;
-
-	}
-
-	@RequestMapping(value = "/suscripcion/crearenlace", method = RequestMethod.POST)
-	@ResponseStatus(value = HttpStatus.CREATED)
-	public RespuestaDto crearEnlace(@RequestBody Enlace enlace) {
-		RespuestaDto respuesta = new RespuestaDto();
-
-		try {
-
-			suscripcionService.crearEnlance(enlace);
-			respuesta.setEstado(Boolean.TRUE);
-			respuesta.setMensaje("Ok");
-			respuesta.setObjeto(enlace);
-
-		} catch (Exception ex) {
-			respuesta.setEstado(false);
-			respuesta.setMensaje(ex.getMessage());
-		}
-		return respuesta;
-
-	}
-
+	
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseStatus(value = HttpStatus.CREATED)
 	public RespuestaDto guardarNotaPedido(@RequestBody PedidoDto pedidoDto,
@@ -293,28 +174,7 @@ public class NotaPedidoController {
 		return respuesta;
 	}
 
-	@RequestMapping(value = "/responsables", method = RequestMethod.PUT)
-	public RespuestaDto registrarResponsables(
-			@RequestBody TareaDetalleNotaPedido tarea,
-			@AuthenticationPrincipal UsuarioAuthenticate usuario) {
-		RespuestaDto respuesta = new RespuestaDto();
-
-		try {
-
-			// System.out.println(tarea.getResponsable().getNombres());
-			// System.out.println(tarea.getAsistente().getNombres());
-
-			suscripcionService.actualizarResponsables(tarea);
-			respuesta.setEstado(Boolean.TRUE);
-			respuesta.setMensaje("Ok");
-			respuesta.setObjeto(tarea);
-		} catch (Exception ex) {
-			respuesta.setEstado(Boolean.FALSE);
-			respuesta.setMensaje(ex.getMessage());
-		}
-
-		return respuesta;
-	}
+	
 
 	@RequestMapping(value = "/reversion", method = RequestMethod.PUT)
 	public RespuestaDto registrarReversion(@RequestBody NotaPedido notaPedido,

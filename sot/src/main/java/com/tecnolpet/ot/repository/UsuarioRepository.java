@@ -29,8 +29,8 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer>{
 	@Query("Select u from Usuario u where u.username = :username and u.perfilEmpresa.empresa.id =:id")
 	public Usuario findByUsernameEmpresa(@Param("username") String username,@Param("id") Integer id); 
 	
-	@Query("Select u from Usuario u where u.perfilEmpresa.empresa= :empresa and u.cliente= :cliente")
-	public List<Usuario> findUsuariosByCliente(@Param("empresa") Empresa empresa,@Param("cliente") Cliente cliente); 
+	//@Query("Select u from Usuario u where u.perfilEmpresa.empresa= :empresa and u.cliente= :cliente")
+	//public List<Usuario> findUsuariosByCliente(@Param("empresa") Empresa empresa,@Param("cliente") Cliente cliente); 
 	
 	@Query("Select pf from PermisoPerfilEmpresa pf where pf.perfilEmpresa = :perfilEmpresa and pf.permiso.permiso is null and pf.perfilEmpresa.empresa.id= :id order by pf.permiso.ordenPermiso")
 	public List<PermisoPerfilEmpresa> findByPerfil(@Param("perfilEmpresa") PerfilEmpresa perfilEmpresa,@Param("id") Integer id);

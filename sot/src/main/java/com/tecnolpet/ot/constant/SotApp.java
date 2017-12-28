@@ -11,6 +11,12 @@ public class SotApp {
 		public static final String USUARIO="raul.mediavilla@mobility.com.ec";
 		public static final String CLAVE="adri1979";
 		
+		public static final String NIVEL_INICIAL_GRUPO="GroupCompanyId";
+		public static final Integer NIVEL_COOPERATIVA=4;
+		public static final Integer NIVEL_RUTA=5;
+		
+		
+		
 	}
 	public static class AlgoritmoClaves {
 		public static final String GENERACLAVE = "012345678abcdefghijklm9ABCDEFGHIJKLMNOPQRSTUVWXYZ";

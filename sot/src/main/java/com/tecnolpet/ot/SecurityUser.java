@@ -24,7 +24,7 @@ import com.tecnolpet.ot.seguridad.UsuarioAuthenticate;
 			this.setPermisos(user.getPermisos());
 			this.setSucursal(user.getSucursal());
 			this.setPerfil_empresa(user.getPerfil_empresa());
-			this.setCliente(user.getCliente());
+			this.setRuta(user.getRuta());
 			this.setEmail(user.getEmail());
 					
 		}

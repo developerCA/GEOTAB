@@ -82,7 +82,7 @@ public class UserService {
 
 		usuario.setEstadoUsuario(usuario.getEstadoUsuario());
 		usuario.setPerfilEmpresa(perfilEmpresa);
-		usuario.setCliente(adminUsuarioDto.getUsuario().getCliente());
+		//usuario.setCliente(adminUsuarioDto.getUsuario().getCliente());
 		usuarioRepository.save(usuario);
 	}
 

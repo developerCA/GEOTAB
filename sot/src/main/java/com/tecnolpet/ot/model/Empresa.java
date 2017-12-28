@@ -48,6 +48,11 @@ public class Empresa implements Serializable {
 	@Column(name="telefono_empresa")
 	@JsonView(ViewOT.PublicView.class)
 	private String telefono;
+	
+	@Column(name="codigo_cooperativa")
+	@JsonView(ViewOT.PublicView.class)
+	private String codigoCooperativa;
+	
 
 	  
 
@@ -126,6 +131,14 @@ public class Empresa implements Serializable {
 
 	public void setTelefono(String telefono) {
 		this.telefono = telefono;
+	}
+
+	public String getCodigoCooperativa() {
+		return codigoCooperativa;
+	}
+
+	public void setCodigoCooperativa(String codigoCooperativa) {
+		this.codigoCooperativa = codigoCooperativa;
 	}
 	
 	

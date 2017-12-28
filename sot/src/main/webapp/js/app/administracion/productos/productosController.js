@@ -2,311 +2,224 @@ app.controller("productoCtrl",["$scope", "productoFactory", "$timeout","categori
 	function($scope, productoFactory, $timeout,categoriasResource,toaster,$modal,modalService) {
 
 	$scope.obj={clienteFinal:null};
-		
-		$scope.cargaModalFinal = function (size) {
-		      var modalInstance = $modal.open({
-		        templateUrl: 'tpl/app/administracion/notasPedido/buscarCliente.html',
-		        controller: 'ModalInstanceCtrlCliente',
-		        size: size
-		      });
 
-		      modalInstance.result.then(function (selectedItem) {
-		        $scope.selectedCliente = selectedItem;
-		        
-		        $scope.obj.clienteFinal=$scope.selectedCliente;
-		        $scope.traerProductos();
-		        
-		      }, function () {
-		        console.log('Modal dismissed at: ' + new Date());
-		      });
-		};
-		
+	$scope.cargaModalFinal = function (size) {
+      var modalInstance = $modal.open({
+        templateUrl: 'tpl/app/administracion/notasPedido/buscarCliente.html',
+        controller: 'ModalInstanceCtrlCliente',
+        size: size
+      });
 
-		
-		$scope.nuevo = false;
-		
-		$scope.init=function(){
-			
-			
-			
-			$scope.traerTipoProductos();
-			
-		};
-		
-		$scope.traerCategorias=function(){
-			
-			productoFactory.listCategorias($scope.obj.clienteFinal.id).then(function(r) {
-				$scope.categorias = r;
-				
-			});
-			
-			
-		};
-		
-		$scope.traerProductos = function() {
+      modalInstance.result.then(function (selectedItem) {
+        $scope.selectedCliente = selectedItem;
+        
+        $scope.obj.clienteFinal=$scope.selectedCliente;
+        $scope.traerProductos();
+        
+      }, function () {
+        console.log('Modal dismissed at: ' + new Date());
+      });
+	};
 
-			productoFactory.listProductos($scope.obj.clienteFinal.id).then(function(r) {
-				$scope.productos = r;
-				$scope.traerCategorias();
-				
-			});
-			
-		};
-		$scope.traerTipoProductos = function() {
+	$scope.nuevo = false;
 
-			productoFactory.listTipoProductos().then(function(r) {
-				$scope.tipoProductos = r;
-			});
-			
-		};
-		
-		$scope.guardarItem=function(){
-			
-			$scope.producto.cliente=$scope.obj.clienteFinal;
-	      
+	$scope.init=function(){
+		$scope.traerTipoProductos();
+	};
 
-			productoFactory.crear($scope.producto).then(function(r) {
-					
-							
-						$scope.status = !r.estado;
-		
-						if (r.estado == true) {
-							//$scope.traerProductosRenovacion();
-							$scope.edicion = false;
-							$scope.nuevo = false;
-							$scope.traerProductos();
-							
-							toaster
-							.pop(
-									"success",
-									"Equipo",
-									"Registro guardado satisfactoriamente");
-						} else {
-							
-									toaster.pop("error",
-											"Equipo",
-											r.mensaje);
-						}	
-				});
-		};
-		
-		$scope.modalOptions = {
-				headerText : 'Equipo',
-				bodyText : '',
-				type:'danger'
-		};
-		
-		$scope.eliminarItem=function(item){
-			
-			$scope.producto = item;
-			
-			$scope.modalOptions.bodyText = 'Desea eliminar el equipo?';
-			$scope.modalOptions.templateUrl="tpl/modals/modalConfirm.html";
-		
-			modalService.showModal({}, $scope.modalOptions).then(function(r){
-				productoFactory.eliminar($scope.producto).then(function(r) {
-					$scope.traerProductos();
-					$scope.nuevo = false;
-					
-					$scope.status = !r.estado;
+	$scope.traerCategorias=function(){
+		productoFactory.listCategorias($scope.obj.clienteFinal.id).then(function(r) {
+			$scope.categorias = r;
+		});
+	};
 
-					if (r.estado == true) {
-						//$scope.traerProductosRenovacion();
-						$scope.edicion = false;
-						$scope.nuevo = false;
-						$scope.traerProductos();
-						
-						toaster
-						.pop(
-								"success",
-								"Equipo",
-								"Registro actualizado satisfactoriamente");
-					} else {
-						toaster.pop("error",
-								"Equipo",
-								r.mensaje);
-					}
+	$scope.traerProductos = function() {
+		productoFactory.listProductos($scope.obj.clienteFinal.id).then(function(r) {
+			$scope.productos = r;
+			$scope.traerCategorias();
+		});
+	};
 
-				});
+	$scope.traerTipoProductos = function() {
 
-			});	
-			
-		};
+		productoFactory.listTipoProductos().then(function(r) {
+			$scope.tipoProductos = r;
+		});
 		
-		$scope.editarItem=function(item){
-			
-			$scope.producto = item;			
-			$scope.nuevo = true;
-			$scope.editar = true;
-			
-							
-		};
-		
-		$scope.actualizarItem=function(){
-			
-			productoFactory.update($scope.producto).then(function(r) {
-				
-					
-					$scope.status = !r.estado;
+	};
 
-					if (r.estado == true) {
-						
-						$scope.traerProductos();
-						$scope.nuevo = false;
-						$scope.edicion = false;
-						
-						toaster
-						.pop(
-								"success",
-								"Equipo",
-								"Registro actualizado satisfactoriamente");
-					} else {
-						toaster.pop("error",
-								"Equipo",
-								r.mensaje);
-					}				
-
-				});
-		};
-		$scope.nuevoItem = function(){
-			
-			if ($scope.obj.clienteFinal==null){
+	$scope.guardarItem=function(){
+		$scope.producto.cliente=$scope.obj.clienteFinal;
+		productoFactory.crear($scope.producto).then(function(r) {
+			$scope.status = !r.estado;
+			if (r.estado == true) {
+				//$scope.traerProductosRenovacion();
+				$scope.edicion = false;
+				$scope.nuevo = false;
+				$scope.traerProductos();
 				toaster
 				.pop(
-						"error",
+						"success",
 						"Equipo",
-						"Seleccione un cliente");
-				
-				return;
-			}
-			$scope.producto = null;
-			$scope.nuevo = true;
-			$scope.editar = false;
-			
-		};
+						"Registro guardado satisfactoriamente");
+			} else {
+				toaster.pop("error",
+						"Equipo",
+						r.mensaje);
+			}	
+		});
+	};
 
-		$scope.sincronizar = function(){
-			//console.log("cargar Dispositivos");
-            api.call("Get", {
-                typeName: "Device"
-            }, function(result) {
-            	console.log(result);
-                if (result !== undefined && result.length > 0) {
-                	$scope.lista = result;
-                	return;
-                    //var select = document.getElementById("device");
-                    //var now = new Date();
-                    for (var i = 0; i < result.length; i++) {
-                        if (new Date(result[i].activeTo) > now) {
-                            var option = new Option();
-                            option.text = result[i].name;
-                            option.setAttribute("data-deviceid", result[i].id);
-                            select.add(option);
-                        }
-                    }
-                } else {
-                    alert("Could not retrieve devices");
-                }
-            }, function(error) {
-                alert(error);
-            });
-		};
+	$scope.modalOptions = {
+		headerText : 'Equipo',
+		bodyText : '',
+		type:'danger'
+	};
 
-		$scope.grupoSincronizar = function(){
-			api.call("Get", {
-			    "typeName": "Group"
-			}, function(result) {
-			    console.log("Done: ", result);
-			    this.grupoCargarLista(result);
-			    this.grupoRelacionarPadre(result);
-			    this.grupoRelacionarNivel(0, 0);
-			    console.log($scope.nGrupo);
-			}, function(e) {
-			    console.error("Failed:", e);
-			});
-		}
-
-		$scope.grupoCargarLista = function(grupos) {
-			$scope.nGrupo = [];
-			for (var i = 0; i < grupos.length; i++) {
-				var tGrupo = {
-					id = grupos[i].id,
-					nombre = grupos[i].name,
-					reference = grupos[i].reference,
-					comments = grupos[i].comments,
-					colora = grupos[i].color.a,
-					colorb = grupos[i].color.b,
-					colorg = grupos[i].color.g,
-					colorr = grupos[i].color.r,
-					padre = null,
-					nivel = null
-				};
-				$scope.nGrupo.push(tGrupo);
-			}
-		}
-
-		$scope.grupoRelacionarPadre = function(grupos) {
-			for (var i = 0; i < grupos.length; i++) {
-				for (var c = 0; c < grupos[i].children.length; c++) {
-					var p = this.grupoBuscarId(grupos[i].children[c].id)
-					$scope.nGrupo[p].padre = i;
-				}
-				$scope.nGrupo
-			}
-		}
-
-		$scope.grupoRelacionarNivel = function(fuenteId, fuenteNivel) {
-			var lista = [];
-			for (var i = 0; i < $scope.nGrupo.length; i++) {
-				if ($scope.nGrupo[i].padre == $scope.nGrupo[fuenteId].id) {
-					lista.push(i);
-				}
-			}
-			for (var i = 0; i < $scope.nGrupo.length; i++) {
-				
-			}
-		}
-
-		$scope.grupoBuscarId = function(id) {
-			for (var i = 0; i < $scope.nGrupo.length; i++) {
-				if ($scope.nGrupo[i].id == id) {
-					return i;
-				}
-			}
-			return null;
-		}
-
-		$scope.cargaDimensiones=function(){
-			var modalInstance = $modal.open({
-		        templateUrl: 'tpl/app/administracion/productos/modalDimension.html',
-		        controller: 'ModalInstanceCtrlAddDimension',
-		        size: 'lg'
-		        
-		      });
-
-		      modalInstance.result.then(function () {
-		    	  $scope.traerTipoProductos();
-		      }, function () {
-		    
-		        $scope.traerTipoProductos();
-		      });
-			
-		};
-		
-		$scope.cancelarItem=function(){
-			$scope.nuevo = false;
-		};
-		
-		
-	 
-	    
-
-	    
-		
+	$scope.eliminarItem=function(item){
+		$scope.producto = item;
+		$scope.modalOptions.bodyText = 'Desea eliminar el equipo?';
+		$scope.modalOptions.templateUrl="tpl/modals/modalConfirm.html";
 	
+		modalService.showModal({}, $scope.modalOptions).then(function(r){
+			productoFactory.eliminar($scope.producto).then(function(r) {
+				$scope.traerProductos();
+				$scope.nuevo = false;
+				
+				$scope.status = !r.estado;
+
+				if (r.estado == true) {
+					//$scope.traerProductosRenovacion();
+					$scope.edicion = false;
+					$scope.nuevo = false;
+					$scope.traerProductos();
+					
+					toaster
+					.pop(
+							"success",
+							"Equipo",
+							"Registro actualizado satisfactoriamente");
+				} else {
+					toaster.pop("error",
+							"Equipo",
+							r.mensaje);
+				}
+
+			});
+
+		});	
+		
+	};
+
+	$scope.editarItem=function(item){
+		$scope.producto = item;			
+		$scope.nuevo = true;
+		$scope.editar = true;
+	};
+		
+	$scope.actualizarItem=function(){
+		productoFactory.update($scope.producto).then(function(r) {
+			$scope.status = !r.estado;
+
+			if (r.estado == true) {
+				
+				$scope.traerProductos();
+				$scope.nuevo = false;
+				$scope.edicion = false;
+				
+				toaster
+				.pop(
+						"success",
+						"Equipo",
+						"Registro actualizado satisfactoriamente");
+			} else {
+				toaster.pop("error",
+						"Equipo",
+						r.mensaje);
+			}				
+
+		});
+	};
+
+	$scope.nuevoItem = function(){
+		if ($scope.obj.clienteFinal==null){
+			toaster
+			.pop(
+				"error",
+				"Equipo",
+				"Seleccione un cliente");
+			return;
+		}
+		$scope.producto = null;
+		$scope.nuevo = true;
+		$scope.editar = false;
+	};
+
+	$scope.sincronizar = function(){
+		//console.log("cargar Dispositivos");
+        api.call("Get", {
+            typeName: "Device"
+        }, function(result) {
+        	console.log(result);
+            if (result !== undefined && result.length > 0) {
+            	$scope.lista = result;
+            	return;
+                //var select = document.getElementById("device");
+                //var now = new Date();
+                for (var i = 0; i < result.length; i++) {
+                    if (new Date(result[i].activeTo) > now) {
+                        var option = new Option();
+                        option.text = result[i].name;
+                        option.setAttribute("data-deviceid", result[i].id);
+                        select.add(option);
+                    }
+                }
+            } else {
+                alert("Could not retrieve devices");
+            }
+        }, function(error) {
+            alert(error);
+        });
+	};
+
+	$scope.grupoSincronizar = function(){
+		api.call("Get", {
+		    "typeName": "Group"
+		}, function(result) {
+		    console.log(result);
+			productoFactory.sincronizarGrupos(
+				result
+			).then(function(r) {
+				
+				
+				
+				console.log(r);
+			});
+		}, function(e) {
+		    console.error("Failed:", e);
+		});
+	}
+
+	$scope.cargaDimensiones=function(){
+		var modalInstance = $modal.open({
+	        templateUrl: 'tpl/app/administracion/productos/modalDimension.html',
+	        controller: 'ModalInstanceCtrlAddDimension',
+	        size: 'lg'
+	      });
+	      modalInstance.result.then(function () {
+	    	  $scope.traerTipoProductos();
+	      }, function () {
+	        $scope.traerTipoProductos();
+	      });
+	};
+	
+	$scope.cancelarItem=function(){
+		$scope.nuevo = false;
+	};
 } ]);
 
-app.controller('ModalInstanceCtrlCliente', ['$scope', '$modalInstance','$timeout','clienteFactory','$modal',  function($scope, $modalInstance,$timeout,clienteFactory,$modal) {
+app.controller('ModalInstanceCtrlCliente', ['$scope', '$modalInstance','$timeout','clienteFactory','$modal',
+	function($scope, $modalInstance,$timeout,clienteFactory,$modal) {
 	
 	/*======INIT========*/
 	$scope.init = function(){

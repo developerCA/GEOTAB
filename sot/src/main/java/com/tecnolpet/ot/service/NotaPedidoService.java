@@ -120,37 +120,9 @@ public class NotaPedidoService {
 				.getId(), perfilEmpresa.getEmpresa());
 	}
 
-	public List<NotaPedido> getNotasPedidoAprobadasSuscripcion(
-			UsuarioAuthenticate usuario) {
+	
 
-		PerfilEmpresa perfilEmpresa = perfilEmpresaRepository.findOne(usuario
-				.getPerfil_empresa());
-		return notaPedidoRepository.findNotasAprobadasSuscripcion(
-				catalogoRepository
-						.findCatalogoBySigla(SotApp.EstadosPedido.APROBADO)
-						.get(0).getId(), perfilEmpresa.getEmpresa(),
-				usuario.getCliente());
-
-	}
-
-	public List<Object> traerDataInicial(UsuarioAuthenticate usuario) {
-
-		PerfilEmpresa perfilEmpresa = perfilEmpresaRepository.findOne(usuario
-				.getPerfil_empresa());
-		List<Object> lista = null;
-
-		if (perfilEmpresa.getPerfil().getId() == SotApp.CLIENTE) {
-			lista = notaPedidoRepository.findDashBoard(perfilEmpresa
-					.getEmpresa().getId(), usuario.getCliente().getId());
-
-		} else {
-			lista = notaPedidoRepository.findDashBoard(perfilEmpresa
-					.getEmpresa().getId());
-
-		}
-
-		return lista;
-	}
+	
 
 	public List<Object> traerDataTick(UsuarioAuthenticate usuario) {
 
@@ -167,91 +139,12 @@ public class NotaPedidoService {
 		return lista;
 	}
 
-	public List<Object> traerValueTick(UsuarioAuthenticate usuario) {
+	
 
-		PerfilEmpresa perfilEmpresa = perfilEmpresaRepository.findOne(usuario
-				.getPerfil_empresa());
-		List<Object> lista = null;
+	
 
-		Calendar fecha = Calendar.getInstance();
-		int anio = fecha.get(Calendar.YEAR);
 
-		if (perfilEmpresa.getPerfil().getId() == SotApp.CLIENTE) {
-			lista = notaPedidoRepository.findDataTicks(perfilEmpresa
-					.getEmpresa().getId(), anio, usuario.getCliente().getId());
-		} else {
-
-			lista = notaPedidoRepository.findDataTicks(perfilEmpresa
-					.getEmpresa().getId(), anio);
-
-		}
-
-		return lista;
-	}
-
-	public List<Object> traerValueEquipos(UsuarioAuthenticate usuario) {
-
-		PerfilEmpresa perfilEmpresa = perfilEmpresaRepository.findOne(usuario
-				.getPerfil_empresa());
-		List<Object> lista = null;
-
-		Calendar fecha = Calendar.getInstance();
-		int anio = fecha.get(Calendar.YEAR);
-
-		if (perfilEmpresa.getPerfil().getId() == SotApp.CLIENTE) {
-
-			lista = notaPedidoRepository.findDataTicksEquipos(perfilEmpresa
-					.getEmpresa().getId(), anio, usuario.getCliente().getId());
-		} else {
-
-			lista = notaPedidoRepository.findDataTicksEquipos(perfilEmpresa
-					.getEmpresa().getId(), anio);
-		}
-
-		return lista;
-	}
-
-	public List<Object> traerValueServicios(UsuarioAuthenticate usuario) {
-
-		PerfilEmpresa perfilEmpresa = perfilEmpresaRepository.findOne(usuario
-				.getPerfil_empresa());
-		List<Object> lista = null;
-
-		Calendar fecha = Calendar.getInstance();
-		int anio = fecha.get(Calendar.YEAR);
-
-		if (perfilEmpresa.getPerfil().getId() == SotApp.CLIENTE) {
-
-			lista = notaPedidoRepository.findDataTicksServicios(perfilEmpresa
-					.getEmpresa().getId(), anio, usuario.getCliente().getId());
-		} else {
-			lista = notaPedidoRepository.findDataTicksServicios(perfilEmpresa
-					.getEmpresa().getId(), anio);
-
-		}
-
-		return lista;
-	}
-
-	public List<NotaPedido> traerOrdenes(UsuarioAuthenticate usuario) {
-
-		PerfilEmpresa perfilEmpresa = perfilEmpresaRepository.findOne(usuario
-				.getPerfil_empresa());
-		List<NotaPedido> lista = null;
-
-		if (perfilEmpresa.getPerfil().getId() == SotApp.CLIENTE) {
-
-			lista = notaPedidoRepository.findOrdenes(
-					perfilEmpresa.getEmpresa(), usuario.getCliente());
-
-		} else {
-			lista = notaPedidoRepository
-					.findOrdenes(perfilEmpresa.getEmpresa());
-
-		}
-
-		return lista;
-	}
+	
 
 	public void calcularCostos(PedidoDto pedidoDto) {
 		NotaPedido np = null;
