@@ -1,57 +1,42 @@
 'use strict';
 app.controller('userInfo', [ '$scope', '$http', "$timeout", "commonService",
-             function($scope, $http, $timeout, commonService) {
- 
-                    $scope.usr = null;
- 
-                    $http.get('api/users/info').success(function(data) {
- 
-                           $scope.usr = data;
-                           $scope.username = data.username;
-                           commonService.setVar("grants", data.permisos);
-                           commonService.setVar("logo", data.cliente.logo_data);
-                           commonService.setVar("nombres", data.nombresCompletos);
-                           commonService.setVar("email", data.cliente.email);
-                           commonService.setVar("data", data);
-                                 
- 
- 
- 
-                    });
-             } ]);
+	function($scope, $http, $timeout, commonService) {
+
+	$scope.usr = null;
+
+	$http.get('api/users/info').success(function(data) {
+		$scope.usr = data;
+		$scope.username = data.username;
+		commonService.setVar("grants", data.permisos);
+		//commonService.setVar("logo", data.cliente.logo_data);
+		commonService.setVar("nombres", data.nombresCompletos);
+		//commonService.setVar("email", data.cliente.email);
+		commonService.setVar("data", data);
+    });
+}]);
 app.controller('getGrants', [ '$scope', 'commonService', '$timeout','notaPedidoFactory','$http','usuariosFactory','$window','modalService',
-                              function($scope, commonService, $timeout,notaPedidoFactory,$http,usuariosFactory,$window,modalService) {
-       //timeout
-       $timeout(function(){
-    	   
-             $scope.grants = commonService.getVar("grants");
-             $scope.logo = commonService.getVar("logo");
-             $scope.nombres = commonService.getVar("nombres");
-             $scope.email = commonService.getVar("email");
-             $scope.data = commonService.getVar("data");
-             
-       });
-       
-       $scope.ordenes=function(){
-    	   
-    	   
-    	   notaPedidoFactory.listOrdenes().then(function(r){
-      		 $scope.ordenes=r;
-    	     console.log($scope.ordenes);
-    	   });
-    	   
-       };
-       
-       $scope.cargarReset=function(){
-    	   
-    	   $http.get('api/users/info').success(function(data) {
-    		   $scope.data=data; 
-    		  
-    	   });
-    	 
-    	
-    	   
-       };
+	function($scope, commonService, $timeout,notaPedidoFactory,$http,usuariosFactory,$window,modalService) {
+
+	$timeout(function(){
+	    $scope.grants = commonService.getVar("grants");
+	    $scope.logo = commonService.getVar("logo");
+	    $scope.nombres = commonService.getVar("nombres");
+	    $scope.email = commonService.getVar("email");
+	    $scope.data = commonService.getVar("data");
+	});
+
+	$scope.ordenes=function(){
+		notaPedidoFactory.listOrdenes().then(function(r){
+      		$scope.ordenes=r;
+    	    console.log($scope.ordenes);
+		});
+    };
+
+    $scope.cargarReset=function(){
+	   $http.get('api/users/info').success(function(data) {
+		   $scope.data=data; 
+	   });
+    };
        
        $scope.cambiar=function(){
     	   

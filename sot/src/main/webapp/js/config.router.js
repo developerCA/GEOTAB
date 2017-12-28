@@ -56,22 +56,22 @@ angular
 															function(
 																	$ocLazyLoad) {
 																return $ocLazyLoad
-																		.load(
-																				[
-																						'toaster',
-																						'ui.select',
-																						'js/app/administracion/notaPedido/notaPedidoFactory.js',
-																						'js/app/user/userController.js',
-																						'js/app/administracion/usuarios/usuariosController.js',
-																						'js/app/administracion/usuarios/usuariosFactory.js',
-																						'js/app/administracion/perfiles/perfilesFactory.js',
-																						'js/app/administracion/cooperativas/cooperativaFactory.js',
-																						'js/app/administracion/regiones/regionesFactory.js',
-																						'js/app/administracion/clientes/clienteFactory.js',
-																						'js/app/administracion/sucursales/sucursalesFactory.js',
-																						'js/app/administracion/permisos/asignacionPermisoFactory.js'
+																		.load([
+																					'toaster',
+																					'ui.select',
+																					'js/app/administracion/notaPedido/notaPedidoFactory.js',
+																					'js/app/user/userController.js',
+																					'js/app/administracion/usuarios/usuariosController.js',
+																					'js/app/administracion/usuarios/usuariosFactory.js',
+																					'js/app/administracion/perfiles/perfilesFactory.js',
+																					'js/app/administracion/cooperativas/cooperativaFactory.js',
+																					'js/app/administracion/regiones/regionesFactory.js',
+																					'js/app/administracion/clientes/clienteFactory.js',
+																					'js/app/administracion/rutas/rutasFactory.js',
+																					'js/app/administracion/sucursales/sucursalesFactory.js',
+																					'js/app/administracion/permisos/asignacionPermisoFactory.js'
 
-																				])
+																			])
 																		.then(
 																				function() {
 																					return $ocLazyLoad
@@ -80,6 +80,56 @@ angular
 															} ]
 												}
 											})
+									.state(
+										'app.rutas', {
+											url : '/rutas',
+											templateUrl : 'tpl/app/administracion/rutas/rutas.html',
+											resolve : {
+												deps : [
+													'$ocLazyLoad',
+														function(
+															$ocLazyLoad
+														) {
+															return $ocLazyLoad
+																.load([
+																	'toaster',
+																	'js/app/administracion/rutas/rutasController.js',
+																	'js/app/administracion/rutas/rutasFactory.js'
+																])
+																.then(
+																	function() {
+																		return $ocLazyLoad
+																			.load([ 'js/controllers/toaster.js' ]);
+																	});
+															}
+													]
+											}
+										})
+									.state(
+										'app.sincronizar', {
+											url : '/rutas',
+											templateUrl : 'tpl/app/administracion/sincronizar/sincronizar.html',
+											resolve : {
+												deps : [
+													'$ocLazyLoad',
+														function(
+															$ocLazyLoad
+														) {
+															return $ocLazyLoad
+																.load([
+																	'toaster',
+																	'js/app/administracion/sincronizar/sincronizarController.js',
+																	'js/app/administracion/sincronizar/sincronizarFactory.js'
+																])
+																.then(
+																	function() {
+																		return $ocLazyLoad
+																			.load([ 'js/controllers/toaster.js' ]);
+																	});
+															}
+													]
+											}
+										})
 									.state(
 											'app.roles',
 											{

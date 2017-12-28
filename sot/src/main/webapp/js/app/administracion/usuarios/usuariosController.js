@@ -1,7 +1,8 @@
 app.controller("usuariosCtrl", [ "$scope", "$filter", "cooperativaFactory", "usuariosFactory", "regionResource",
-                                "sucursalesFactory", "asignacioPermisoResource", "toaster","clienteFactory",
+                                "sucursalesFactory", "asignacioPermisoResource", "toaster","clienteFactory","rutasFactory",
  
-    function($scope, $filter, cooperativaFactory, usuariosFactory, regionResource, sucursalesFactory, asignacioPermisoResource, toaster,clienteFactory) {
+    function($scope, $filter, cooperativaFactory, usuariosFactory, regionResource, sucursalesFactory,
+    		asignacioPermisoResource, toaster,clienteFactory,rutasFactory) {
 
         $scope.filter = '';  
         $scope.productos = null; 
@@ -16,24 +17,24 @@ app.controller("usuariosCtrl", [ "$scope", "$filter", "cooperativaFactory", "usu
     
         $scope.init = function(){ 
             $scope.listProductos();
-            $scope.traerClientes();
-        } 
-        
-        $scope.traerClientes=function(){
-        	clienteFactory.list().then(function(r) {
-                $scope.clientes = r;
-               
+             
+        }
+
+      
+
+        $scope.traerRutas=function(){
+        	rutasFactory.list().then(function(r) {
+                $scope.rutas = r;
             })   
-        	
         };
- 
+
         $scope.listProductos = function(){	
         	cooperativaFactory.list().then(function(request) {
                 $scope.productos = request;
                 $scope.idProducto = $scope.productos[0].id;
             })    
         }    
-         
+
         $scope.listRegiones = function(){ 
             regionResource.list().then(function(request) { 
                 $scope.regiones = request;      
@@ -140,15 +141,23 @@ app.controller("usuariosCtrl", [ "$scope", "$filter", "cooperativaFactory", "usu
         $scope.clickCreateUser = function(){     
             $scope.usuario = {};   
             var item = {"estadoUsuario": true};
-            //console.log($scope.perfilList);
-            //$scope.perfilList.usuarios.push(item);   
+           
             $scope.selectItem(item);
             $scope.item.editing = true;
             $scope.item.creating = true; 
-            
-            //$scope.regionList = $scope.regiones[0]; 
-            //$scope.listSucursalesByRegion(0);
-        };       
+            $scope.cargarRutas();
+         
+        };    
+        
+        $scope.cargarRutas=function(){
+        	 
+        	console.log($scope.idProducto);
+        	rutasFactory.listaRutas($scope.idProducto).then(function(resp) {  
+                console.log(resp);
+                $scope.rutas=resp;
+            })  
+        	
+        }
  
         $scope.selectItem = function(item){    
             angular.forEach($scope.usuarios, function(item) {

@@ -1,0 +1,43 @@
+<toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container> 
+<div class="app-content-body app-content-full fade-in-up ng-scope ">
+	<div class="hbox hbox-auto-xs hbox-auto-sm bg-light"
+		ng-controller="rutasCtrl"
+		ng-init=" init(); app.settings.asideFixed = true;
+            app.settings.asideDock = false;
+            app.settings.container = false;
+            app.hideAside = false; 
+            app.hideFooter = true; ">
+		<!-- column -->
+		<div class="col w b-r">
+			<div class="vbox">
+				<div class="wrapper">
+					<div class="h4">
+						<b>Rutas</b>
+					</div>
+				</div>
+				<div class="row-row">
+					<div class="cell scrollable hover">
+						<div class="cell-inner">
+							<div class="padder">
+								<div class="list-group">
+									<a ng-repeat="item in productos"
+										class="list-group-item b-l-primary b-l-3x hover-anchor"
+										ng-class="{'hover': item.selected }"
+										ng-click="selectProducto(item)"> <span
+										class="block text-ellipsis">{{ item.nombre ?
+											item.nombre : 'No existen rutas' }}</span>
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<span
+					tooltip="Click sobre un Producto para listar los Usuarios por Perfil"
+					class="pull-right text-muted inline wrapper-xs m-r-sm"><i
+					class="fa fa-question"></i></span>
+			</div>
+		</div>
+		<!-- /column -->
+	</div>
+</div>
