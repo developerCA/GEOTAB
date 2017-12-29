@@ -56,23 +56,22 @@ angular
 															function(
 																	$ocLazyLoad) {
 																return $ocLazyLoad
-																		.load(
-																				[
-																						'toaster',
-																						'ui.select',
-																						'js/app/administracion/notaPedido/notaPedidoFactory.js',
-																						'js/app/administracion/perfiles/perfilesFactory.js',
-																						'js/app/user/userController.js',
-																						'js/app/administracion/usuarios/usuariosController.js',
-																						'js/app/administracion/usuarios/usuariosFactory.js',
-																						'js/app/administracion/perfiles/perfilesFactory.js',
-																						'js/app/administracion/cooperativas/cooperativaFactory.js',
-																						'js/app/administracion/regiones/regionesFactory.js',
-																						'js/app/administracion/clientes/clienteFactory.js',
-																						'js/app/administracion/sucursales/sucursalesFactory.js',
-																						'js/app/administracion/permisos/asignacionPermisoFactory.js'
+																		.load([
+																					'toaster',
+																					'ui.select',
+																					'js/app/administracion/notaPedido/notaPedidoFactory.js',
+																					'js/app/user/userController.js',
+																					'js/app/administracion/usuarios/usuariosController.js',
+																					'js/app/administracion/usuarios/usuariosFactory.js',
+																					'js/app/administracion/perfiles/perfilesFactory.js',
+																					'js/app/administracion/cooperativas/cooperativaFactory.js',
+																					'js/app/administracion/regiones/regionesFactory.js',
+																					'js/app/administracion/clientes/clienteFactory.js',
+																					'js/app/administracion/rutas/rutasFactory.js',
+																					'js/app/administracion/sucursales/sucursalesFactory.js',
+																					'js/app/administracion/permisos/asignacionPermisoFactory.js'
 
-																				])
+																			])
 																		.then(
 																				function() {
 																					return $ocLazyLoad
@@ -81,6 +80,56 @@ angular
 															} ]
 												}
 											})
+									.state(
+										'app.rutas', {
+											url : '/rutas',
+											templateUrl : 'tpl/app/administracion/rutas/rutas.html',
+											resolve : {
+												deps : [
+													'$ocLazyLoad',
+														function(
+															$ocLazyLoad
+														) {
+															return $ocLazyLoad
+																.load([
+																	'toaster',
+																	'js/app/administracion/rutas/rutasController.js',
+																	'js/app/administracion/rutas/rutasFactory.js'
+																])
+																.then(
+																	function() {
+																		return $ocLazyLoad
+																			.load([ 'js/controllers/toaster.js' ]);
+																	});
+															}
+													]
+											}
+										})
+									.state(
+										'app.sincronizar', {
+											url : '/rutas',
+											templateUrl : 'tpl/app/administracion/sincronizar/sincronizar.html',
+											resolve : {
+												deps : [
+													'$ocLazyLoad',
+														function(
+															$ocLazyLoad
+														) {
+															return $ocLazyLoad
+																.load([
+																	'toaster',
+																	'js/app/administracion/sincronizar/sincronizarController.js',
+																	'js/app/administracion/sincronizar/sincronizarFactory.js'
+																])
+																.then(
+																	function() {
+																		return $ocLazyLoad
+																			.load([ 'js/controllers/toaster.js' ]);
+																	});
+															}
+													]
+											}
+										})
 									.state(
 											'app.roles',
 											{
@@ -1804,6 +1853,56 @@ angular
 																	$ocLazyLoad) {
 																return $ocLazyLoad
 																		.load([
+																				'com.2fdevs.videogular',
+																				'com.2fdevs.videogular.plugins.controls',
+																				'com.2fdevs.videogular.plugins.overlayplay',
+																				'com.2fdevs.videogular.plugins.poster',
+																				'com.2fdevs.videogular.plugins.buffering',
+																				'js/app/music/ctrl.js',
+																				'js/app/music/theme.css' ]);
+															} ]
+												}
+											})
+									.state('music.home', {
+										url : '/home',
+										templateUrl : 'tpl/music.home.html'
+									})
+									.state('music.genres', {
+										url : '/genres',
+										templateUrl : 'tpl/music.genres.html'
+									})
+									.state('music.detail', {
+										url : '/detail',
+										templateUrl : 'tpl/music.detail.html'
+									})
+									.state('music.mtv', {
+										url : '/mtv',
+										templateUrl : 'tpl/music.mtv.html'
+									})
+									.state(
+											'music.mtvdetail',
+											{
+												url : '/mtvdetail',
+												templateUrl : 'tpl/music.mtv.detail.html'
+											})
+									/* PMI Apps */
+									.state(
+											'app.forms2',
+											{
+												url : '/forms2',
+												templateUrl : 'tpl/app_form.html',
+												resolve : {
+													deps : [
+															'$ocLazyLoad',
+															function(
+																	$ocLazyLoad) {
+																return $ocLazyLoad
+																		.load([ 'js/app/forms/form.js' ]);
+															} ]
+												}
+											})
+
+						} ]);
 																				'com.2fdevs.videogular',
 																				'com.2fdevs.videogular.plugins.controls',
 																				'com.2fdevs.videogular.plugins.overlayplay',

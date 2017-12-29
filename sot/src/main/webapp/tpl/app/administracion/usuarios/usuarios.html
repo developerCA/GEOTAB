@@ -226,23 +226,31 @@
 
 										<div class="form-group m-b-sm"
 											ng-hide="!item.emailUsuario && !item.editing">
-											<label class="col-sm-3 control-label">Cliente</label>
+											<label class="col-sm-3 control-label">
+												Ruta
+											</label>
 											<div class="col-sm-9">
-												<p class="form-control-static" ng-hide="item.editing">{{item.cliente.nombres}}
-													{{item.cliente.apellidos }}</p>
-
-
-												<div class="input-group m-b" ng-show="item.editing">
-													<span class="input-group-btn"> <i class="icon-users"></i>
+												<p class="form-control-static" ng-hide="item.editing">
+															{{item.ruta.nombre}}
+															({{item.ruta.identificador}})
+												</p>
+												<div class="col-sm-12 input-group m-b" ng-show="item.editing">
+													<span class="input-group-btn">
+														<i class="icon-users"></i>
 													</span>
-													<ui-select ng-model="item.cliente" theme="bootstrap"
-														required> <ui-select-match
-														placeholder="Seleccione un cliente">{{item.cliente.nombres}} {{item.cliente.apellidos}} </ui-select-match>
-													<ui-select-choices
-														repeat="c in clientes | filter: $select.search">
-
-													<div ng-bind-html="c.nombres | highlight: $select.search"></div>
-													<small> email: {{c.email}} </small> </ui-select-choices> </ui-select>
+													<ui-select ng-model="item.ruta" theme="bootstrap" required>
+														<ui-select-match placeholder="Seleccione una ruta">
+															{{item.ruta.nombre}}
+															({{item.ruta.identificador}})
+														</ui-select-match>
+														<ui-select-choices repeat="r in rutas | filter: $select.search">
+														<div ng-bind-html="r.nombre | highlight: $select.search"></div>
+															<small>
+																
+																Codigo: {{r.identificador}}
+															</small>
+														</ui-select-choices>
+													</ui-select>
 												</div>
 											</div>
 										</div>

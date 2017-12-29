@@ -16,18 +16,24 @@ app.controller("usuariosCtrl", [ "$scope", "$filter", "cooperativaFactory", "usu
     
         $scope.init = function(){ 
             $scope.listProductos();
-           
-        } 
-        
-     
- 
+             
+        }
+
+      
+
+        $scope.traerRutas=function(){
+        	rutasFactory.list().then(function(r) {
+                $scope.rutas = r;
+            })   
+        };
+
         $scope.listProductos = function(){	
         	cooperativaFactory.list().then(function(request) {
                 $scope.productos = request;
                 $scope.idProducto = $scope.productos[0].id;
             })    
         }    
-         
+
         $scope.listRegiones = function(){ 
             regionResource.list().then(function(request) { 
                 $scope.regiones = request;      
