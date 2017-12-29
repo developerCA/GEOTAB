@@ -21,21 +21,19 @@ public class SeguridadController {
 	private final UsuarioService usuarioService;
 
 	@Autowired
-	public SeguridadController(UsuarioRepository userRepository,
-			UsuarioService usuarioService) {
+	public SeguridadController(UsuarioRepository userRepository, UsuarioService usuarioService) {
 		this.userRepository = userRepository;
 		this.usuarioService = usuarioService;
 
 	}
 
 	@RequestMapping(value = "/user/{username}/{producto}", method = RequestMethod.GET)
-	public Usuario getUsuario(@PathVariable String username,
-			@PathVariable Integer empresa) {
+	public Usuario getUsuario(@PathVariable String username) {
 
 		Usuario userPermiso = null;
 
 		try {
-			userPermiso = userRepository.findByUsernameEmpresa(username,empresa);
+			userPermiso = userRepository.findByUsername(username);
 
 		} catch (Exception ex) {
 
@@ -44,14 +42,12 @@ public class SeguridadController {
 	}
 
 	@RequestMapping(value = "/grants/{username}/{producto}", method = RequestMethod.GET)
-	private List<MenuDto> getPermisos(@PathVariable String username,
-			@PathVariable Integer empresa) {
+	private List<MenuDto> getPermisos(@PathVariable String username) {
 
-		Usuario user = userRepository.findByUsernameEmpresa(username, empresa);
+		Usuario user = userRepository.findByUsername(username);
 
 		List<MenuDto> permisos;
-		permisos = usuarioService.getPermisos(user.getPerfilEmpresa(),
-				empresa);
+		permisos = usuarioService.getPermisos(user.getPerfil());
 
 		return permisos;
 	}

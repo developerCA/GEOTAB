@@ -1,6 +1,7 @@
 package com.tecnolpet.ot.rest;
 
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -8,9 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.tecnolpet.ot.dto.RespuestaDto;
 import com.tecnolpet.ot.model.Empresa;
-import com.tecnolpet.ot.model.PerfilEmpresa;
 import com.tecnolpet.ot.service.EmpresaService;
 
 
@@ -102,41 +103,9 @@ public class EmpresaController {
 	}
 
 
-	@RequestMapping(value="/agregarPerfilProducto",method = RequestMethod.PUT)
-	public RespuestaDto agregarPerfilEmpresa(@RequestBody PerfilEmpresa perfilEmpresa){
-		RespuestaDto respuesta=new RespuestaDto();
 	
-		try{
-			
-			empresaService.guardarPerfilEmpresa(perfilEmpresa); 
-			respuesta.setEstado(Boolean.TRUE);
-			respuesta.setObjeto(perfilEmpresa);			
-			 
-		}catch (Exception ex){
-			respuesta.setEstado(Boolean.FALSE);
-			respuesta.setMensaje(ex.getMessage());
-		}
-		 
-		return respuesta;
-	}  	
- 
 
-	@RequestMapping(value="/removerPerfilProducto",method = RequestMethod.PUT)
-	public RespuestaDto removerPerfilEmpresa(@RequestBody PerfilEmpresa perfilEmpresa){ 
-		RespuestaDto respuesta=new RespuestaDto();
-	  
-		try{
-			empresaService.desactivarPerfilEmpresa(perfilEmpresa); 
-			respuesta.setEstado(Boolean.TRUE);
-			respuesta.setObjeto(perfilEmpresa);			
-			 
-		}catch (Exception ex){
-			respuesta.setEstado(Boolean.FALSE);
-			respuesta.setMensaje(ex.getMessage());
-		}
-		
-		return respuesta;
-	} 
+
 	
 	
 	

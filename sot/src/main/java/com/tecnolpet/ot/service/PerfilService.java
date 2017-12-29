@@ -7,9 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tecnolpet.ot.model.Perfil;
-import com.tecnolpet.ot.model.PerfilEmpresa;
-import com.tecnolpet.ot.model.Usuario;
-import com.tecnolpet.ot.repository.PerfilEmpresaRepository;
 import com.tecnolpet.ot.repository.PerfilRepository;
 import com.tecnolpet.ot.repository.UsuarioRepository;
 
@@ -24,8 +21,7 @@ public class PerfilService {
 	@Autowired
 	private UsuarioRepository usuarioRepository;
 
-	@Autowired
-	private PerfilEmpresaRepository perfilproductoRepository;
+	
 
 	public List<Perfil> traePerfil() {
 		return perfilRepository.findByEstadoPerfil(Boolean.TRUE);
@@ -66,11 +62,13 @@ public class PerfilService {
 
 	private boolean existeUsuarioByPerfil(Perfil perfil) {
 
+		boolean existe = false;
+		/*
 		List<PerfilEmpresa> listaPerfilesByProducto = perfilproductoRepository
 				.findByPerfil(perfil);
 
 		List<Usuario> usuarioByperfilproducto = null;
-		boolean existe = false;
+	
 
 		for (PerfilEmpresa pp : listaPerfilesByProducto) {
 			
@@ -82,7 +80,7 @@ public class PerfilService {
 				break;
 			}
 
-		}
+		}*/
 
 		return existe;
 	}

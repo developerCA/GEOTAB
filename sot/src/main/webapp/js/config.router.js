@@ -61,6 +61,7 @@ angular
 																						'toaster',
 																						'ui.select',
 																						'js/app/administracion/notaPedido/notaPedidoFactory.js',
+																						'js/app/administracion/perfiles/perfilesFactory.js',
 																						'js/app/user/userController.js',
 																						'js/app/administracion/usuarios/usuariosController.js',
 																						'js/app/administracion/usuarios/usuariosFactory.js',

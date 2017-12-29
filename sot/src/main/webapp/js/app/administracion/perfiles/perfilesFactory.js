@@ -18,7 +18,11 @@ app.factory("perfilesFactory", [ "Restangular", function(Restangular) {
 
 		desactivar : function(item) {
 			return Restangular.allUrl("perfil/desactivar").customPUT(item);
-		}
+		},
+		
+		listaPerfiles: function() {
+            return Restangular.allUrl("perfil").getList();
+        },  
 
 	}
 

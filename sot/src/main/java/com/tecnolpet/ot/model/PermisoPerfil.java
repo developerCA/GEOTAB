@@ -12,21 +12,21 @@ import com.tecnolpet.ot.jview.ViewOT;
  * 
  */
 @Entity
-@Table(name = "permiso_perfil_empresa")
-public class PermisoPerfilEmpresa implements Serializable {
+@Table(name = "permiso_perfil")
+public class PermisoPerfil implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name = "id_permiso_perfil_empresa")
+	@Column(name = "id_permiso_perfil")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@JsonView(ViewOT.PublicView.class)
 	private Integer id;
 
 	// bi-directional many-to-one association to PerfilProducto
 	@ManyToOne
-	@JoinColumn(name = "id_perfil_empresa")
+	@JoinColumn(name = "id_perfil")
 	@JsonView(ViewOT.PublicView.class)
-	private PerfilEmpresa perfilEmpresa;
+	private Perfil perfil;
 
 	// bi-directional many-to-one association to Permiso
 	@ManyToOne
@@ -41,7 +41,7 @@ public class PermisoPerfilEmpresa implements Serializable {
 	@JsonView(ViewOT.PublicView.class)
 	private Integer idPermiso;
 
-	public PermisoPerfilEmpresa() {
+	public PermisoPerfil() {
 	}
 
 	public Integer getId() {
@@ -52,13 +52,7 @@ public class PermisoPerfilEmpresa implements Serializable {
 		this.id = id;
 	}
 
-	public PerfilEmpresa getPerfilEmpresa() {
-		return perfilEmpresa;
-	}
 
-	public void setPerfilEmpresa(PerfilEmpresa perfilEmpresa) {
-		this.perfilEmpresa = perfilEmpresa;
-	}
 
 	public Permiso getPermiso() {
 		return this.permiso;
@@ -82,6 +76,14 @@ public class PermisoPerfilEmpresa implements Serializable {
 
 	public void setIdPermiso(Integer idPermiso) {
 		this.idPermiso = idPermiso;
+	}
+
+	public Perfil getPerfil() {
+		return perfil;
+	}
+
+	public void setPerfil(Perfil perfil) {
+		this.perfil = perfil;
 	}
 
 }

@@ -5,11 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
 import com.tecnolpet.ot.constant.SotApp;
 import com.tecnolpet.ot.dto.AdminUsuarioDto;
-import com.tecnolpet.ot.model.PerfilEmpresa;
 import com.tecnolpet.ot.model.Usuario;
-import com.tecnolpet.ot.repository.PerfilEmpresaRepository;
 import com.tecnolpet.ot.repository.UsuarioRepository;
 import com.tecnolpet.ot.seguridad.UsuarioAuthenticate;
 import com.tecnolpet.ot.utils.ClavesUtils;
@@ -20,8 +19,7 @@ public class UserService {
 	@Autowired
 	private UsuarioRepository usuarioRepository;
 
-	@Autowired
-	private PerfilEmpresaRepository perfilEmpresaRepository;
+	
 
 	@Autowired
 	private EnviarCorreoService enviarCorreoService;
@@ -42,10 +40,10 @@ public class UserService {
 		return usuarioRepository.findUsuarioEmpresa(idEmpresa);
 	}
 
-	public List<Usuario> traerUsuariosPorPerfilProducto(
+	/*public List<Usuario> traerUsuariosPorPerfilProducto(
 			PerfilEmpresa perfilEmpresa) {
 		return usuarioRepository.findUsuarioByPerfilEmpresa(perfilEmpresa);
-	}
+	}*/
 
 	public List<Usuario> listarUsuariosPorPerfilEmpresa(Integer idPerfilEmpresa) {
 		
@@ -60,9 +58,8 @@ public class UserService {
 			throws Exception {
 
 		Usuario usuario = adminUsuarioDto.getUsuario();
-		PerfilEmpresa perfilEmpresa = perfilEmpresaRepository
-				.findByPerfilAndEmpresaAndEstado(adminUsuarioDto.getPerfil(),
-						adminUsuarioDto.getEmpresa(),true);
+		usuario.setPerfil(adminUsuarioDto.getPerfil());
+		
 
 		if (!op.equals("update")) {
 			for (Usuario u : traerUsuariosPorEstado(true)) {
@@ -81,7 +78,7 @@ public class UserService {
 		}
 
 		usuario.setEstadoUsuario(usuario.getEstadoUsuario());
-		usuario.setPerfilEmpresa(perfilEmpresa);
+		
 		//usuario.setCliente(adminUsuarioDto.getUsuario().getCliente());
 		usuarioRepository.save(usuario);
 	}

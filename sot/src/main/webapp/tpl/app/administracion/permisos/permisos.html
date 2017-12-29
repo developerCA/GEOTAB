@@ -1,38 +1,11 @@
-<div class="hbox hbox-auto-xs hbox-auto-sm" ng-controller="permisosCtrl">
-    <div class="col w-lg bg-light b-r bg-auto">
-        <div class="wrapper-md">
-
-            <h1 class="m-n font-thin h4"> <i class="fa fa-ticket"></i> Permisos</h1>
-            <br>
-            <a ng-click="crearPermisoPadre()" class="btn btn-success btn-xs">
-                <i class="fa fa-fw m-r-xs fa-plus"></i>Agregar Raiz
-            </a>
-            <br>
-
-            <div class="line b-b line-lg"></div>
-            <label>Elija una Empresa:</label>
-            <div>
-                <select class="form-control" ng-model="idProducto" required="required"
-                        ng-change="armarArbol()">
-                    <option ng-repeat="p in productos" value="{{p.id}}">{{p.nombre}}</option>
-                </select>
-            </div>
-            <br>
-
-
-            <a ng-click="try_adding_a_branch()"
-               class="btn btn-info btn-xs">
-                <i class="fa fa-fw m-r-xs fa-plus"></i> Nuevo
-            </a>
-
-
-
-
-
-        </div>
-    </div>
- 
+<div class="hbox hbox-auto-xs hbox-auto-sm" ng-controller="permisosCtrl" ng-init="armarArbol()">
+   
     <div class="col-sm-12" ng-show="nuevo">
+    
+  
+            
+            
+            
         <div class="panel panel-default" draggable="true">
             
             <div class="panel-heading font-bold">Nuevo Permiso Padre</div>
@@ -99,8 +72,23 @@
     </div>
     <div class="col" ng-hide="nuevo">
         <div class="wrapper-md">
+        <div>
+          <a ng-click="crearPermisoPadre()" class="btn btn-success btn-xs">
+                <i class="fa fa-fw m-r-xs fa-plus"></i>Agregar Permiso 
+            </a>
+            
+            <a ng-click="try_adding_a_branch()"
+               class="btn btn-info btn-xs">
+                <i class="fa fa-fw m-r-xs fa-plus"></i> Agregar subnivel 
+            </a>
+        </div>
+         
+            <br>
             <div class="b-a bg-light dk r r-2x">
                 <span ng-if="doing_async">...cargando...</span>
+                
+                
+            
                 <abn-tree tree-data="my_data" tree-control="my_tree"
                           on-select="my_tree_handler(branch)" expand-level="2"
                           initial-selection="Granny Smith" icon-leaf="fa fa-file-o"

@@ -18,9 +18,9 @@ app.factory("permisosResource", [
 					return item.put();
 				},
 
-				traerArbol : function(idProducto) {
+				traerArbol : function() {
 					var lista = Restangular.allUrl(
-							"permiso/traeArbol/" + idProducto).getList();
+							"permiso/traeArbol" ).getList();
 					return lista;
 				},
 

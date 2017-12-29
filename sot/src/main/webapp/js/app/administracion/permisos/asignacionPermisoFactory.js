@@ -19,9 +19,9 @@ app.factory("asignacioPermisoResource", [
 					return item.put();
 				},
 
-				traerArbol : function(idProducto) {
+				traerArbol : function() {
 					var lista = Restangular.allUrl(
-							"permisoPerfilEmpresa/traeArbol/" + idProducto)
+							"permisoPerfilEmpresa/traeArbol")
 							.getList();
 					return lista;
 				},
@@ -33,9 +33,9 @@ app.factory("asignacioPermisoResource", [
 					return lista;
 				},
 
-				traerPerfiles : function(idProducto) {
+				traerPerfiles : function() {
 					var lista = Restangular.allUrl(
-							"permisoPerfilEmpresa/traePerfiles/" + idProducto)
+							"permisoPerfilEmpresa/traePerfiles")
 							.getList();
 					return lista;
 				},

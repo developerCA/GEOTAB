@@ -20,13 +20,11 @@ public class SigpaUserDetailsService implements UserDetailsService {
 	UsuarioService usuarioService;
 
 	@Override
-	public UserDetails loadUserByUsername(String username)
-			throws UsernameNotFoundException {
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
 		Usuario user = userRepository.findByUsername(username);
 		if (user == null) {
-			throw new UsernameNotFoundException("UserName " + username
-					+ " not found");
+			throw new UsernameNotFoundException("UserName " + username + " not found");
 		}
 		UsuarioAuthenticate usuarioAuthenticate = new UsuarioAuthenticate();
 		usuarioAuthenticate.setId(user.getId());
@@ -34,11 +32,9 @@ public class SigpaUserDetailsService implements UserDetailsService {
 		usuarioAuthenticate.setUsername(user.getUsername());
 		usuarioAuthenticate.setEmail(user.getEmailUsuario());
 		usuarioAuthenticate.setPassword(user.getPassword());
-		usuarioAuthenticate.setPerfil_empresa(user.getPerfilEmpresa().getId());
+		usuarioAuthenticate.setPerfil(user.getPerfil().getId());
 		usuarioAuthenticate.setRuta(user.getRuta());
-		usuarioAuthenticate.setPermisos(usuarioService.getPermisos(
-				user.getPerfilEmpresa(), user.getPerfilEmpresa().getEmpresa()
-						.getId()));
+		usuarioAuthenticate.setPermisos(usuarioService.getPermisos(user.getPerfil()));
 		return new SecurityUser(usuarioAuthenticate);
 
 	}

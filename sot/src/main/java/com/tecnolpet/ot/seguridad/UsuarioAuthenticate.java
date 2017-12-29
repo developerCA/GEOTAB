@@ -19,13 +19,11 @@ public class UsuarioAuthenticate implements Serializable {
 	protected String apellido;
 	protected Integer id;
 	protected String password;
-	protected Integer perfil_empresa;
+	protected Integer perfil;
 	protected Integer sucursal;
 	protected Ruta ruta;
-	
-	
+
 	protected List<MenuDto> permisos;
-	
 
 	public Integer getId() {
 		return id;
@@ -91,14 +89,6 @@ public class UsuarioAuthenticate implements Serializable {
 		this.permisos = permisos;
 	}
 
-	public Integer getPerfil_empresa() {
-		return perfil_empresa;
-	}
-
-	public void setPerfil_empresa(Integer perfil_empresa) {
-		this.perfil_empresa = perfil_empresa;
-	}
-
 	public Ruta getRuta() {
 		return ruta;
 	}
@@ -107,8 +97,12 @@ public class UsuarioAuthenticate implements Serializable {
 		this.ruta = ruta;
 	}
 
+	public Integer getPerfil() {
+		return perfil;
+	}
 
-
-	
+	public void setPerfil(Integer perfil) {
+		this.perfil = perfil;
+	}
 
 }

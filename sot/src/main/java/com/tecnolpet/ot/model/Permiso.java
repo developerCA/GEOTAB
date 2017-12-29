@@ -65,18 +65,12 @@ public class Permiso implements Serializable {
 	@JsonIgnore
 	private List<Permiso> permisos;
 
-	// bi-directional many-to-one association to Producto
-	@ManyToOne
-	@JoinColumn(name = "id_empresa")
-	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-	@JsonView(ViewOT.PublicView.class)
-	@RestResource(exported = false)
-	private Empresa empresa;
+	
 
 	// bi-directional many-to-one association to PermisoPerfilProducto
 	@OneToMany(mappedBy = "permiso")
 	@JsonIgnore
-	private List<PermisoPerfilEmpresa> permisoPerfilProductos;
+	private List<PermisoPerfil> permisoPerfilProductos;
 
 	@Column(name = "estado")
 	@JsonView(ViewOT.PublicView.class)
@@ -163,25 +157,25 @@ public class Permiso implements Serializable {
 		return permiso;
 	}
 
-	public List<PermisoPerfilEmpresa> getPermisoPerfilProductos() {
+	public List<PermisoPerfil> getPermisoPerfilProductos() {
 		return this.permisoPerfilProductos;
 	}
 
 	public void setPermisoPerfilProductos(
-			List<PermisoPerfilEmpresa> permisoPerfilProductos) {
+			List<PermisoPerfil> permisoPerfilProductos) {
 		this.permisoPerfilProductos = permisoPerfilProductos;
 	}
 
-	public PermisoPerfilEmpresa addPermisoPerfilProducto(
-			PermisoPerfilEmpresa permisoPerfilProducto) {
+	public PermisoPerfil addPermisoPerfilProducto(
+			PermisoPerfil permisoPerfilProducto) {
 		getPermisoPerfilProductos().add(permisoPerfilProducto);
 		permisoPerfilProducto.setPermiso(this);
 
 		return permisoPerfilProducto;
 	}
 
-	public PermisoPerfilEmpresa removePermisoPerfilProducto(
-			PermisoPerfilEmpresa permisoPerfilProducto) {
+	public PermisoPerfil removePermisoPerfilProducto(
+			PermisoPerfil permisoPerfilProducto) {
 		getPermisoPerfilProductos().remove(permisoPerfilProducto);
 		permisoPerfilProducto.setPermiso(null);
 
@@ -216,12 +210,6 @@ public class Permiso implements Serializable {
 		this.idEmpresa = idEmpresa;
 	}
 
-	public Empresa getEmpresa() {
-		return empresa;
-	}
-
-	public void setEmpresa(Empresa empresa) {
-		this.empresa = empresa;
-	}
+	
 
 }

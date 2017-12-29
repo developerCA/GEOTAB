@@ -7,10 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tecnolpet.ot.model.Empresa;
-import com.tecnolpet.ot.model.PerfilEmpresa;
-import com.tecnolpet.ot.model.Usuario;
 import com.tecnolpet.ot.repository.EmpresaRepository;
-import com.tecnolpet.ot.repository.PerfilEmpresaRepository;
 import com.tecnolpet.ot.repository.UsuarioRepository;
 
 
@@ -24,9 +21,7 @@ public class EmpresaService {
 	@Autowired
 	private UsuarioRepository usuarioRepository;
 
-	@Autowired
-	private PerfilEmpresaRepository perfilEmpresaRepository;
-	
+		
 	public List<Empresa> traerEmpresa(){
 		return empresaRepository.findByEstado(Boolean.TRUE);
 	}
@@ -68,12 +63,13 @@ public class EmpresaService {
 	
 	  
 	private boolean existeUsuarioByEmpresa(Empresa empresa) {
-
-		List<PerfilEmpresa> listaPerfilesByProducto = perfilEmpresaRepository.findByEmpresaAndEstado(empresa, true);
+		boolean existe = false;
+		
+	/*	List<PerfilEmpresa> listaPerfilesByProducto = perfilEmpresaRepository.findByEmpresaAndEstado(empresa, true);
 
 
 		List<Usuario> usuarioByperfilproducto = null;
-		boolean existe = false;
+		
 
 		for (PerfilEmpresa pp : listaPerfilesByProducto) {
 			
@@ -85,22 +81,14 @@ public class EmpresaService {
 				break;
 			}
 
-		}
+		}*/
 
 		return existe;
 	}
 	
 	
 	
-	public void guardarPerfilEmpresa(PerfilEmpresa perfilEmpresa) throws Exception{
-		perfilEmpresa.setEstado(true);
-		perfilEmpresaRepository.save(perfilEmpresa);
-	} 		 
 	
-	public void desactivarPerfilEmpresa(PerfilEmpresa perfilEmpresa) throws Exception{
-		perfilEmpresa.setEstado(false);
-		perfilEmpresaRepository.save(perfilEmpresa);
-	}	
 	
 }
 

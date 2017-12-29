@@ -103,6 +103,10 @@ public class GeoTabService {
 			sincronizarRutas(cooperativa, empresa);
 		}
 	}
+	
+	private void crearPerfiles(Empresa empresa){
+		
+	}
 
 	private void sincronizarRutas(GeotabGrupo cooperativa, Empresa empresa) {
 

@@ -10,39 +10,33 @@ import com.tecnolpet.ot.dto.PermisoDto;
 import com.tecnolpet.ot.model.Permiso;
 import com.tecnolpet.ot.repository.PermisoRepository;
 
-
 @Service
 public class PermisoService {
 
 	@Autowired
 	private PermisoRepository permisoRepository;
 
-	public List<Permiso> findByProducto(Integer idEmpresa) {
-		return permisoRepository.findByEmpresaId(idEmpresa);
-	}
-
 	
-	public List<PermisoDto> listaArbol(Integer idEmpresa) {
 
-		List<Permiso> padres = permisoRepository
-				.findByEmpresaPadre(idEmpresa);
+	public List<PermisoDto> listaArbol() {
+
+		List<Permiso> padres = permisoRepository.buscarPermisosPadre();
 
 		List<PermisoDto> lista = new ArrayList<PermisoDto>();
 		for (Permiso permiso : padres) {
 			PermisoDto dto = new PermisoDto();
 			dto.setId(permiso.getId());
 			dto.setLabel(permiso.getNombrePermiso());
-			dto = listaArbolHijo(idEmpresa, dto);
+			dto = listaArbolHijo(dto);
 			lista.add(dto);
 		}
 
 		return lista;
 	}
 
-	public PermisoDto listaArbolHijo(Integer idEmpresa, PermisoDto dtoPadre) {
+	public PermisoDto listaArbolHijo(PermisoDto dtoPadre) {
 
-		List<Permiso> hijos = permisoRepository.findByEmpresaHijo(idEmpresa,
-				dtoPadre.getId());
+		List<Permiso> hijos = permisoRepository.buscarPermisosHijo(dtoPadre.getId());
 
 		List<PermisoDto> lista = new ArrayList<PermisoDto>();
 
@@ -53,7 +47,7 @@ public class PermisoService {
 			dto.setLabel(permiso.getNombrePermiso());
 
 			if (permiso.getPermisos().size() > 0) {
-				dto = listaArbolHijo(idEmpresa, dto);
+				dto = listaArbolHijo(dto);
 			}
 
 			lista.add(dto);
@@ -63,30 +57,25 @@ public class PermisoService {
 		return dtoPadre;
 	}
 
-	public List<PermisoDto> listaArbolActivo(Integer idEmpresa) {
+	public List<PermisoDto> listaArbolActivo() {
 
-		
-		List<Permiso> padres = permisoRepository
-				.findByEmpresaPadreActivo(idEmpresa);
-		
+		List<Permiso> padres = permisoRepository.findByEmpresaPadreActivo();
 
 		List<PermisoDto> lista = new ArrayList<PermisoDto>();
 		for (Permiso permiso : padres) {
 			PermisoDto dto = new PermisoDto();
 			dto.setId(permiso.getId());
 			dto.setLabel(permiso.getNombrePermiso());
-			dto = listaArbolHijoActivo(idEmpresa, dto);
+			dto = listaArbolHijoActivo(dto);
 			lista.add(dto);
 		}
 
 		return lista;
 	}
 
-	public PermisoDto listaArbolHijoActivo(Integer idEmpresa,
-			PermisoDto dtoPadre) {
+	public PermisoDto listaArbolHijoActivo(PermisoDto dtoPadre) {
 
-		List<Permiso> hijos = permisoRepository.findByEmpresaHijoActivo(
-				idEmpresa, dtoPadre.getId());
+		List<Permiso> hijos = permisoRepository.findByEmpresaHijoActivo(dtoPadre.getId());
 
 		List<PermisoDto> lista = new ArrayList<PermisoDto>();
 
@@ -97,7 +86,7 @@ public class PermisoService {
 			dto.setLabel(permiso.getNombrePermiso());
 
 			if (permiso.getPermisos().size() > 0) {
-				dto = listaArbolHijoActivo(idEmpresa, dto);
+				dto = listaArbolHijoActivo(dto);
 			}
 
 			lista.add(dto);
@@ -116,4 +105,3 @@ public class PermisoService {
 	}
 
 }
-

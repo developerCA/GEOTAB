@@ -24,7 +24,7 @@ app.controller('asignacionPermisosCtrl', function($scope, $timeout,
 	$scope.edicion = false;
 
 	$scope.armarArbol = function() {
-		asignacioPermisoResource.traerArbol($scope.idProducto).then(
+		asignacioPermisoResource.traerArbol().then(
 				function(r) {
 
 					treedata_avm = r;
@@ -76,7 +76,7 @@ app.controller('asignacionPermisosCtrl', function($scope, $timeout,
 			$scope.idArbol2 = null;
 			$scope.eliminarBoton = true;
 		}
-		// $scope.permiso = asignacioPermisoResource.getPermiso(branch.id);
+		
 	};
 
 	$scope.cargarPerfiles = function() {

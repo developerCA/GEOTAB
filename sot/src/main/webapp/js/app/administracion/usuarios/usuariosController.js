@@ -1,7 +1,7 @@
 app.controller("usuariosCtrl", [ "$scope", "$filter", "cooperativaFactory", "usuariosFactory", "regionResource",
-                                "sucursalesFactory", "asignacioPermisoResource", "toaster","clienteFactory",
+                                "sucursalesFactory",  "toaster","clienteFactory","perfilesFactory",
  
-    function($scope, $filter, cooperativaFactory, usuariosFactory, regionResource, sucursalesFactory, asignacioPermisoResource, toaster,clienteFactory) {
+    function($scope, $filter, cooperativaFactory, usuariosFactory, regionResource, sucursalesFactory, toaster,clienteFactory,perfilesFactory) {
 
         $scope.filter = '';  
         $scope.productos = null; 
@@ -16,16 +16,10 @@ app.controller("usuariosCtrl", [ "$scope", "$filter", "cooperativaFactory", "usu
     
         $scope.init = function(){ 
             $scope.listProductos();
-            $scope.traerClientes();
+           
         } 
         
-        $scope.traerClientes=function(){
-        	clienteFactory.list().then(function(r) {
-                $scope.clientes = r;
-               
-            })   
-        	
-        };
+     
  
         $scope.listProductos = function(){	
         	cooperativaFactory.list().then(function(request) {
@@ -54,9 +48,10 @@ app.controller("usuariosCtrl", [ "$scope", "$filter", "cooperativaFactory", "usu
             })            
         }             
 
-        $scope.findUsuariosPorPerfilProducto = function(idPerfilProducto) { 
+        $scope.findUsuariosPorPerfil = function(idPerfil) { 
+        	
             $scope.emptyUsers();
-            usuariosFactory.listPorPerfilProducto(idPerfilProducto).then(function(request) {  
+            usuariosFactory.listPorPerfilProducto(idPerfil).then(function(request) {  
                 $scope.usuarios = request; 
                // console.log($scope.usuarios);
                 if ($scope.usuarios.length > 0)  
@@ -86,7 +81,7 @@ app.controller("usuariosCtrl", [ "$scope", "$filter", "cooperativaFactory", "usu
             
             $scope.producto = item;  
             $scope.producto.selected = true; 
-            $scope.cargarPerfiles($scope.idProducto);
+            $scope.cargarPerfiles();
         };
 
         $scope.selectUser = function(item){  
@@ -118,23 +113,24 @@ app.controller("usuariosCtrl", [ "$scope", "$filter", "cooperativaFactory", "usu
             //$scope.cargarPerfiles($scope.perfilList.producto.id);            
         };    
  
-        $scope.cargarPerfiles = function(idProducto) {
-            $scope.emptyUsers();         
-            asignacioPermisoResource.traerPerfiles(idProducto).then(
-            function(request) {    
+        $scope.cargarPerfiles = function() {
+            $scope.emptyUsers();  
+         
+            perfilesFactory.list().then(function(request) {   
+            	console.log(request);
                 $scope.perfiles = request;    
                 $scope.perfilList = $scope.perfiles[0];    
-                //console.log($scope.perfilList);
+                	
                 if ($scope.perfilList!=undefined)
-                $scope.cargarUsuarios( $scope.perfiles[0].id );
-                $scope.perfilListUser = $scope.perfilList;
+                $scope.cargarUsuarios();
+                //$scope.perfilListUser = $scope.perfilList;
                     
             });  
         }              
 
         $scope.cargarUsuarios = function() {  
         	
-            $scope.findUsuariosPorPerfilProducto($scope.perfilList.id);
+            $scope.findUsuariosPorPerfil($scope.perfilList.id);
         };                             
              
         $scope.clickCreateUser = function(){     

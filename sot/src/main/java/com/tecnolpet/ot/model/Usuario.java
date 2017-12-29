@@ -68,11 +68,11 @@ public class Usuario implements Serializable {
 
 	// bi-directional many-to-one association to PerfilProducto
 	@ManyToOne
-	@JoinColumn(name = "id_perfil_empresa")
+	@JoinColumn(name = "id_perfil")
 	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	@RestResource(exported=false)
 	@JsonView(ViewOT.PublicView.class)
-	private PerfilEmpresa perfilEmpresa;
+	private Perfil perfil;
 	
 	@ManyToOne
 	@JoinColumn(name = "id_sucursal",referencedColumnName="codigo")
@@ -146,13 +146,7 @@ public class Usuario implements Serializable {
 
 	
 
-	public PerfilEmpresa getPerfilEmpresa() {
-		return perfilEmpresa;
-	}
-
-	public void setPerfilEmpresa(PerfilEmpresa perfilEmpresa) {
-		this.perfilEmpresa = perfilEmpresa;
-	}
+	
 
 	@JsonIgnore
 	@JsonProperty(value = "usuarioRols")
@@ -211,6 +205,14 @@ public class Usuario implements Serializable {
 
 	public void setRuta(Ruta ruta) {
 		this.ruta = ruta;
+	}
+
+	public Perfil getPerfil() {
+		return perfil;
+	}
+
+	public void setPerfil(Perfil perfil) {
+		this.perfil = perfil;
 	}
 
 	

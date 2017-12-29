@@ -23,7 +23,7 @@ import com.tecnolpet.ot.seguridad.UsuarioAuthenticate;
 			this.setNombresCompletos(user.getNombresCompletos());
 			this.setPermisos(user.getPermisos());
 			this.setSucursal(user.getSucursal());
-			this.setPerfil_empresa(user.getPerfil_empresa());
+			this.setPerfil(user.getPerfil());
 			this.setRuta(user.getRuta());
 			this.setEmail(user.getEmail());
 					

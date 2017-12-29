@@ -8,31 +8,21 @@ import org.springframework.data.repository.query.Param;
 
 import com.tecnolpet.ot.model.Permiso;
 
-
-
 public interface PermisoRepository extends JpaRepository<Permiso, Integer> {
 
-	@Query("Select p from Permiso p where p.empresa.id =:idEmpresa")
-	public List<Permiso> findByEmpresaId(
-			@Param("idEmpresa") Integer idEmpresa);
+	
 
+	@Query("Select p from Permiso p where p.permiso.id is null")
+	public List<Permiso> buscarPermisosPadre();
 
-	@Query("Select p from Permiso p where p.empresa.id =:idEmpresa and p.permiso.id is null")
-	public List<Permiso> findByEmpresaPadre(
-			@Param("idEmpresa") Integer idEmpresa);
+	@Query("Select p from Permiso p where  p.permiso.id = :idPadre")
+	public List<Permiso> buscarPermisosHijo(@Param("idPadre") Integer idPadre);
 
-	@Query("Select p from Permiso p where p.empresa.id =:idEmpresa and p.permiso.id = :idPadre")
-	public List<Permiso> findByEmpresaHijo(
-			@Param("idEmpresa") Integer idEmpresa,
-			@Param("idPadre") Integer idPadre);
+	@Query("Select p from Permiso p where  p.permiso.estado = true and p.permiso.id is null")
+	public List<Permiso> findByEmpresaPadreActivo();
 
-	@Query("Select p from Permiso p where p.empresa.id =:idEmpresa  and p.permiso.estado = true and p.permiso.id is null")
-	public List<Permiso> findByEmpresaPadreActivo(
-			@Param("idEmpresa") Integer idEmpresa);
-
-	@Query("Select p from Permiso p where p.empresa.id =:idEmpresa and p.permiso.id = :idPadre and p.permiso.estado = true")
+	@Query("Select p from Permiso p where p.permiso.id = :idPadre and p.permiso.estado = true")
 	public List<Permiso> findByEmpresaHijoActivo(
-			@Param("idEmpresa") Integer idEmpresa,
 			@Param("idPadre") Integer idPadre);
 
 }

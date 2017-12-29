@@ -13,11 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.tecnolpet.ot.dto.PermisoDto;
 import com.tecnolpet.ot.dto.RespuestaDto;
-import com.tecnolpet.ot.model.Empresa;
 import com.tecnolpet.ot.model.Permiso;
 import com.tecnolpet.ot.service.PermisoService;
-
-
 
 @RestController
 @RequestMapping("api/permiso")
@@ -34,11 +31,7 @@ public class PermisoController {
 	@ResponseStatus(value = HttpStatus.CREATED)
 	public RespuestaDto guardarPermiso(@RequestBody Permiso permiso) {
 		RespuestaDto respuestaDto = new RespuestaDto();
-		if (permiso.getIdEmpresa() != null) {
-			Empresa p = new Empresa();
-			p.setId(permiso.getIdEmpresa());
-			permiso.setEmpresa(p);
-		}
+
 		if (permiso.getIdPermisoPadre() != null) {
 			Permiso per = new Permiso();
 			per.setId(permiso.getIdPermisoPadre());
@@ -56,10 +49,9 @@ public class PermisoController {
 		return respuestaDto;
 	}
 
-	@RequestMapping(value = "/traeArbol/{idProducto}", method = RequestMethod.GET)
-	public List<PermisoDto> buscarArbol(
-			@PathVariable("idProducto") Integer idProducto) {
-		List<PermisoDto> lista = permisoService.listaArbol(idProducto);
+	@RequestMapping(value = "/traeArbol", method = RequestMethod.GET)
+	public List<PermisoDto> buscarArbol() {
+		List<PermisoDto> lista = permisoService.listaArbol();
 		return lista;
 	}
 

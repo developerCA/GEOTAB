@@ -1,16 +1,13 @@
 package com.tecnolpet.ot.model;
 
 import java.io.Serializable;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.tecnolpet.ot.jview.ViewOT;
 
@@ -56,15 +53,8 @@ public class Empresa implements Serializable {
 
 	  
 
-	//bi-directional many-to-one association to PerfilProducto
-	@OneToMany(mappedBy="empresa")
-	@JsonIgnore 
-	private List<PerfilEmpresa> perfilEmpresas;
-
-	//bi-directional many-to-one association to Permiso
-	@OneToMany(mappedBy="empresa")
-	@JsonIgnore
-	private List<Permiso> permisos;
+	
+	
 
 	public Empresa() {
 	}
@@ -93,21 +83,9 @@ public class Empresa implements Serializable {
 		this.nombre = nombre;
 	}
 
-	public List<PerfilEmpresa> getPerfilEmpresas() {
-		return perfilEmpresas;
-	}
+	
 
-	public void setPerfilEmpresas(List<PerfilEmpresa> perfilEmpresas) {
-		this.perfilEmpresas = perfilEmpresas;
-	}
-
-	public List<Permiso> getPermisos() {
-		return permisos;
-	}
-
-	public void setPermisos(List<Permiso> permisos) {
-		this.permisos = permisos;
-	}
+	
 
 	public String getDireccion() {
 		return direccion;

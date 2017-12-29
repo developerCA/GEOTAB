@@ -15,7 +15,7 @@ app.controller('permisosCtrl', function($scope, $timeout, permisosResource,
 	$scope.edicion = false;
 
 	$scope.armarArbol = function() {
-		permisosResource.traerArbol($scope.idProducto).then(function(r) {
+		permisosResource.traerArbol().then(function(r) {
 
 			treedata_avm = r;
 			$scope.my_data = treedata_avm;

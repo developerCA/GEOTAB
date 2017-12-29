@@ -2,17 +2,15 @@ package com.tecnolpet.ot.model;
 
 import java.io.Serializable;
 
-import javax.persistence.*;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-//import com.thoughtworks.qdox.model.BeanProperty;
-
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.NamedQuery;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.tecnolpet.ot.jview.ViewOT;
-
-import java.util.List;
 
 
 /**
@@ -42,9 +40,7 @@ public class Perfil implements Serializable {
 	@JsonView(ViewOT.PublicView.class)
 	private String nombrePerfil;
 
-	//bi-directional many-to-one association to PerfilProducto
-	@OneToMany(mappedBy="perfil")
-	private List<PerfilEmpresa> perfilProductos;
+	
 
 	public Perfil() {
 	}
@@ -81,29 +77,7 @@ public class Perfil implements Serializable {
 		this.nombrePerfil = nombrePerfil;
 	}
 
-	@JsonIgnore
-	@JsonProperty(value="perfilProductos")
-	public List<PerfilEmpresa> getPerfilProductos() {
-		return this.perfilProductos;
-	}
-
-	@JsonProperty(value="perfilProductos")
-	public void setPerfilProductos(List<PerfilEmpresa> perfilProductos) {
-		this.perfilProductos = perfilProductos;
-	}
-
-	public PerfilEmpresa addPerfilProducto(PerfilEmpresa perfilProducto) {
-		getPerfilProductos().add(perfilProducto);
-		perfilProducto.setPerfil(this);
-
-		return perfilProducto;
-	}
-
-	public PerfilEmpresa removePerfilProducto(PerfilEmpresa perfilProducto) {
-		getPerfilProductos().remove(perfilProducto);
-		perfilProducto.setPerfil(null);
-
-		return perfilProducto;
-	}
+	
+	
 
 }
