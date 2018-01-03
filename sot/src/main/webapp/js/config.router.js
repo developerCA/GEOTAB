@@ -108,31 +108,6 @@ angular
 											}
 										})
 									.state(
-										'app.sincronizar', {
-											url : '/rutas',
-											templateUrl : 'tpl/app/administracion/sincronizar/sincronizar.html',
-											resolve : {
-												deps : [
-													'$ocLazyLoad',
-														function(
-															$ocLazyLoad
-														) {
-															return $ocLazyLoad
-																.load([
-																	'toaster',
-																	'js/app/administracion/sincronizar/sincronizarController.js',
-																	'js/app/administracion/sincronizar/sincronizarFactory.js'
-																])
-																.then(
-																	function() {
-																		return $ocLazyLoad
-																			.load([ 'js/controllers/toaster.js' ]);
-																	});
-															}
-													]
-											}
-										})
-									.state(
 											'app.roles',
 											{
 												url : '/roles',
@@ -580,10 +555,35 @@ angular
 											})
 
 									.state(
-											'app.producto',
+										'app.sincronizar', {
+											url : '/sincronizar',
+											templateUrl : 'tpl/app/administracion/sincronizar/sincronizar.html',
+											resolve : {
+												deps : [
+													'$ocLazyLoad',
+														function(
+															$ocLazyLoad
+														) {
+															return $ocLazyLoad
+																.load([
+																	'toaster',
+																	'js/app/administracion/sincronizar/sincronizarController.js',
+																	'js/app/administracion/sincronizar/sincronizarFactory.js'
+																])
+																.then(
+																	function() {
+																		return $ocLazyLoad
+																			.load([ 'js/controllers/toaster.js' ]);
+																	});
+															}
+													]
+											}
+										})
+									.state(
+											'app.dispositovos',
 											{
 												url : '/dispositovos',
-												templateUrl : 'tpl/app/administracion/productos/dispositovos.html',
+												templateUrl : 'tpl/app/administracion/dispositivos/dispositovos.html',
 												resolve : {
 													deps : [
 															'$ocLazyLoad',
@@ -592,22 +592,9 @@ angular
 																return $ocLazyLoad
 																		.load([
 																				'toaster',
-																				'ui.select',
-																				'js/app/administracion/categorias/categoriasFactory.js',
-																				'js/app/administracion/productos/productosController.js',
-																				'js/app/administracion/productos/productosFactory.js',
-																				'js/app/administracion/notaPedido/notaPedidoFactory.js',
-																				'js/app/administracion/usuarios/usuariosFactory.js',
-																				'js/app/administracion/clientes/clienteFactory.js',
-																				'js/app/administracion/clientes/clienteController.js',
-																				'js/app/administracion/paises/paisesFactory.js',
-																				'js/app/administracion/provincias/provinciasFactory.js',
-																				'js/app/administracion/ciudades/ciudadFactory.js',
-																				'js/app/administracion/profesiones/profesionesFactory.js',
-																				'js/app/administracion/tipoClientes/tipoClienteFactory.js',
-																				'js/app/administracion/regiones/regionesFactory.js',
-																				'js/app/administracion/sucursales/sucursalesFactory.js',
-																				'js/app/user/userController.js' ]);
+																				'js/app/administracion/dispositivos/dispositivosController.js',
+																				'js/app/administracion/dispositivos/dispositivosFactory.js'
+																		]);
 															} ]
 												}
 											})

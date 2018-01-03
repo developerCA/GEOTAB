@@ -1,7 +1,7 @@
-app.factory("sincronizarFactory", ["Restangular",
+app.factory("dispositivosFactory", ["Restangular",
 	function (Restangular) {
 
-	var service = Restangular.service("ruta");
+	var service = Restangular.service("geotab");
 
 	return{
 		list: function() {

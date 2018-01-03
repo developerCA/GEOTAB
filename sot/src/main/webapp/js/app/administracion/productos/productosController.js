@@ -155,35 +155,8 @@ app.controller("productoCtrl",["$scope", "productoFactory", "$timeout","categori
 		$scope.editar = false;
 	};
 
-	$scope.sincronizar = function(){
-		//console.log("cargar Dispositivos");
-        api.call("Get", {
-            typeName: "Device"
-        }, function(result) {
-        	console.log(result);
-            if (result !== undefined && result.length > 0) {
-            	$scope.lista = result;
-            	return;
-                //var select = document.getElementById("device");
-                //var now = new Date();
-                for (var i = 0; i < result.length; i++) {
-                    if (new Date(result[i].activeTo) > now) {
-                        var option = new Option();
-                        option.text = result[i].name;
-                        option.setAttribute("data-deviceid", result[i].id);
-                        select.add(option);
-                    }
-                }
-            } else {
-                alert("Could not retrieve devices");
-            }
-        }, function(error) {
-            alert(error);
-        });
-	};
-
 	$scope.grupoSincronizar = function(){
-		api.call("Get", {
+/*		api.call("Get", {
 		    "typeName": "Group"
 		}, function(result) {
 		    console.log(result);
@@ -198,7 +171,7 @@ app.controller("productoCtrl",["$scope", "productoFactory", "$timeout","categori
 		}, function(e) {
 		    console.error("Failed:", e);
 		});
-	}
+*/	}
 
 	$scope.cargaDimensiones=function(){
 		var modalInstance = $modal.open({

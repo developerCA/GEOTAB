@@ -42,11 +42,5 @@ app.factory("productoFactory", ["Restangular", function (Restangular) {
          listTareas: function() {
              return Restangular.allUrl("producto/tareas").getList();
          }, 
-         
-         sincronizarGrupos:function(items){
-        	 return Restangular.allUrl("geotab/sincronizar").customPOST(items);
-         },
-        
 	}
-	
 }]);
