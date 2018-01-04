@@ -37,8 +37,8 @@ public class AdmUserController {
 
 	@RequestMapping(value = "/porPerfilProducto", method = RequestMethod.GET)
 	public List<Usuario> traerUsuariosPerfilProducto(
-			@RequestParam Integer idPerfilProducto) {
-		return userService.listarUsuariosPorPerfilEmpresa(idPerfilProducto);
+			@RequestParam Integer idPerfil,@RequestParam Integer idEmpresa) {
+		return userService.listarUsuariosPorPerfilEmpresa(idPerfil,idEmpresa);
 	}
 
 	@RequestMapping(value = "/porProducto", method = RequestMethod.GET)

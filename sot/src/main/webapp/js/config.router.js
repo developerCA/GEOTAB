@@ -70,7 +70,9 @@ angular
 																						'js/app/administracion/regiones/regionesFactory.js',
 																						'js/app/administracion/clientes/clienteFactory.js',
 																						'js/app/administracion/sucursales/sucursalesFactory.js',
-																						'js/app/administracion/permisos/asignacionPermisoFactory.js'
+																						'js/app/administracion/permisos/asignacionPermisoFactory.js',
+																						'js/app/administracion/rutas/rutasFactory.js',
+																						
 
 																		
 																			])

@@ -82,6 +82,13 @@ public class Usuario implements Serializable {
 	private Sucursal sucursal;
 	
 	@ManyToOne
+	@JoinColumn(name = "codigo_empresa")
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+	@RestResource(exported=false)
+	@JsonView(ViewOT.PublicView.class)
+	private Empresa empresa;
+	
+	@ManyToOne
 	@JoinColumn(name="codigo_ruta")
 	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	@RestResource(exported=false)		
@@ -213,6 +220,14 @@ public class Usuario implements Serializable {
 
 	public void setPerfil(Perfil perfil) {
 		this.perfil = perfil;
+	}
+
+	public Empresa getEmpresa() {
+		return empresa;
+	}
+
+	public void setEmpresa(Empresa empresa) {
+		this.empresa = empresa;
 	}
 
 	

@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import com.tecnolpet.ot.model.Empresa;
 import com.tecnolpet.ot.model.Perfil;
 import com.tecnolpet.ot.model.Permiso;
 import com.tecnolpet.ot.model.PermisoPerfil;
@@ -32,7 +33,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer>{
 	public List<PermisoPerfil> findByPerfilHijos(
 			@Param("perfil") Perfil perfil, @Param("permiso") Permiso permiso);
 
-	@Query( value = "Select u.* from usuario u INNER JOIN perfil_empresa p ON u.id_perfil_empresa = p.id_perfil_empresa where u.id_perfil_empresa = :idPerfilEmpresa and p.estado = true", nativeQuery = true) 
-	public List<Usuario> listarUsuarioPorPerfilEmpresa(@Param("idPerfilEmpresa") Integer idPerfilEmpresa);	
+	@Query( "Select u from Usuario u where u.perfil = :perfil and u.empresa = :empresa ") 
+	public List<Usuario> listarUsuarioPorPerfilEmpresa(@Param("perfil") Perfil perfil,@Param("empresa") Empresa empresa);	
 	
 }

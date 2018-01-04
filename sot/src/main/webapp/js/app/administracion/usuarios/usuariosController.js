@@ -1,7 +1,7 @@
 app.controller("usuariosCtrl", [ "$scope", "$filter", "cooperativaFactory", "usuariosFactory", "regionResource",
-                                "sucursalesFactory",  "toaster","clienteFactory","perfilesFactory",
+                                "sucursalesFactory",  "toaster","clienteFactory","perfilesFactory","rutasFactory",
  
-    function($scope, $filter, cooperativaFactory, usuariosFactory, regionResource, sucursalesFactory, toaster,clienteFactory,perfilesFactory) {
+    function($scope, $filter, cooperativaFactory, usuariosFactory, regionResource, sucursalesFactory, toaster,clienteFactory,perfilesFactory,rutasFactory) {
 
         $scope.filter = '';  
         $scope.productos = null; 
@@ -22,7 +22,7 @@ app.controller("usuariosCtrl", [ "$scope", "$filter", "cooperativaFactory", "usu
       
 
         $scope.traerRutas=function(){
-        	rutasFactory.list().then(function(r) {
+        	rutasFactory.listaRutas($scope.idProducto).then(function(r) {
                 $scope.rutas = r;
             })   
         };
@@ -54,12 +54,15 @@ app.controller("usuariosCtrl", [ "$scope", "$filter", "cooperativaFactory", "usu
             })            
         }             
 
-        $scope.findUsuariosPorPerfil = function(idPerfil) { 
+        $scope.findUsuariosPorPerfil = function(idPerfil,idEmpresa) { 
         	
             $scope.emptyUsers();
-            usuariosFactory.listPorPerfilProducto(idPerfil).then(function(request) {  
+            
+          
+            
+            usuariosFactory.listPorPerfilProducto(idPerfil,idEmpresa).then(function(request) {  
                 $scope.usuarios = request; 
-               // console.log($scope.usuarios);
+                console.log($scope.usuarios);
                 if ($scope.usuarios.length > 0)  
                 	$scope.usuario = $filter('orderBy')($scope.usuarios,'first')[0];
                 else
@@ -79,6 +82,7 @@ app.controller("usuariosCtrl", [ "$scope", "$filter", "cooperativaFactory", "usu
           
             $scope.emptyUsers();
             $scope.idProducto = item.id;
+            $scope.empresa=item;
             $scope.nombreProductoSelected = item.nombre; 
 
             angular.forEach($scope.productos, function(item) {
@@ -88,6 +92,7 @@ app.controller("usuariosCtrl", [ "$scope", "$filter", "cooperativaFactory", "usu
             $scope.producto = item;  
             $scope.producto.selected = true; 
             $scope.cargarPerfiles();
+            $scope.traerRutas();
         };
 
         $scope.selectUser = function(item){  
@@ -136,7 +141,7 @@ app.controller("usuariosCtrl", [ "$scope", "$filter", "cooperativaFactory", "usu
 
         $scope.cargarUsuarios = function() {  
         	
-            $scope.findUsuariosPorPerfil($scope.perfilList.id);
+            $scope.findUsuariosPorPerfil($scope.perfilList.id,$scope.idProducto);
         };                             
              
         $scope.clickCreateUser = function(){     
@@ -200,13 +205,14 @@ app.controller("usuariosCtrl", [ "$scope", "$filter", "cooperativaFactory", "usu
             var adminUser = {}; 
             adminUser.usuario = item;  
             
-          
-            adminUser.perfil = $scope.perfilListUser.perfil;
-            adminUser.empresa = $scope.perfilList.empresa;
+            console.log($scope.perfilListUser);
+            adminUser.perfil = $scope.perfilListUser;
+            adminUser.empresa = $scope.empresa;
             adminUser.password = $scope.password;  
             delete $scope.perfilListUser.usuarios;            
-            $scope.perfilListUser.usuario = item; 
+            //$scope.perfilListUser.usuario = item; 
             
+            console.log(adminUser);
             return adminUser;
         }        
             
@@ -215,7 +221,7 @@ app.controller("usuariosCtrl", [ "$scope", "$filter", "cooperativaFactory", "usu
   
             var user = $scope.buildUser(item);
         
-            console.log($scope.item);
+            console.log(user);
             if($scope.item.creating)
                 $scope.crearUsuario(user);
             else //Edit 

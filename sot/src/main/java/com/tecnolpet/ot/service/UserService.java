@@ -8,7 +8,11 @@ import org.springframework.stereotype.Service;
 
 import com.tecnolpet.ot.constant.SotApp;
 import com.tecnolpet.ot.dto.AdminUsuarioDto;
+import com.tecnolpet.ot.model.Empresa;
+import com.tecnolpet.ot.model.Perfil;
 import com.tecnolpet.ot.model.Usuario;
+import com.tecnolpet.ot.repository.EmpresaRepository;
+import com.tecnolpet.ot.repository.PerfilRepository;
 import com.tecnolpet.ot.repository.UsuarioRepository;
 import com.tecnolpet.ot.seguridad.UsuarioAuthenticate;
 import com.tecnolpet.ot.utils.ClavesUtils;
@@ -19,6 +23,11 @@ public class UserService {
 	@Autowired
 	private UsuarioRepository usuarioRepository;
 
+	@Autowired
+	private PerfilRepository perfilRepository;
+	
+	@Autowired
+	private EmpresaRepository empresaRepository;
 	
 
 	@Autowired
@@ -45,9 +54,11 @@ public class UserService {
 		return usuarioRepository.findUsuarioByPerfilEmpresa(perfilEmpresa);
 	}*/
 
-	public List<Usuario> listarUsuariosPorPerfilEmpresa(Integer idPerfilEmpresa) {
+	public List<Usuario> listarUsuariosPorPerfilEmpresa(Integer idPerfil,Integer idEmpresa) {
+		Perfil perfil=perfilRepository.findOne( idPerfil);
+		Empresa empresa=empresaRepository.findOne(idEmpresa);
 		
-		return usuarioRepository.listarUsuarioPorPerfilEmpresa(idPerfilEmpresa);
+		return usuarioRepository.listarUsuarioPorPerfilEmpresa(perfil, empresa);
 	}
 
 	public String generarPassword() {
@@ -59,7 +70,7 @@ public class UserService {
 
 		Usuario usuario = adminUsuarioDto.getUsuario();
 		usuario.setPerfil(adminUsuarioDto.getPerfil());
-		
+		usuario.setEmpresa(adminUsuarioDto.getEmpresa());
 
 		if (!op.equals("update")) {
 			for (Usuario u : traerUsuariosPorEstado(true)) {
@@ -79,7 +90,7 @@ public class UserService {
 
 		usuario.setEstadoUsuario(usuario.getEstadoUsuario());
 		
-		//usuario.setCliente(adminUsuarioDto.getUsuario().getCliente());
+	
 		usuarioRepository.save(usuario);
 	}
 

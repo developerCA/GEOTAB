@@ -9,8 +9,8 @@ app.factory("usuariosFactory" , ["Restangular" , function (Restangular, $http) {
         listPorProducto:function(idProducto){
             return Restangular.allUrl("admUsuario/porProducto").getList({idProducto:idProducto});
         }, 	  
-        listPorPerfilProducto:function(idPerfilProducto){ 
-            return Restangular.allUrl("admUsuario/porPerfilProducto").getList({idPerfilProducto:idPerfilProducto});
+        listPorPerfilProducto:function(idPerfil,idEmpresa){ 
+            return Restangular.allUrl("admUsuario/porPerfilProducto").getList({idPerfil:idPerfil,idEmpresa:idEmpresa});
         },        
         generarPassword:function(){         
             return Restangular.allUrl("admUsuario/generarPassword").customPUT();
