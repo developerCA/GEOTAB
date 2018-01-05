@@ -3,7 +3,7 @@
 <div ng-controller="calibracionCtrl" ng-init="init()">
 	<div class="bg-light lter b-b wrapper-md">
 		<h1 class="m-n font-thin h4">
-			<i class="fa fa-cubes"></i>Registro de Instrumentos
+			<i class="fa fa-cubes"></i>Dispositivos
 		</h1>
 	</div>
 	<div class="wrapper-md" ng-show="!nuevo">
@@ -21,11 +21,11 @@
 							<th>#</th>
 							<th>Serie</th>
 							<th>Nombre</th>
-							<th>Modelo</th>
-							<th>Fabricante</th>
-							<th>Graduaci&oacute;n</th>
-							<th>Rango</th>
-							<th></th>
+							<th>Placa</th>
+							<th>Habilitacion</th>
+							<th>C&oacute;digo</th>
+							
+							
 							<th></th>
 						</tr>
 					</thead>
@@ -34,16 +34,16 @@
 							<td>{{$index+1}}</td>
 							<td>{{p.serie}}</td>
 							<td>{{p.nombre}}</td>
-							<td>{{p.modelo}}</td>
-							<td>{{p.fabricante}}</td>
-							<td>{{p.graduacion}}</td>
-							<td>{{p.rango}}</td>
-							<td>
+							<td>{{p.placa}}</td>
+							<td>{{p.habilitacion}}</td>
+							<td>{{p.codigoDispositivo}}</td>
+							
+						<!-- 	<td>
 								<button class="btn btn-sm btn-icon btn-info"
 									ng-click="editarItem(p)" tooltip="Editar registro">
 									<i class="fa fa-pencil"></i>
 								</button>
-							</td>
+							</td>  -->
 							<td style="width: 1px">
 								<button class="btn btn-sm btn-icon btn-danger"
 									ng-click="eliminarItem(p)" tooltip="Eliminar registro">

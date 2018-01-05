@@ -2,16 +2,20 @@ package com.tecnolpet.ot.model;
 
 import java.io.Serializable;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 
 import org.springframework.data.rest.core.annotation.RestResource;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.tecnolpet.ot.jview.ViewOT;
-
-import java.util.List;
 
 /**
  * The persistent class for the instrumento database table.
@@ -45,22 +49,19 @@ public class Instrumento implements Serializable {
 	@JsonView(ViewOT.PublicView.class)
 	private String habilitacion;
 	@JsonView(ViewOT.PublicView.class)
-	private String codigo_dispositivo;
+	private String codigoDispositivo;
 	@JsonView(ViewOT.PublicView.class)
 	private String grupo_id;
 
-	// bi-directional many-to-one association to Calibracion
-	@OneToMany(mappedBy = "instrumento")
-	@JsonIgnore
-	private List<Calibracion> calibracions;
-
 	// bi-directional many-to-one association to Producto
 	@ManyToOne
-	@JoinColumn(name = "codigo_empresa")
+	@JoinColumn(name = "codigo_ruta")
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	@RestResource(exported = false)
 	@JsonView(ViewOT.PublicView.class)
-	private Empresa empresa;
+	private Ruta ruta;
+
+	
 
 	// bi-directional many-to-one association to Catalogo
 	@ManyToOne
@@ -129,27 +130,9 @@ public class Instrumento implements Serializable {
 		this.serie = serie;
 	}
 
-	public List<Calibracion> getCalibracions() {
-		return this.calibracions;
-	}
+	
 
-	public void setCalibracions(List<Calibracion> calibracions) {
-		this.calibracions = calibracions;
-	}
-
-	public Calibracion addCalibracion(Calibracion calibracion) {
-		getCalibracions().add(calibracion);
-		calibracion.setInstrumento(this);
-
-		return calibracion;
-	}
-
-	public Calibracion removeCalibracion(Calibracion calibracion) {
-		getCalibracions().remove(calibracion);
-		calibracion.setInstrumento(null);
-
-		return calibracion;
-	}
+	
 
 	public Catalogo getCatalogo() {
 		return this.catalogo;
@@ -159,14 +142,7 @@ public class Instrumento implements Serializable {
 		this.catalogo = catalogo;
 	}
 
-	public Empresa getEmpresa() {
-		return empresa;
-	}
-
-	public void setEmpresa(Empresa empresa) {
-		this.empresa = empresa;
-	}
-
+	
 	public String getPlaca() {
 		return placa;
 	}
@@ -183,13 +159,7 @@ public class Instrumento implements Serializable {
 		this.habilitacion = habilitacion;
 	}
 
-	public String getCodigo_dispositivo() {
-		return codigo_dispositivo;
-	}
-
-	public void setCodigo_dispositivo(String codigo_dispositivo) {
-		this.codigo_dispositivo = codigo_dispositivo;
-	}
+	
 
 	public String getGrupo_id() {
 		return grupo_id;
@@ -197,5 +167,21 @@ public class Instrumento implements Serializable {
 
 	public void setGrupo_id(String grupo_id) {
 		this.grupo_id = grupo_id;
+	}
+
+	public Ruta getRuta() {
+		return ruta;
+	}
+
+	public void setRuta(Ruta ruta) {
+		this.ruta = ruta;
+	}
+
+	public String getCodigoDispositivo() {
+		return codigoDispositivo;
+	}
+
+	public void setCodigoDispositivo(String codigoDispositivo) {
+		this.codigoDispositivo = codigoDispositivo;
 	}
 }

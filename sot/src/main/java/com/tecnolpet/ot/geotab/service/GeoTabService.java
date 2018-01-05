@@ -56,34 +56,59 @@ public class GeoTabService {
 		sincronizarCooperativas();
 	}
 
-	public void sincronziarDispositivos(List<DispositivoGeotabDto> dispositivos) {
-		StringBuilder hijos;
+	public void sincronziarDispositivos(List<DispositivoGeotabDto> dispositivos, Integer codigoRuta) {
+
 		Instrumento geotabDispositivo;
 
-		//instrumentoRepository.deleteAll();
+		Ruta ruta = rutaRepository.findOne(codigoRuta);
 
-		for (DispositivoGeotabDto dispositivo: dispositivos) {
-			geotabDispositivo = new Instrumento();
-			for (GrupoDispositivoDto padre: dispositivo.getGroups()) {
-				geotabDispositivo.setGrupo_id(padre.getId());
+		for (DispositivoGeotabDto dispositivo : dispositivos) {
+
+			String indentificadorRuta = null;
+			for (GrupoDispositivoDto padre : dispositivo.getGroups()) {
+				indentificadorRuta = padre.getId();
+
 				break;
 			}
-			geotabDispositivo.setPlaca(dispositivo.getLicensePlate());
-			geotabDispositivo.setHabilitacion(dispositivo.getVehicleIdentificationNumber());
-			geotabDispositivo.setCodigo_dispositivo(dispositivo.getId());
-			geotabDispositivo.setSerie(dispositivo.getSerialNumber());
-			//geotabDispositivo.set(dispositivo.get);
-			instrumentoRepository.save(geotabDispositivo);
+
+			if (null != indentificadorRuta) {
+
+				if (indentificadorRuta.equals(ruta.getIdentificador())) {
+
+					geotabDispositivo = instrumentoRepository.findDispositivo(ruta, indentificadorRuta);
+
+					if (null != geotabDispositivo) {
+						geotabDispositivo.setPlaca(dispositivo.getLicensePlate());
+						geotabDispositivo.setHabilitacion(dispositivo.getVehicleIdentificationNumber());
+						geotabDispositivo.setSerie(dispositivo.getSerialNumber());
+						geotabDispositivo.setNombre(dispositivo.getName());
+					} else {
+						geotabDispositivo = new Instrumento();
+						geotabDispositivo.setPlaca(dispositivo.getLicensePlate());
+						geotabDispositivo.setHabilitacion(dispositivo.getVehicleIdentificationNumber());
+						geotabDispositivo.setCodigoDispositivo(dispositivo.getId());
+						geotabDispositivo.setSerie(dispositivo.getSerialNumber());
+						geotabDispositivo.setNombre(dispositivo.getName());
+						geotabDispositivo.setRuta(ruta);
+					}
+
+					instrumentoRepository.save(geotabDispositivo);
+				}
+
+			}
+
 		}
 	}
 
-	public List<Instrumento> devolverDispositivos(){
-		return instrumentoRepository.findAll();
+	public List<Instrumento> devolverDispositivos(Ruta ruta) {
+		System.err.println(ruta.getNombre());
+		System.out.println("------------------");
+		return instrumentoRepository.findByRuta(ruta);
 	}
 
-	public List<Ruta> devolverRutas(Integer codigoEmpresa){
-		Empresa empresa=empresaRepository.findOne(codigoEmpresa);
-		
+	public List<Ruta> devolverRutas(Integer codigoEmpresa) {
+		Empresa empresa = empresaRepository.findOne(codigoEmpresa);
+
 		return rutaRepository.findByEmpresa(empresa);
 	}
 
@@ -132,10 +157,6 @@ public class GeoTabService {
 			empresaRepository.save(empresa);
 			sincronizarRutas(cooperativa, empresa);
 		}
-	}
-	
-	private void crearPerfiles(Empresa empresa){
-		
 	}
 
 	private void sincronizarRutas(GeotabGrupo cooperativa, Empresa empresa) {

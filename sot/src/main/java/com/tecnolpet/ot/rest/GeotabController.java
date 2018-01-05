@@ -54,7 +54,10 @@ public class GeotabController {
 
 		try {
 			respuestaDto.setEstado(Boolean.TRUE);
-			geoTabService.sincronziarDispositivos(dispositivos);
+			System.err.println(dispositivos);
+			System.err.println(usuario.getRuta());
+			
+			geoTabService.sincronziarDispositivos(dispositivos,usuario.getRuta().getCodigo());
 		} catch (Exception ex) {
 			respuestaDto.setEstado(Boolean.FALSE);
 			respuestaDto.setMensaje(ex.getMessage());
@@ -65,8 +68,8 @@ public class GeotabController {
 
 	@JsonView(ViewOT.PublicView.class)
 	@RequestMapping(value = "/listar/dispositivos", method = RequestMethod.GET)
-	public List<Instrumento> traerInstrumentos() {
-		return geoTabService.devolverDispositivos();
+	public List<Instrumento> traerInstrumentos(@AuthenticationPrincipal UsuarioAuthenticate usuario) {
+		return geoTabService.devolverDispositivos(usuario.getRuta());
 	}
 
 	@JsonView(ViewOT.PublicView.class)

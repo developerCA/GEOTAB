@@ -20,7 +20,7 @@ app.controller("calibracionCtrl",["$scope", "calibracionFactory",  "$timeout","t
 	
 	$scope.cargarDispositivos=function(){
 		calibracionFactory.listDispositivos().then(function(r) {
-			//console.log(r);
+			console.log(r);
 			$scope.dispositivos = r;
 		});
 	}
