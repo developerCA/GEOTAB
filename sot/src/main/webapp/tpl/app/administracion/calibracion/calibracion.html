@@ -12,7 +12,7 @@
 				<a class="btn m-b-xs btn-sm btn-success btn-addon"
 					ng-click="nuevoItem()"><i class="fa fa-plus"></i>Agregar</a> </span>
 			</div>
--->			<div class="table-responsive" ng-if="posiciones!=undefined||null">
+-->			<div class="table-responsive" ng-if="dispositivos!=undefined||null">
 
 				<table ui-jq="dataTable" class="table table-striped m-b-none"
 					ui-options="{oLanguage: {sUrl: 'vendor/jquery/datatables/spanish.txt'}}">
@@ -30,7 +30,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr ng-repeat="p in posiciones">
+						<tr ng-repeat="p in dispositivos">
 							<td>{{$index+1}}</td>
 							<td>{{p.serie}}</td>
 							<td>{{p.nombre}}</td>
