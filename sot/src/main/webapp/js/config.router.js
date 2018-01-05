@@ -613,10 +613,18 @@ angular
 																	$ocLazyLoad) {
 																return $ocLazyLoad
 																		.load([
-																				'toaster',
+																			'ui.select',
+																			'toaster',
+																			'angularFileUpload',
 																				'js/app/administracion/tablero/tableroController.js',
-																				'js/app/administracion/tablero/tableroFactory.js'
-																		]);
+																				'js/app/administracion/tablero/tableroFactory.js',
+																				'js/controllers/toaster.js',
+																				])
+																			.then(
+																				function() {
+																					return $ocLazyLoad
+																						.load([ 'js/controllers/toaster.js' ]);
+																				});
 															} ]
 												}
 											})
