@@ -1,0 +1,103 @@
+<toaster-container
+	toaster-options="{'position-class': 'toast-top-right', 'close-button':true}">
+</toaster-container>
+<div ng-controller="tableroCtrl" ng-init="init()">
+	<div class="bg-light lter b-b wrapper-md">
+		<h1 class="m-n font-thin h4">
+			<i class="fa fa-cubes"></i>Registro de Instrumentos
+		</h1>
+	</div>
+	<div class="wrapper-md" ng-show="true">
+		<div class="panel panel-info">
+			<div class="panel-heading">
+				<a class="btn m-b-xs btn-sm btn-success btn-addon"
+					ng-click="sincronizarDispositivos()"><i class="fa fa-plus"></i>Sincronizar Dispositivos</a> </span>
+			</div>
+			<div class="table-responsive" ng-if="dispositivos!=undefined||null">
+
+				<table ui-jq="dataTable" class="table table-striped m-b-none"
+					ui-options="{oLanguage: {sUrl: 'vendor/jquery/datatables/spanish.txt'}}">
+					<thead>
+						<tr>
+							<th>#</th>
+							<th>Serie</th>
+							<th>Nombre</th>
+							<th>Modelo</th>
+							<th>Fabricante</th>
+							<th>Graduaci&oacute;n</th>
+							<th>Rango</th>
+							<th></th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="p in dispositivos">
+							<td>{{$index+1}}</td>
+							<td>{{p.serie}}</td>
+							<td>{{p.nombre}}</td>
+							<td>{{p.modelo}}</td>
+							<td>{{p.fabricante}}</td>
+							<td>{{p.graduacion}}</td>
+							<td>{{p.rango}}</td>
+							<td>
+								<button class="btn btn-sm btn-icon btn-info"
+									ng-click="editarItem(p)" tooltip="Editar registro">
+									<i class="fa fa-pencil"></i>
+								</button>
+							</td>
+							<td style="width: 1px">
+								<button class="btn btn-sm btn-icon btn-danger"
+									ng-click="eliminarItem(p)" tooltip="Eliminar registro">
+									<i class="fa fa-times"></i>
+								</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<div class="table-responsive" ng-if="instrumentos!=undefined||null">
+
+				<table ui-jq="dataTable" class="table table-striped m-b-none"
+					ui-options="{oLanguage: {sUrl: 'vendor/jquery/datatables/spanish.txt'}}">
+					<thead>
+						<tr>
+							<th>#</th>
+							<th>Serie</th>
+							<th>Nombre</th>
+							<th>Modelo</th>
+							<th>Fabricante</th>
+							<th>Graduaci&oacute;n</th>
+							<th>Rango</th>
+							<th></th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="p in instrumentos">
+							<td>{{$index+1}}</td>
+							<td>{{p.serie}}</td>
+							<td>{{p.nombre}}</td>
+							<td>{{p.modelo}}</td>
+							<td>{{p.fabricante}}</td>
+							<td>{{p.graduacion}}</td>
+							<td>{{p.rango}}</td>
+							<td><button class="btn btn-sm btn-icon btn-info"
+									ng-click="editarItem(p)" tooltip="Editar registro">
+									<i class="fa fa-pencil"></i>
+								</button></td>
+							<td style="width: 1px"><button
+									class="btn btn-sm btn-icon btn-danger"
+									ng-click="eliminarItem(p)" tooltip="Eliminar registro">
+									<i class="fa fa-times"></i>
+								</button></td>
+
+
+						</tr>
+					</tbody>
+				</table>
+
+			</div>
+		</div>
+	</div>
+</div>

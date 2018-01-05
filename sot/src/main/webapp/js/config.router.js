@@ -602,6 +602,25 @@ angular
 												}
 											})
 									.state(
+											'app.tablero',
+											{
+												url : '/tablero',
+												templateUrl : 'tpl/app/administracion/tablero/tablero.html',
+												resolve : {
+													deps : [
+															'$ocLazyLoad',
+															function(
+																	$ocLazyLoad) {
+																return $ocLazyLoad
+																		.load([
+																				'toaster',
+																				'js/app/administracion/tablero/tableroController.js',
+																				'js/app/administracion/tablero/tableroFactory.js'
+																		]);
+															} ]
+												}
+											})
+									.state(
 											'app.notaPedido',
 											{
 												url : '/ot',
