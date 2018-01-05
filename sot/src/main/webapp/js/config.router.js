@@ -425,6 +425,7 @@ angular
 																return $ocLazyLoad
 																		.load([
 																				'toaster',
+																				'js/app/administracion/sincronizar/sincronizarFactory.js',
 																				'js/app/administracion/calibracion/calibracionController.js',
 																				'js/app/administracion/calibracion/calibracionFactory.js',
 																				'js/app/administracion/notaPedido/notaPedidoFactory.js',

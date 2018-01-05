@@ -8,11 +8,11 @@
 	</div>
 	<div class="wrapper-md" ng-show="!nuevo">
 		<div class="panel panel-info">
-<!--			<div class="panel-heading">
+			<div class="panel-heading">
 				<a class="btn m-b-xs btn-sm btn-success btn-addon"
-					ng-click="nuevoItem()"><i class="fa fa-plus"></i>Agregar</a> </span>
+					ng-click="sincronizarDispositivos()"><i class="fa fa-plus"></i>Sincronizar Dispositivos</a> </span>
 			</div>
--->			<div class="table-responsive" ng-if="dispositivos!=undefined||null">
+			<div class="table-responsive" ng-if="dispositivos!=undefined||null">
 
 				<table ui-jq="dataTable" class="table table-striped m-b-none"
 					ui-options="{oLanguage: {sUrl: 'vendor/jquery/datatables/spanish.txt'}}">
