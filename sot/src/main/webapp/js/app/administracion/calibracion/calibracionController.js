@@ -5,6 +5,9 @@ app.controller("calibracionCtrl",["$scope", "calibracionFactory",  "$timeout","t
 	$scope.renovable = false;
 	$scope.accesos = false;
 	$scope.actualizable = false;
+	$scope.posiciones = null;
+	$scope.beginningOfDay = new Date();
+	$scope.endOfDay = new Date();
 	
 	$scope.modalOptions = {
 			headerText : 'Instrumento',
@@ -13,8 +16,55 @@ app.controller("calibracionCtrl",["$scope", "calibracionFactory",  "$timeout","t
 	};
 	
 	$scope.init = function(){
-		$scope.traerInstrumentos();
-		
+		$scope.beginningOfDay.setHours(0, 0, 0, 0);
+		$scope.endOfDay.setHours(23, 59, 59, 59);
+		//$scope.traerInstrumentos();
+		$scope.cargarPosiciones();
+	}
+	
+	$scope.cargarPosiciones=function(){
+		calibracionFactory.listDispositivos().then(function(r) {
+			//console.log(r);
+			$scope.posiciones = [];
+			for (var i = 0; i < r.length; i++) {
+				consle.log(i+": ",r[i].codigo_dispositivo);
+				if (r[i].codigo_dispositivo == null) {
+					return;
+				}
+				api.call("Get", {
+                    typeName: "LogRecord",
+                    search: {
+                        deviceSearch: {
+                            id: r[i].codigo_dispositivo
+                        },
+                        fromDate: $scope.beginningOfDay.toISOString(),
+                        toDate: $scope.endOfDay.toISOString()
+                    }
+                }, function(result) {
+                	var ii;
+                    if (result !== undefined) {
+                        ii = resultL.length - 1;
+                        $scope.posiciones.push(result[ii]);
+                        consle.log(i+": ",result[ii]);
+                    } else {
+                        alert("Could not retrieve trip");
+                    }
+                }, function(error) {
+                    alert(error);
+                });
+			}
+		});
+		return;
+        api.call("Get", {
+            typeName: "Device"
+        }, function(result) {
+		    console.log(result);
+		    $scope.posiciones
+		    for (var i = 0; i < result.length; i++) {
+			}
+        }, function(error) {
+            alert(error);
+        });
 	}
 	
 	$scope.exportar=function(){

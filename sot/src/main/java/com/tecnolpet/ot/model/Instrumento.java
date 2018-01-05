@@ -40,6 +40,15 @@ public class Instrumento implements Serializable {
 	@JsonView(ViewOT.PublicView.class)
 	private String serie;
 
+	@JsonView(ViewOT.PublicView.class)
+	private String placa;
+	@JsonView(ViewOT.PublicView.class)
+	private String habilitacion;
+	@JsonView(ViewOT.PublicView.class)
+	private String codigo_dispositivo;
+	@JsonView(ViewOT.PublicView.class)
+	private String grupo_id;
+
 	// bi-directional many-to-one association to Calibracion
 	@OneToMany(mappedBy = "instrumento")
 	@JsonIgnore
@@ -158,4 +167,35 @@ public class Instrumento implements Serializable {
 		this.empresa = empresa;
 	}
 
+	public String getPlaca() {
+		return placa;
+	}
+
+	public void setPlaca(String placa) {
+		this.placa = placa;
+	}
+
+	public String getHabilitacion() {
+		return habilitacion;
+	}
+
+	public void setHabilitacion(String habilitacion) {
+		this.habilitacion = habilitacion;
+	}
+
+	public String getCodigo_dispositivo() {
+		return codigo_dispositivo;
+	}
+
+	public void setCodigo_dispositivo(String codigo_dispositivo) {
+		this.codigo_dispositivo = codigo_dispositivo;
+	}
+
+	public String getGrupo_id() {
+		return grupo_id;
+	}
+
+	public void setGrupo_id(String grupo_id) {
+		this.grupo_id = grupo_id;
+	}
 }

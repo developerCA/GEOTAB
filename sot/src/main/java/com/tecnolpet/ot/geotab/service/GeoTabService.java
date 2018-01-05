@@ -6,13 +6,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tecnolpet.ot.constant.SotApp;
+import com.tecnolpet.ot.geotab.dto.DispositivoGeotabDto;
 import com.tecnolpet.ot.geotab.dto.GrupoChildrenGeoTabDto;
+import com.tecnolpet.ot.geotab.dto.GrupoDispositivoDto;
 import com.tecnolpet.ot.geotab.dto.GrupoGeotabDto;
 import com.tecnolpet.ot.model.Empresa;
 import com.tecnolpet.ot.model.GeotabGrupo;
+import com.tecnolpet.ot.model.Instrumento;
 import com.tecnolpet.ot.model.Ruta;
 import com.tecnolpet.ot.repository.EmpresaRepository;
 import com.tecnolpet.ot.repository.GeoTabGrupoRepository;
+import com.tecnolpet.ot.repository.InstrumentoRepository;
 import com.tecnolpet.ot.repository.RutaRepository;
 
 @Service
@@ -20,6 +24,9 @@ public class GeoTabService {
 
 	@Autowired
 	private GeoTabGrupoRepository geoTabGrupoRepository;
+
+	@Autowired
+	private InstrumentoRepository instrumentoRepository;
 
 	@Autowired
 	private EmpresaRepository empresaRepository;
@@ -47,14 +54,37 @@ public class GeoTabService {
 
 		establecerNiveles();
 		sincronizarCooperativas();
-
 	}
-	
+
+	public void sincronziarDispositivos(List<DispositivoGeotabDto> dispositivos) {
+		StringBuilder hijos;
+		Instrumento geotabDispositivo;
+
+		//instrumentoRepository.deleteAll();
+
+		for (DispositivoGeotabDto dispositivo: dispositivos) {
+			geotabDispositivo = new Instrumento();
+			for (GrupoDispositivoDto padre: dispositivo.getGroups()) {
+				geotabDispositivo.setGrupo_id(padre.getId());
+				break;
+			}
+			geotabDispositivo.setPlaca(dispositivo.getLicensePlate());
+			geotabDispositivo.setHabilitacion(dispositivo.getVehicleIdentificationNumber());
+			geotabDispositivo.setCodigo_dispositivo(dispositivo.getId());
+			geotabDispositivo.setSerie(dispositivo.getSerialNumber());
+			//geotabDispositivo.set(dispositivo.get);
+			instrumentoRepository.save(geotabDispositivo);
+		}
+	}
+
+	public List<Instrumento> devolverDispositivos(){
+		return instrumentoRepository.findAll();
+	}
+
 	public List<Ruta> devolverRutas(Integer codigoEmpresa){
 		Empresa empresa=empresaRepository.findOne(codigoEmpresa);
 		
 		return rutaRepository.findByEmpresa(empresa);
-		
 	}
 
 	private void establecerNiveles() {

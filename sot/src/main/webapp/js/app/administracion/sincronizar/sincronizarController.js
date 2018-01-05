@@ -14,13 +14,18 @@ app.controller("sincronizarCtrl", ["$scope", "$filter", "sincronizarFactory",
             })   
         };
 
-    	$scope.sincronizar = function(){
+    	$scope.sincronizarDispositivos = function(){
     		//console.log("cargar Dispositivos");
             api.call("Get", {
                 typeName: "Device"
             }, function(result) {
-            	console.log(result);
-                if (result !== undefined && result.length > 0) {
+    		    console.log(result);
+    		    sincronizarFactory.sincronizarDispositivos(
+    				result
+    			).then(function(r) {
+    				console.log(r);
+    			});
+/*               if (result !== undefined && result.length > 0) {
                 	$scope.lista = result;
                 	return;
                     //var select = document.getElementById("device");
@@ -36,12 +41,12 @@ app.controller("sincronizarCtrl", ["$scope", "$filter", "sincronizarFactory",
                 } else {
                     alert("Could not retrieve devices");
                 }
-            }, function(error) {
+*/            }, function(error) {
                 alert(error);
             });
     	};
 
-    	$scope.grupoSincronizar = function(){
+    	$scope.sincronizarGrupos = function(){
     		api.call("Get", {
     		    "typeName": "Group"
     		}, function(result) {

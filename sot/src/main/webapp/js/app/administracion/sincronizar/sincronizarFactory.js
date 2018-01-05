@@ -9,7 +9,11 @@ app.factory("sincronizarFactory", ["Restangular",
         },
 
         sincronizarGrupos:function(items){
-       	 return Restangular.allUrl("geotab/sincronizar").customPOST(items);
+       	 return Restangular.allUrl("geotab/sincronizarGrupos").customPOST(items);
+        },
+
+        sincronizarDispositivos:function(items){
+      	 return Restangular.allUrl("geotab/sincronizarDispositivos").customPOST(items);
         },
 /*
         create: function(item){

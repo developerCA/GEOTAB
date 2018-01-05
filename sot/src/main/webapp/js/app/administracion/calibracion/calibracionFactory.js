@@ -3,14 +3,15 @@ app.factory("calibracionFactory", ["Restangular", function (Restangular) {
 	var service = Restangular.service("/calibracion");
 	
 	return{
-		
-		
          list: function() {
-        	
         	 return Restangular.allUrl("calibracion/instrumentos").getList();
          },
+
+         listDispositivos: function() {
+        	 return Restangular.allUrl("geotab/listar/dispositivos").getList();
+         },
+
          listPorInstrumento: function(item) {
-         	
         	 return Restangular.allUrl("calibracion/calibracionesPorInstrumento").getList({calibracion:item.id});
          },
          
