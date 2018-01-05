@@ -582,10 +582,10 @@ angular
 											}
 										})
 									.state(
-											'app.dispositovos',
+											'app.dispositivos',
 											{
-												url : '/dispositovos',
-												templateUrl : 'tpl/app/administracion/dispositivos/dispositovos.html',
+												url : '/dispositivos',
+												templateUrl : 'tpl/app/administracion/dispositivos/dispositivos.html',
 												resolve : {
 													deps : [
 															'$ocLazyLoad',
