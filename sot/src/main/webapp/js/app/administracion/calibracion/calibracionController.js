@@ -20,22 +20,23 @@ app.controller("calibracionCtrl",["$scope", "calibracionFactory",  "$timeout","t
 	
 	$scope.cargarDispositivos=function(){
 		calibracionFactory.listDispositivos().then(function(r) {
-			console.log(r);
 			$scope.dispositivos = r;
 		});
 	}
 	
 	
 	$scope.sincronizarDispositivos = function(){
-		//console.log("cargar Dispositivos");
+		
         api.call("Get", {
             typeName: "Device"
         }, function(result) {
-		    console.log(result);
+		   
 		    sincronizarFactory.sincronizarDispositivos(
 				result
 			).then(function(r) {
-				console.log(r);
+				
+				$scope.cargarDispositivos();
+				
 			});
 
        }, function(error) {

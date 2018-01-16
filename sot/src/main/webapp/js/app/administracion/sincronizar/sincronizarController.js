@@ -2,24 +2,14 @@ app.controller("sincronizarCtrl", ["$scope", "$filter", "sincronizarFactory",
     function($scope, $filter, sincronizarFactory) {
         $scope.filter = '';  
 
-        $scope.init = function() { 
-            //$scope.listProductos();
-            $scope.traersincronizar();
-        }
-
-        $scope.traersincronizar = function() {
-        	$scope.sincronizar = [];
-        	sincronizarFactory.list().then(function(r) {
-                $scope.sincronizar = r;
-            })   
-        };
+      
 
     	$scope.sincronizarDispositivos = function(){
-    		//console.log("cargar Dispositivos");
+    		
             api.call("Get", {
                 typeName: "Device"
             }, function(result) {
-    		    console.log(result);
+    		   
     		    sincronizarFactory.sincronizarDispositivos(
     				result
     			).then(function(r) {
@@ -27,7 +17,7 @@ app.controller("sincronizarCtrl", ["$scope", "$filter", "sincronizarFactory",
     			});
 
            }, function(error) {
-                alert(error);
+              //  alert(error);
             });
     	};
 
@@ -44,6 +34,65 @@ app.controller("sincronizarCtrl", ["$scope", "$filter", "sincronizarFactory",
     		}, function(e) {
     		    console.error("Failed:", e);
     		});
+    	}
+    	
+    	$scope.sincronizaZonas=function(){
+    		
+    		api.call("Get", {
+    		    "typeName": "Zone"
+    		}, function(resultZonas) {
+    		    console.log(resultZonas);
+    		    
+    		   
+    		    api.call("Get", {
+        		    "typeName": "ZoneType"
+        		}, function(resultType) {
+        		    
+        			console.log(resultType);
+        			
+        		    resultType.splice(0,1);
+        		    resultType.splice(0,1);
+        		    resultType.splice(0,1);
+        		    resultType.splice(0,1);
+        		    
+        		    
+        		    var zonas=[];
+        		    var dtoZonas={tipoZonaGeotabDto:null,zonaGeotabDtos:null};
+        		    
+        		    for (var i =0;i<=resultZonas.length-1;i++){
+        		    	
+        		    	
+        		    	
+        		    	
+        		    	if (resultZonas[i].zoneTypes[0]!="ZoneTypeHomeId" && 
+        		    			resultZonas[i].zoneTypes[0]!="ZoneTypeCustomerId" &&
+        		    			resultZonas[i].zoneTypes[0]!="ZoneTypeOfficeId" &&
+        		    			resultZonas[i].zoneTypes[0]!="ZoneTypeAddressLookupId" ){
+        		    		zonas.push(resultZonas[i]);
+        		    	}else{
+        		    		  console.log(resultZonas[i]);
+        		    	}
+        		    }
+        		  
+        		    console.log(zonas);
+        		    
+        		    dtoZonas.tipoZonaGeotabDto=resultType;
+        		    dtoZonas.zonaGeotabDtos=zonas;
+        		  
+        		    sincronizarFactory.sincronizarZonas(
+        		    		dtoZonas
+            			).then(function(r) {
+            				console.log(r);
+            		});
+        		   
+        		}, function(e) {
+        		    console.error("Failed:", e);
+        		});
+    		    
+    		}, function(e) {
+    		    console.error("Failed:", e);
+    		});
+    		
     	}
 /*
         $scope.listProductos = function(){	

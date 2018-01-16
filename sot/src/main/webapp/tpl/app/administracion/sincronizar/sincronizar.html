@@ -2,7 +2,7 @@
 <div class="app-content-body app-content-full fade-in-up ng-scope ">
 	<div class="hbox hbox-auto-xs hbox-auto-sm bg-light"
 		ng-controller="sincronizarCtrl"
-		ng-init=" init(); app.settings.asideFixed = true;
+		 app.settings.asideFixed = true;
             app.settings.asideDock = false;
             app.settings.container = false;
             app.hideAside = false; 
@@ -19,14 +19,20 @@
 					<div class="col-sm-12">
 						<a class="btn m-b-xs btn-sm btn-success btn-addon"
 							ng-click="sincronizarDispositivos();">
-							<i class="fa fa-plus"></i>
+							<i class="fa fa-bus"></i>
 							Sincronizar Dispositivos
 						</a>
 						<a class="btn m-b-xs btn-sm btn-success btn-addon"
 							ng-click="sincronizarGrupos();">
-							<i class="fa fa-plus"></i>
-							Sincronizar Grupo
+							<i class="fa fa-sliders"></i>
+							Sincronizar Cooperativas y rutas
 						</a>
+						<a class="btn m-b-xs btn-sm btn-success btn-addon"
+							ng-click="sincronizaZonas();">
+							<i class="fa fa-globe"></i>
+							Sincronizar Zonas
+						</a>
+						
 					</div>
 				</div>
 				<div class="row-row">

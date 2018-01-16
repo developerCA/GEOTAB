@@ -10,7 +10,7 @@
 		<div class="panel panel-info">
 			<div class="panel-heading">
 				<a class="btn m-b-xs btn-sm btn-success btn-addon"
-					ng-click="sincronizarDispositivos()"><i class="fa fa-plus"></i>Sincronizar Dispositivos</a> </span>
+					ng-click="sincronizarDispositivos()"><i class="fa fa-refresh"></i>Sincronizar Dispositivos</a> </span>
 			</div>
 			<div class="table-responsive" ng-if="dispositivos!=undefined||null">
 
@@ -26,7 +26,7 @@
 							<th>C&oacute;digo</th>
 							
 							
-							<th></th>
+							
 						</tr>
 					</thead>
 					<tbody>
@@ -38,18 +38,7 @@
 							<td>{{p.habilitacion}}</td>
 							<td>{{p.codigoDispositivo}}</td>
 							
-						<!-- 	<td>
-								<button class="btn btn-sm btn-icon btn-info"
-									ng-click="editarItem(p)" tooltip="Editar registro">
-									<i class="fa fa-pencil"></i>
-								</button>
-							</td>  -->
-							<td style="width: 1px">
-								<button class="btn btn-sm btn-icon btn-danger"
-									ng-click="eliminarItem(p)" tooltip="Eliminar registro">
-									<i class="fa fa-times"></i>
-								</button>
-							</td>
+						
 						</tr>
 					</tbody>
 				</table>

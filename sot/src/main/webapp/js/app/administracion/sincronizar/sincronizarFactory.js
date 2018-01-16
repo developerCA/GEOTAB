@@ -11,16 +11,23 @@ app.factory("sincronizarFactory", ["Restangular",
         sincronizarGrupos:function(items){
        	 return Restangular.allUrl("geotab/sincronizarGrupos").customPOST(items);
         },
-
+        
+        sincronizarFechasLozalizaciones:function(){
+          	 return Restangular.allUrl("geotab/fechasDispositivos").customPOST();
+        },
+        
+        sincronizarLozalizaciones:function(item){
+         	 return Restangular.allUrl("geotab/procesarDatos").customPOST(item);
+       },
+       
         sincronizarDispositivos:function(items){
       	 return Restangular.allUrl("geotab/sincronizarDispositivos").customPOST(items);
         },
-/*
-        create: function(item){
-            return service.post(item);
-        },
-        update:function(item){
-        	return item.put();
-        },
-*/	}
+        sincronizarZonas:function(itemDto){
+        	
+         	 return Restangular.allUrl("geotab/sincronizarZonas").customPOST(itemDto);
+           },
+        
+      
+	}
 }]);

@@ -570,6 +570,9 @@ angular
 															return $ocLazyLoad
 																.load([
 																	'toaster',
+																	'js/app/user/userController.js',
+																	'js/app/administracion/notaPedido/notaPedidoFactory.js',
+																	'js/app/administracion/usuarios/usuariosFactory.js',
 																	'js/app/administracion/sincronizar/sincronizarController.js',
 																	'js/app/administracion/sincronizar/sincronizarFactory.js'
 																])
@@ -595,6 +598,9 @@ angular
 																return $ocLazyLoad
 																		.load([
 																				'toaster',
+																				'js/app/user/userController.js',
+																				'js/app/administracion/notaPedido/notaPedidoFactory.js',
+																				'js/app/administracion/usuarios/usuariosFactory.js',
 																				'js/app/administracion/dispositivos/dispositivosController.js',
 																				'js/app/administracion/dispositivos/dispositivosFactory.js'
 																		]);
@@ -615,10 +621,14 @@ angular
 																		.load([
 																			'ui.select',
 																			'toaster',
+																			'js/app/user/userController.js',
+																			'js/app/administracion/notaPedido/notaPedidoFactory.js',
+																			'js/app/administracion/usuarios/usuariosFactory.js',
 																			'angularFileUpload',
-																				'js/app/administracion/tablero/tableroController.js',
-																				'js/app/administracion/tablero/tableroFactory.js',
-																				'js/controllers/toaster.js',
+																			'js/app/administracion/tablero/tableroController.js',
+																			'js/app/administracion/tablero/tableroFactory.js',
+																			'js/app/administracion/sincronizar/sincronizarFactory.js',
+																			'js/controllers/toaster.js',
 																				])
 																			.then(
 																				function() {

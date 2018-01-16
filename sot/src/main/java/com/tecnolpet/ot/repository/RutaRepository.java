@@ -12,4 +12,7 @@ public interface RutaRepository  extends JpaRepository<Ruta, Integer>{
 	public List<Ruta> findByEmpresa(Empresa empresa);
 	
 	public Ruta findByEmpresaAndIdentificador(Empresa empresa,String identificador);
+	
+	public Ruta findByIdentificador(String identificador);
+	
 }

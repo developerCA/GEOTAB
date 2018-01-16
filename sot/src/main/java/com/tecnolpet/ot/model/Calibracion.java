@@ -70,7 +70,7 @@ public class Calibracion implements Serializable {
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	@RestResource(exported = false)
 	@JsonView(ViewOT.PublicView.class)
-	private Instrumento instrumento;
+	private Dispositivo instrumento;
 
 	public Calibracion() {
 	}
@@ -123,11 +123,11 @@ public class Calibracion implements Serializable {
 		this.catalogo = catalogo;
 	}
 
-	public Instrumento getInstrumento() {
+	public Dispositivo getInstrumento() {
 		return this.instrumento;
 	}
 
-	public void setInstrumento(Instrumento instrumento) {
+	public void setInstrumento(Dispositivo instrumento) {
 		this.instrumento = instrumento;
 	}
 

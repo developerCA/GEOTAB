@@ -9,7 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
 
 import org.springframework.data.rest.core.annotation.RestResource;
 
@@ -22,8 +21,7 @@ import com.tecnolpet.ot.jview.ViewOT;
  * 
  */
 @Entity
-@NamedQuery(name = "Instrumento.findAll", query = "SELECT i FROM Instrumento i")
-public class Instrumento implements Serializable {
+public class Dispositivo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -50,9 +48,7 @@ public class Instrumento implements Serializable {
 	private String habilitacion;
 	@JsonView(ViewOT.PublicView.class)
 	private String codigoDispositivo;
-	@JsonView(ViewOT.PublicView.class)
-	private String grupo_id;
-
+	
 	// bi-directional many-to-one association to Producto
 	@ManyToOne
 	@JoinColumn(name = "codigo_ruta")
@@ -71,7 +67,7 @@ public class Instrumento implements Serializable {
 	@JsonView(ViewOT.PublicView.class)
 	private Catalogo catalogo;
 
-	public Instrumento() {
+	public Dispositivo() {
 	}
 
 	public Integer getId() {
@@ -159,17 +155,7 @@ public class Instrumento implements Serializable {
 		this.habilitacion = habilitacion;
 	}
 
-	
-
-	public String getGrupo_id() {
-		return grupo_id;
-	}
-
-	public void setGrupo_id(String grupo_id) {
-		this.grupo_id = grupo_id;
-	}
-
-	public Ruta getRuta() {
+		public Ruta getRuta() {
 		return ruta;
 	}
 

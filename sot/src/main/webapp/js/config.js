@@ -33,9 +33,9 @@ angular.module('app')
 
     blockUIConfig.requestFilter = function(config) {
      //console.log(config.url);
-  if(config.url=="api/variable/autocomplete"){
+  if(config.url=="api/geotab/fechaDispositivos"){
       return false;
-     }else if(config.url=="api/rama/autocomplete"){
+     }else if(config.url=="api/geotab/procesarDatos"){
       return false;      
      }
   

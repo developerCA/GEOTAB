@@ -1,23 +1,49 @@
 package com.tecnolpet.ot.geotab.service;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.tecnolpet.ot.constant.SotApp;
 import com.tecnolpet.ot.geotab.dto.DispositivoGeotabDto;
 import com.tecnolpet.ot.geotab.dto.GrupoChildrenGeoTabDto;
 import com.tecnolpet.ot.geotab.dto.GrupoDispositivoDto;
 import com.tecnolpet.ot.geotab.dto.GrupoGeotabDto;
+import com.tecnolpet.ot.geotab.dto.LocalizazionesGeotabDto;
+import com.tecnolpet.ot.geotab.dto.ProcesaDatosGeotabDto;
+import com.tecnolpet.ot.geotab.dto.PuntoZonaGeotabDto;
+import com.tecnolpet.ot.geotab.dto.SincronizarZonasDto;
+import com.tecnolpet.ot.geotab.dto.TipoZonaGeotabDto;
+import com.tecnolpet.ot.geotab.dto.ZonaGeotabDto;
+import com.tecnolpet.ot.geotab.dto.ZonaRutaGeotabDto;
+import com.tecnolpet.ot.geotab.dto.ZonaTypeGeotabDto;
+import com.tecnolpet.ot.model.Dispositivo;
 import com.tecnolpet.ot.model.Empresa;
+import com.tecnolpet.ot.model.FechaDispositivo;
 import com.tecnolpet.ot.model.GeotabGrupo;
-import com.tecnolpet.ot.model.Instrumento;
+import com.tecnolpet.ot.model.Localizacion;
+import com.tecnolpet.ot.model.Punto;
 import com.tecnolpet.ot.model.Ruta;
+import com.tecnolpet.ot.model.TipoZona;
+import com.tecnolpet.ot.model.Zona;
+import com.tecnolpet.ot.repository.DispositivoRepository;
 import com.tecnolpet.ot.repository.EmpresaRepository;
+import com.tecnolpet.ot.repository.FechaDispositivoRepository;
 import com.tecnolpet.ot.repository.GeoTabGrupoRepository;
-import com.tecnolpet.ot.repository.InstrumentoRepository;
+import com.tecnolpet.ot.repository.LocalizacionRepository;
+import com.tecnolpet.ot.repository.PuntoRepository;
 import com.tecnolpet.ot.repository.RutaRepository;
+import com.tecnolpet.ot.repository.TipoZonaRepository;
+import com.tecnolpet.ot.repository.ZonaRepository;
+import com.tecnolpet.ot.utils.PoligonoUtils;
 
 @Service
 public class GeoTabService {
@@ -26,13 +52,157 @@ public class GeoTabService {
 	private GeoTabGrupoRepository geoTabGrupoRepository;
 
 	@Autowired
-	private InstrumentoRepository instrumentoRepository;
+	private DispositivoRepository dispositivoRepository;
 
 	@Autowired
 	private EmpresaRepository empresaRepository;
 
 	@Autowired
 	private RutaRepository rutaRepository;
+
+	@Autowired
+	private ZonaRepository zonaRepository;
+
+	@Autowired
+	private PuntoRepository puntoRepository;
+
+	@Autowired
+	private TipoZonaRepository tipoZonaRepository;
+
+	@Autowired
+	private FechaDispositivoRepository fechaDispositivoRepository;
+
+	@Autowired
+	private LocalizacionRepository localizacionRepository;
+
+	public FechaDispositivo devolverFechaProceso() throws Exception {
+		FechaDispositivo fecha = null;
+		FechaDispositivo fechaDispositivo = fechaDispositivoRepository.findByNemonico("FECDI");
+
+		if (null == fechaDispositivo) {
+			fecha = crearFechaRegistroInicial();
+		} else {
+
+			if ("GEN".equals(fechaDispositivo.getEstado())) {
+				throw new Exception("Otro proceso esta sincronizando...");
+			} else {
+				if ("PRO".equals(fechaDispositivo.getEstado())) {
+					fecha = establecerFecha(fechaDispositivo);
+				} else {
+					throw new Exception("Accion no controlada...");
+				}
+			}
+
+		}
+
+		System.err.println(fecha);
+		return fecha;
+	}
+
+	private FechaDispositivo establecerFecha(FechaDispositivo fechaProcesada) {
+
+		String fechaInicial = fechaProcesada.getFechaFinal();
+		TimeZone tz = TimeZone.getDefault();
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.S'Z'");
+		df.setTimeZone(tz);
+		String fechaFinalUTC = df.format(new Date());
+
+		fechaProcesada.setEstado("GEN");
+		fechaProcesada.setFechaInicio(fechaInicial);
+		fechaProcesada.setFechaFinal(fechaFinalUTC);
+
+		fechaDispositivoRepository.save(fechaProcesada);
+
+		return fechaProcesada;
+
+	}
+
+	private FechaDispositivo crearFechaRegistroInicial() {
+
+		FechaDispositivo fechaDispositivo = new FechaDispositivo();
+		fechaDispositivo.setEstado("GEN");
+		fechaDispositivo.setNemonico("FECDI");
+
+		TimeZone tz = TimeZone.getDefault();
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.S'Z'");
+		df.setTimeZone(tz);
+
+		String fechaFinalUTC = df.format(new Date());
+
+		Calendar fechaInicio = Calendar.getInstance();
+		fechaInicio.set(Calendar.HOUR_OF_DAY, 0);
+		fechaInicio.set(Calendar.MINUTE, 0);
+		fechaInicio.set(Calendar.SECOND, 0);
+		fechaInicio.set(Calendar.MILLISECOND, 0);
+
+		String fechaInicioUTC = df.format(fechaInicio.getTime());
+
+		fechaDispositivo.setFechaInicio(fechaInicioUTC);
+		fechaDispositivo.setFechaFinal(fechaFinalUTC);
+
+		fechaDispositivoRepository.save(fechaDispositivo);
+
+		return fechaDispositivo;
+	}
+
+	public void procesarLocalizaciones(ProcesaDatosGeotabDto procesaDatosGeotabDto) throws InterruptedException {
+		cambiarFechaEstadoGenerado(procesaDatosGeotabDto.getFechaDispositivo());
+
+		for (LocalizazionesGeotabDto localizacion : procesaDatosGeotabDto.getListaDatos()) {
+			List<Dispositivo> listaDispositivo = dispositivoRepository
+					.findByCodigoDispositivo(localizacion.getDevice().getId());
+			if (null != listaDispositivo) {
+				try {
+					if (!listaDispositivo.isEmpty()) {
+						Dispositivo dispositivo = listaDispositivo.get(0);
+						Localizacion localizacionModel = new Localizacion();
+						localizacionModel.setDispositivo(dispositivo);
+						localizacionModel.setEstado("GEN");
+						localizacionModel.setFechaHora(localizacion.getDateTime());
+						localizacionModel.setLatitude(localizacion.getLatitude());
+						localizacionModel.setLongitud(localizacion.getLongitude());
+
+						localizacionRepository.save(localizacionModel);
+						procesarPasoZona(localizacionModel);
+					}
+
+				} catch (Exception e) {
+					System.err.println(e.getMessage());
+				}
+
+			}
+
+		}
+
+		procesaDatosGeotabDto.getFechaDispositivo().setEstado("PRO");
+		fechaDispositivoRepository.save(procesaDatosGeotabDto.getFechaDispositivo());
+	}
+
+	private void procesarPasoZona(Localizacion localizacion){
+		List<Zona> listaZonas=zonaRepository.findByRuta(localizacion.getDispositivo().getRuta());
+		System.out.println(localizacion.getLatitude());
+		System.out.println(localizacion.getLongitud());
+		
+		for (Zona zona:listaZonas){
+			List<Punto> listaPuntos=puntoRepository.findByZona(zona);
+			System.out.println(zona.getNombre());
+			System.out.println(listaPuntos.size());
+			boolean buscaParadaZona=PoligonoUtils.buscarZonaPoligono(listaPuntos, localizacion);
+			if (buscaParadaZona){
+				System.err.println("Dispositivo:"+localizacion.getDispositivo().getNombre() );
+				System.err.println("Zona:"+zona.getNombre() );
+				System.err.println("Zona:"+zona.getRuta().getNombre() );
+						
+			}
+			
+		}
+		
+	}
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	private void cambiarFechaEstadoGenerado(FechaDispositivo fechaDispositivo) {
+		fechaDispositivo.setEstado("GEN");
+		fechaDispositivoRepository.save(fechaDispositivo);
+	}
 
 	public void sincronziarGrupos(List<GrupoGeotabDto> grupos) {
 		StringBuilder hijos;
@@ -56,11 +226,9 @@ public class GeoTabService {
 		sincronizarCooperativas();
 	}
 
-	public void sincronziarDispositivos(List<DispositivoGeotabDto> dispositivos, Integer codigoRuta) {
+	public void sincronziarDispositivos(List<DispositivoGeotabDto> dispositivos) {
 
-		Instrumento geotabDispositivo;
-
-		Ruta ruta = rutaRepository.findOne(codigoRuta);
+		Dispositivo geotabDispositivo;
 
 		for (DispositivoGeotabDto dispositivo : dispositivos) {
 
@@ -73,9 +241,12 @@ public class GeoTabService {
 
 			if (null != indentificadorRuta) {
 
-				if (indentificadorRuta.equals(ruta.getIdentificador())) {
+				System.out.println(indentificadorRuta);
+				Ruta ruta = rutaRepository.findByIdentificador(indentificadorRuta);
 
-					geotabDispositivo = instrumentoRepository.findDispositivo(ruta, indentificadorRuta);
+				if (null != ruta) {
+					System.out.println(ruta.getNombre());
+					geotabDispositivo = dispositivoRepository.findDispositivo(ruta, dispositivo.getId());
 
 					if (null != geotabDispositivo) {
 						geotabDispositivo.setPlaca(dispositivo.getLicensePlate());
@@ -83,7 +254,7 @@ public class GeoTabService {
 						geotabDispositivo.setSerie(dispositivo.getSerialNumber());
 						geotabDispositivo.setNombre(dispositivo.getName());
 					} else {
-						geotabDispositivo = new Instrumento();
+						geotabDispositivo = new Dispositivo();
 						geotabDispositivo.setPlaca(dispositivo.getLicensePlate());
 						geotabDispositivo.setHabilitacion(dispositivo.getVehicleIdentificationNumber());
 						geotabDispositivo.setCodigoDispositivo(dispositivo.getId());
@@ -92,7 +263,9 @@ public class GeoTabService {
 						geotabDispositivo.setRuta(ruta);
 					}
 
-					instrumentoRepository.save(geotabDispositivo);
+					dispositivoRepository.save(geotabDispositivo);
+				} else {
+					System.err.println("Es necesario sinccronizar las rutas + " + indentificadorRuta);
 				}
 
 			}
@@ -100,10 +273,113 @@ public class GeoTabService {
 		}
 	}
 
-	public List<Instrumento> devolverDispositivos(Ruta ruta) {
-		System.err.println(ruta.getNombre());
-		System.out.println("------------------");
-		return instrumentoRepository.findByRuta(ruta);
+	public void sincronizarZonas(SincronizarZonasDto sincronizarZonasDto) {
+
+		if (null != sincronizarZonasDto.getTipoZonaGeotabDto()) {
+			for (TipoZonaGeotabDto tipoZonaGeotabDto : sincronizarZonasDto.getTipoZonaGeotabDto()) {
+
+				TipoZona tipoZona = tipoZonaRepository.findByIdentificador(tipoZonaGeotabDto.getId());
+				if (null == tipoZona) {
+					tipoZona = new TipoZona();
+					tipoZona.setIdentificador(tipoZonaGeotabDto.getId());
+					tipoZona.setNombre(tipoZonaGeotabDto.getName());
+				} else {
+					tipoZona.setNombre(tipoZonaGeotabDto.getName());
+
+				}
+
+				tipoZonaRepository.save(tipoZona);
+
+			}
+		}
+
+		if (null != sincronizarZonasDto.getZonaGeotabDtos()) {
+			sincronizarZonas(sincronizarZonasDto.getZonaGeotabDtos());
+
+		}
+	}
+
+	private void sincronizarZonas(List<ZonaGeotabDto> zonas) {
+		for (ZonaGeotabDto zonaGeotabDto : zonas) {
+
+			String identificadorRuta = null;
+			for (ZonaRutaGeotabDto zonaRutaGeotabDto : zonaGeotabDto.getGroups()) {
+				identificadorRuta = zonaRutaGeotabDto.getId();
+			}
+			if (null != identificadorRuta) {
+				Ruta ruta = rutaRepository.findByIdentificador(identificadorRuta);
+
+				if (null != ruta) {
+
+					validarZona(ruta, zonaGeotabDto);
+				} else {
+					System.err
+							.println(" Ruta no encontrada " + identificadorRuta + " zona: " + zonaGeotabDto.getName());
+				}
+			}
+
+		}
+
+	}
+
+	private void validarZona(Ruta ruta, ZonaGeotabDto zonaGeotabDto) {
+
+		String identificarTipoZona = null;
+
+		for (ZonaTypeGeotabDto tipoZonaGeotabDto : zonaGeotabDto.getZoneTypes()) {
+			identificarTipoZona = tipoZonaGeotabDto.getId();
+		}
+
+		if (null != identificarTipoZona) {
+			TipoZona tipoZona = tipoZonaRepository.findByIdentificador(identificarTipoZona);
+
+			if (null != tipoZona) {
+				registrarZona(ruta, zonaGeotabDto, tipoZona);
+			}
+		}
+
+	}
+
+	private void registrarZona(Ruta ruta, ZonaGeotabDto zonaGeotabDto, TipoZona tipoZona) {
+		Zona zona = zonaRepository.findByIdentificador(zonaGeotabDto.getId());
+
+		if (null != zona) {
+			zona.setNombre(zonaGeotabDto.getName());
+			zona.setRuta(ruta);
+			zona.setTipoZona(tipoZona);
+
+		} else {
+			zona = new Zona();
+			zona.setNombre(zonaGeotabDto.getName());
+			zona.setRuta(ruta);
+			zona.setIdentificador(zonaGeotabDto.getId());
+			zona.setTipoZona(tipoZona);
+		}
+
+		zonaRepository.save(zona);
+		registrarPuntosZona(zona, zonaGeotabDto);
+	}
+
+	private void registrarPuntosZona(Zona zona, ZonaGeotabDto zonaGeotabDto) {
+
+		List<Punto> listaPuntos = puntoRepository.findByZona(zona);
+
+		for (Punto punto : listaPuntos) {
+			puntoRepository.delete(punto);
+		}
+
+		for (PuntoZonaGeotabDto puntoDto : zonaGeotabDto.getPoints()) {
+			Punto punto = new Punto();
+			punto.setPosx(puntoDto.getX());
+			punto.setPosy(puntoDto.getY());
+			punto.setZona(zona);
+			puntoRepository.save(punto);
+		}
+	}
+
+	public List<Dispositivo> devolverDispositivos(Ruta ruta) {
+
+		return dispositivoRepository.findByRuta(ruta);
 	}
 
 	public List<Ruta> devolverRutas(Integer codigoEmpresa) {
