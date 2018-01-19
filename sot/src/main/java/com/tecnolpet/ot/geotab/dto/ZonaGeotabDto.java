@@ -6,6 +6,7 @@ public class ZonaGeotabDto {
 
 	private String id;
 	private String name;
+	private String comment;
 	
 	private List<ZonaRutaGeotabDto> groups;
 	
@@ -52,6 +53,14 @@ public class ZonaGeotabDto {
 
 	public void setZoneTypes(List<ZonaTypeGeotabDto> zoneTypes) {
 		this.zoneTypes = zoneTypes;
+	}
+
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
 	}
 	
 	

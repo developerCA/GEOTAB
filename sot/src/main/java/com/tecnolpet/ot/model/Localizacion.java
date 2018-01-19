@@ -23,6 +23,8 @@ public class Localizacion implements Serializable {
 
 	private double longitud;
 	
+	private Integer proceso;
+	
 	private String estado;
 	
 
@@ -80,6 +82,14 @@ public class Localizacion implements Serializable {
 
 	public void setEstado(String estado) {
 		this.estado = estado;
+	}
+
+	public Integer getProceso() {
+		return proceso;
+	}
+
+	public void setProceso(Integer proceso) {
+		this.proceso = proceso;
 	}
 
 }

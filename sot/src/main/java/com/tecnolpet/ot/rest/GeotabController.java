@@ -112,6 +112,24 @@ public class GeotabController {
 
 		return respuestaDto;
 	}
+	
+	@RequestMapping(value = "/procesarTablero", method = RequestMethod.POST)
+	public RespuestaDto procesarTablero(@AuthenticationPrincipal UsuarioAuthenticate usuario  ) {
+		RespuestaDto respuestaDto = new RespuestaDto();
+
+		try {
+			respuestaDto.setEstado(Boolean.TRUE);
+			respuestaDto.setObjeto(geoTabService.devolverTablero(usuario));
+			
+		} catch (Exception ex) {
+			respuestaDto.setEstado(Boolean.FALSE);
+			respuestaDto.setMensaje(ex.getMessage());
+		}
+
+		return respuestaDto;
+	}
+	
+	
 
 	@JsonView(ViewOT.PublicView.class)
 	@RequestMapping(value = "/listar/dispositivos", method = RequestMethod.GET)

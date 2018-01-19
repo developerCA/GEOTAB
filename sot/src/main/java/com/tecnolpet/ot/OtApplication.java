@@ -14,10 +14,12 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.PropertySources;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 
 @Configuration
 @EnableAutoConfiguration
+@EnableTransactionManagement
 @ComponentScan
 @Controller
 @SpringBootApplication

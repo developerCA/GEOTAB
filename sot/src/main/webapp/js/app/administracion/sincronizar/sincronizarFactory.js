@@ -20,6 +20,11 @@ app.factory("sincronizarFactory", ["Restangular",
          	 return Restangular.allUrl("geotab/procesarDatos").customPOST(item);
        },
        
+    
+       sincronizarTablero:function(){
+         	 return Restangular.allUrl("geotab/procesarTablero").customPOST();
+       },
+     
         sincronizarDispositivos:function(items){
       	 return Restangular.allUrl("geotab/sincronizarDispositivos").customPOST(items);
         },

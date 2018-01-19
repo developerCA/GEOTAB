@@ -20,6 +20,16 @@ public class Zona implements Serializable {
 	private String identificador;
 
 	private String nombre;
+	
+	private String orden;
+	
+	private Integer tiempo;
+	
+	@Column(name="valida_zona")
+	private Boolean  valida;
+	
+	@Column(name="inicio_zona")
+	private Boolean inicioZona;
 
 	//bi-directional many-to-one association to Ruta
 	@ManyToOne
@@ -71,6 +81,38 @@ public class Zona implements Serializable {
 
 	public void setTipoZona(TipoZona tipoZona) {
 		this.tipoZona = tipoZona;
+	}
+
+	public String getOrden() {
+		return orden;
+	}
+
+	public void setOrden(String orden) {
+		this.orden = orden;
+	}
+
+	public Integer getTiempo() {
+		return tiempo;
+	}
+
+	public void setTiempo(Integer tiempo) {
+		this.tiempo = tiempo;
+	}
+
+	public Boolean getValida() {
+		return valida;
+	}
+
+	public void setValida(Boolean valida) {
+		this.valida = valida;
+	}
+
+	public Boolean getInicioZona() {
+		return inicioZona;
+	}
+
+	public void setInicioZona(Boolean inicioZona) {
+		this.inicioZona = inicioZona;
 	}
 
 }

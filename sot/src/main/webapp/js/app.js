@@ -20,5 +20,7 @@ angular.module('app', [
     'blockUI',
     'ngBootbox',
     'ngImgCrop',
-    'mgcrea.ngStrap'
+    'mgcrea.ngStrap',
+    'underscore'
+    
 ]);
