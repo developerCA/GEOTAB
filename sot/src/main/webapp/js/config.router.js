@@ -608,6 +608,28 @@ angular
 												}
 											})
 									.state(
+											'app.zonas',
+											{
+												url : '/zonas',
+												templateUrl : 'tpl/app/administracion/zonas/zonas.html',
+												resolve : {
+													deps : [
+															'$ocLazyLoad',
+															function(
+																	$ocLazyLoad) {
+																return $ocLazyLoad
+																		.load([
+																				'toaster',
+																				'js/app/user/userController.js',
+																				'js/app/administracion/notaPedido/notaPedidoFactory.js',
+																				'js/app/administracion/usuarios/usuariosFactory.js',
+																				'js/app/administracion/zonas/zonasController.js',
+																				'js/app/administracion/zonas/zonasFactory.js'
+																		]);
+															} ]
+												}
+											})
+									.state(
 											'app.tablero',
 											{
 												url : '/tablero',
