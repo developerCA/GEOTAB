@@ -53,6 +53,7 @@ app.controller("tableroCtrl",
 														            }
 												}, function(resultDatos) {
 												
+													console.log(resultDatos);
 												 var dtoDatos={fechaDispositivo:fechaProceso,listaDatos:resultDatos};
 												
 													sincronizarFactory.sincronizarLozalizaciones(

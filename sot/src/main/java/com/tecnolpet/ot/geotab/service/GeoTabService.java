@@ -301,7 +301,8 @@ public class GeoTabService {
 
 	private void registraDispositivoZona(Localizacion localizacion, Zona zona, Integer numeroVuelta) {
 
-		LocalizacionZona localizacionZona = new LocalizacionZona();
+		try{
+				LocalizacionZona localizacionZona = new LocalizacionZona();
 		localizacionZona.setDispositivo(localizacion.getDispositivo());
 		localizacionZona.setEstado("GEN");
 		localizacionZona.setZona(zona);
@@ -316,6 +317,10 @@ public class GeoTabService {
 		localizacionZona.setProceso(localizacion.getProceso());
 		localizacionZona.setNumeroVuelta(numeroVuelta);
 		localizacionZonaRepository.save(localizacionZona);
+		}catch (Exception e) {
+			System.err.println(e.getMessage());
+		}
+	
 
 	}
 
@@ -526,6 +531,15 @@ public class GeoTabService {
 		Empresa empresa = empresaRepository.findOne(codigoEmpresa);
 
 		return rutaRepository.findByEmpresa(empresa);
+	}
+	public List<Empresa> traerEmpresas(){
+		return empresaRepository.findAll();
+	}
+	public List<Zona> traerZonas(Integer id){
+		Ruta ruta=rutaRepository.findOne(id);
+		List<Zona> zonas=zonaRepository.findByRuta(ruta);
+		
+		return zonas;
 	}
 
 	private void establecerNiveles() {

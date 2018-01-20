@@ -9,12 +9,11 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 
-	<artifactId>sot</artifactId>
+	<artifactId>geotab</artifactId>
 	<version>1.0</version>
 
-	<packaging>war</packaging>
-	<name>ot</name>
-	<description>Sistema Ordenes de Trabajo</description>
+	<name>geotab</name>
+	<description>Sistema Geotab</description>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -84,12 +83,7 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
-			<exclusions>
-				<exclusion>
-					<groupId>org.springframework.boot</groupId>
-					<artifactId>spring-boot-starter-tomcat</artifactId>
-				</exclusion>
-			</exclusions>
+			
 		</dependency>
 
 		<dependency>
@@ -130,7 +124,7 @@
 	</dependencies>
 
 	<build>
-		<finalName>sot-1.0</finalName>
+	 <!-- <finalName>sot-1.0</finalName> -->	
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

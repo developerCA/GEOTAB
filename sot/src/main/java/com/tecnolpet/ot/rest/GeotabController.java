@@ -19,7 +19,9 @@ import com.tecnolpet.ot.geotab.dto.SincronizarZonasDto;
 import com.tecnolpet.ot.geotab.service.GeoTabService;
 import com.tecnolpet.ot.jview.ViewOT;
 import com.tecnolpet.ot.model.Dispositivo;
+import com.tecnolpet.ot.model.Empresa;
 import com.tecnolpet.ot.model.Ruta;
+import com.tecnolpet.ot.model.Zona;
 import com.tecnolpet.ot.seguridad.UsuarioAuthenticate;
 
 @RestController
@@ -136,10 +138,24 @@ public class GeotabController {
 	public List<Dispositivo> traerInstrumentos(@AuthenticationPrincipal UsuarioAuthenticate usuario) {
 		return geoTabService.devolverDispositivos(usuario.getRuta());
 	}
+	
+	@JsonView(ViewOT.PublicView.class)
+	@RequestMapping(value = "/listar/empresas", method = RequestMethod.GET)
+	public List<Empresa> traerEmpresas(@AuthenticationPrincipal UsuarioAuthenticate usuario) {
+		return geoTabService.traerEmpresas();
+	}
+	
+	
 
 	@JsonView(ViewOT.PublicView.class)
 	@RequestMapping(value = "/rutas", method = RequestMethod.GET)
 	public List<Ruta> traerRutas(@RequestParam Integer codigoEmpresa) {
 		return geoTabService.devolverRutas(codigoEmpresa);
+	}
+	
+	@JsonView(ViewOT.PublicView.class)
+	@RequestMapping(value = "/zonas", method = RequestMethod.GET)
+	public List<Zona> traerZonas(@RequestParam Integer codigoRuta) {
+		return geoTabService.traerZonas(codigoRuta);
 	}
 }
