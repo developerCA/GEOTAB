@@ -3,6 +3,9 @@ package com.tecnolpet.ot.model;
 import java.io.Serializable;
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.tecnolpet.ot.jview.ViewOT;
+
 
 /**
  * The persistent class for the zona database table.
@@ -15,27 +18,36 @@ public class Zona implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@JsonView(ViewOT.PublicView.class)
 	private Integer codigo;
 
+	@JsonView(ViewOT.PublicView.class)
 	private String identificador;
 
+	@JsonView(ViewOT.PublicView.class)
 	private String nombre;
 	
+	@JsonView(ViewOT.PublicView.class)
 	private String orden;
 	
+	@JsonView(ViewOT.PublicView.class)
 	private Integer tiempo;
 	
+	@JsonView(ViewOT.PublicView.class)
 	@Column(name="valida_zona")
 	private Boolean  valida;
 	
+	@JsonView(ViewOT.PublicView.class)
 	@Column(name="inicio_zona")
 	private Boolean inicioZona;
 
 	//bi-directional many-to-one association to Ruta
+	@JsonView(ViewOT.PublicView.class)
 	@ManyToOne
 	@JoinColumn(name="codigo_ruta")
 	private Ruta ruta;
 	
+	@JsonView(ViewOT.PublicView.class)
 	@ManyToOne
 	@JoinColumn(name="codigo_tipo_zona")
 	private TipoZona tipoZona;
