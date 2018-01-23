@@ -8,8 +8,21 @@ app.factory("zonasFactory", ["Restangular",
 			return service.getList();
         },
 
-        sincronizarGrupos:function(items){
-       	 return Restangular.allUrl("geotab/sincronizar").customPOST(items);
+        cargarEmpresas: function() {
+        	var url = "geotab/listar/empresas";
+        	return Restangular.allUrl(url).customGET();
+        },
+
+        cargarRutas: function(empresa) {
+        	var url = "geotab/rutas/"
+    			+ empresa;
+        	return Restangular.allUrl(url).customGET();
+        },
+
+        cargarZonas: function(ruta) {
+        	var url = "geotab/zonas/"
+    			+ ruta;
+        	return Restangular.allUrl(url).customGET();
         },
 /*
         create: function(item){
