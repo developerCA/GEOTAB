@@ -179,14 +179,14 @@ public class GeotabController {
 	}
 
 	@JsonView(ViewOT.PublicView.class)
-	@RequestMapping(value = "/rutas/{empresa}", method = RequestMethod.GET)
-	public List<Ruta> traerRutas(@PathVariable("empresa") Integer codigoEmpresa) {
+	@RequestMapping(value = "/rutas", method = RequestMethod.GET)
+	public List<Ruta> traerRutas(@RequestParam Integer codigoEmpresa) {
 		return geoTabService.devolverRutas(codigoEmpresa);
 	}
 
 	@JsonView(ViewOT.PublicView.class)
-	@RequestMapping(value = "/zonas/{ruta}", method = RequestMethod.GET)
-	public List<Zona> traerZonas(@PathVariable("ruta") Integer codigoRuta) {
+	@RequestMapping(value = "/zonas", method = RequestMethod.GET)
+	public List<Zona> traerZonas(@RequestParam Integer codigoRuta) {
 		return geoTabService.traerZonas(codigoRuta);
 	}
 }
