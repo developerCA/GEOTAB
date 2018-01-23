@@ -47,6 +47,8 @@ public class VTablero implements Serializable {
 	@Column(name = "numero_vuelta")
 	private Integer numeroVuelta;
 	
+	private String orden;
+	
 	private String zona;
 
 	public VTablero() {
@@ -146,6 +148,14 @@ public class VTablero implements Serializable {
 
 	public void setNumeroVuelta(Integer numeroVuelta) {
 		this.numeroVuelta = numeroVuelta;
+	}
+
+	public String getOrden() {
+		return orden;
+	}
+
+	public void setOrden(String orden) {
+		this.orden = orden;
 	}
 
 	

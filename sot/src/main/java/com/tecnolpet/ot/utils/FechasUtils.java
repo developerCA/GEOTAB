@@ -67,6 +67,27 @@ public class FechasUtils {
 		long dias = diferenciaEn_ms / (1000 * 60 * 60 * 24);
 		return (int) dias;
 	}
+	
+	// Suma los días recibidos a la fecha  
+	 public static Date sumarRestarDiasFecha(Date fecha, int dias){
+	
+	      Calendar calendar = Calendar.getInstance();
+	      calendar.setTime(fecha); // Configuramos la fecha que se recibe
+	      calendar.add(Calendar.DAY_OF_YEAR, dias);  // numero de días a añadir, o restar en caso de días<0
+	
+	      return calendar.getTime(); // Devuelve el objeto Date con los nuevos días añadidos
+	
+	 }
+	// Suma o resta las horas recibidos a la fecha  
+	 public static Date sumarRestarHorasFecha(Date fecha, int horas){
+	
+	      Calendar calendar = Calendar.getInstance();
+	      calendar.setTime(fecha); // Configuramos la fecha que se recibe
+	      calendar.add(Calendar.HOUR, horas);  // numero de horas a añadir, o restar en caso de horas<0
+	
+	      return calendar.getTime(); // Devuelve el objeto Date con las nuevas horas añadidas
+	
+	 }
 
 	public static Date convertirStringTimeZoneToDate(String fechaUTC) {
 		Date date = null;

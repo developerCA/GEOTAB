@@ -11,7 +11,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "v_localizacion_dispositivo")
-public class VLocalizacion implements Serializable {
+public class VLocalizacionDispositivo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -39,11 +39,9 @@ public class VLocalizacion implements Serializable {
 
 	private Integer proceso;
 	
-	@Column(name = "numero_vuelta")
-	private Integer numeroVuelta;
-	
 
-	public VLocalizacion() {
+
+	public VLocalizacionDispositivo() {
 	}
 
 	public Integer getCodigoDispositivo() {
@@ -118,12 +116,6 @@ public class VLocalizacion implements Serializable {
 		this.id = id;
 	}
 
-	public Integer getNumeroVuelta() {
-		return numeroVuelta;
-	}
 
-	public void setNumeroVuelta(Integer numeroVuelta) {
-		this.numeroVuelta = numeroVuelta;
-	}
 
 }

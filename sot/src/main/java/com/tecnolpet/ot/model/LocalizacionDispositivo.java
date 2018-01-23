@@ -33,6 +33,11 @@ public class LocalizacionDispositivo implements Serializable {
 	@Column(name = "numero_vuelta")
 	private Integer numeroVuelta;
 	
+	private Integer tiempo;
+	
+	@Column(name="tiempo_real")
+	private Time tiempoReal;
+
 
 	//bi-directional many-to-one association to Dispositivo
 	@ManyToOne
@@ -122,6 +127,22 @@ public class LocalizacionDispositivo implements Serializable {
 
 	public void setNumeroVuelta(Integer numeroVuelta) {
 		this.numeroVuelta = numeroVuelta;
+	}
+
+	public Integer getTiempo() {
+		return tiempo;
+	}
+
+	public void setTiempo(Integer tiempo) {
+		this.tiempo = tiempo;
+	}
+
+	public Time getTiempoReal() {
+		return tiempoReal;
+	}
+
+	public void setTiempoReal(Time tiempoReal) {
+		this.tiempoReal = tiempoReal;
 	}
 
 }

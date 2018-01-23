@@ -41,9 +41,7 @@ public class LocalizacionZona implements Serializable {
 
 	private Integer proceso;
 	
-	@Column(name = "numero_vuelta")
-	private Integer numeroVuelta;
-	
+
 	//bi-directional many-to-one association to Dispositivo
 	@ManyToOne
 	@JoinColumn(name="codigo_dispositivo")
@@ -134,12 +132,6 @@ public class LocalizacionZona implements Serializable {
 		this.proceso = proceso;
 	}
 
-	public Integer getNumeroVuelta() {
-		return numeroVuelta;
-	}
 
-	public void setNumeroVuelta(Integer numeroVuelta) {
-		this.numeroVuelta = numeroVuelta;
-	}
 
 }
