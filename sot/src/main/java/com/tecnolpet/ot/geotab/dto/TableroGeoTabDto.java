@@ -1,7 +1,6 @@
 package com.tecnolpet.ot.geotab.dto;
 
 import java.util.List;
-import com.tecnolpet.ot.model.VTablero;
 
 public class TableroGeoTabDto {
 
@@ -9,15 +8,15 @@ public class TableroGeoTabDto {
 	
 	private List<ZonaTableroDto> zonas;
 	
-	private List<VTablero> tablero;
+	private List<TableroViewGeoTabDto> tablero;
 
 	private List<DispositivoTableroDto> dispositivos;
 
-	public List<VTablero> getTablero() {
+	public List<TableroViewGeoTabDto> getTablero() {
 		return tablero;
 	}
 
-	public void setTablero(List<VTablero> tablero) {
+	public void setTablero(List<TableroViewGeoTabDto> tablero) {
 		this.tablero = tablero;
 	}
 

@@ -4,9 +4,9 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.tecnolpet.ot.model.VLocalizacion;
+import com.tecnolpet.ot.model.VLocalizacionDispositivo;
 
-public interface VlocalizacionRepository extends JpaRepository<VLocalizacion,Integer>{
+public interface VlocalizacionRepository extends JpaRepository<VLocalizacionDispositivo,Integer>{
 
-	List<VLocalizacion> findByProceso(Integer proceso);
+	List<VLocalizacionDispositivo> findByProceso(Integer proceso);
 }

@@ -183,7 +183,7 @@ public class GeotabController {
 	public List<Ruta> traerRutas(@PathVariable("empresa") Integer codigoEmpresa) {
 		return geoTabService.devolverRutas(codigoEmpresa);
 	}
-	
+
 	@JsonView(ViewOT.PublicView.class)
 	@RequestMapping(value = "/zonas/{ruta}", method = RequestMethod.GET)
 	public List<Zona> traerZonas(@PathVariable("ruta") Integer codigoRuta) {

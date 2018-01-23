@@ -22,21 +22,30 @@
 				<table class="table table-striped m-b-none">
 					<thead>
 						<tr>
-							<th><i class="fa fa-car"></i> Dispositivo</th>
-							<th ng-repeat="z in zonas">{{z.nombreZona}}</th>
+							<th colspan="2" class="text-center"><i class="fa fa-car"></i> UNIDAD</th>
+							<th ng-repeat="z in zonas" colspan="2" class="text-center">{{z.nombreZona}}</th>
+						</tr>
 
+						<tr>
 
-
+							<th class="text-center">Cod.Vuelta</th>
+							<th class="text-center">Unidad</th>
+							<th ng-repeat-start="z in zonas" colspan="1" class="text-center">Entrada</th>
+							<th ng-repeat-end="" colspan="1" class="text-center">Salida</th>
 
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<th></th>
 
-
+						<tr ng-repeat="d in tabla.tablero">
+							<td class="text-center"><span class="badge bg-info">{{d.dispositivoTableroDto.numeroVuelta}}</span></td>
+							<td class="text-center">{{d.dispositivoTableroDto.dispositivo}}</td>
+							<td ng-repeat-start="h in d.listaHoras" colspan="1"
+								class="text-center">{{h.horaEntrada}}</td>
+							<td ng-repeat-end="" colspan="1" class="text-center">{{h.horaSalida}}</td>
 
 						</tr>
+
 					</tbody>
 				</table>
 			</div>

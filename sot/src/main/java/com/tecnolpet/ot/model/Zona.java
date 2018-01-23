@@ -51,7 +51,12 @@ public class Zona implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="codigo_tipo_zona")
 	private TipoZona tipoZona;
-
+	
+	@JsonView(ViewOT.PublicView.class)
+	@Column(name="zona_enlace")
+	private Integer zonaEnlace;
+	
+	
 	public Zona() {
 	}
 
@@ -125,6 +130,14 @@ public class Zona implements Serializable {
 
 	public void setInicioZona(Boolean inicioZona) {
 		this.inicioZona = inicioZona;
+	}
+
+	public Integer getZonaEnlace() {
+		return zonaEnlace;
+	}
+
+	public void setZonaEnlace(Integer zonaEnlace) {
+		this.zonaEnlace = zonaEnlace;
 	}
 
 }

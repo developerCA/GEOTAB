@@ -94,16 +94,18 @@ app.controller("tableroCtrl",
 					$scope.traertablero = function() {
 						sincronizarFactory.sincronizarTablero().then(function(resp) {
 						
-							$scope.tablero=resp.objeto;
-							console.log($scope.tablero);
-							$scope.zonas=$scope.tablero.zonas;
+							$scope.tabla=resp.objeto;
 							
+							$scope.zonas=$scope.tabla.zonas;
+							
+							$scope.dispositivos=$scope.tabla.dispositivos;
 						    /*$scope.zonas= _.groupBy($scope.tablero,function(data){
 						    	return data.codigoZona,data.zona;
 						    });*/
 						    
+							console.log($scope.tabla);
 						    
-							console.log($scope.zonas);
+							
 
 						});
 					}

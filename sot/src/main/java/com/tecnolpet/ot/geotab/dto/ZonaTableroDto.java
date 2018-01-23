@@ -4,11 +4,13 @@ public class ZonaTableroDto {
 
 	private Integer codigoZona;
 	private String nombreZona;
+	private String orden;
 	
-	public ZonaTableroDto(Integer codigoZona,String nombreZona  ){
+	public ZonaTableroDto(Integer codigoZona,String nombreZona,String orden  ){
 		this.codigoZona=codigoZona;
 		this.nombreZona=nombreZona;
-		
+		this.orden=orden;
+				
 	}
 
 	public Integer getCodigoZona() {
@@ -25,6 +27,14 @@ public class ZonaTableroDto {
 
 	public void setNombreZona(String nombreZona) {
 		this.nombreZona = nombreZona;
+	}
+
+	public String getOrden() {
+		return orden;
+	}
+
+	public void setOrden(String orden) {
+		this.orden = orden;
 	}
 	
 	
