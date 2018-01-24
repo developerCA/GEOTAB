@@ -83,6 +83,9 @@ app.controller("zonasCtrl", ["$scope", "$filter", "zonasFactory",
 			}
     	}
         $scope.model.contacts[index] = angular.copy($scope.model.selected);
+        if ($scope.model.selected.zonaEnlace == "") {
+        	$scope.model.selected.zonaEnlace = null;
+        }
         zonasFactory.guardar(
     		$scope.model.selected
 		);
