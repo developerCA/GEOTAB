@@ -64,6 +64,24 @@ app.controller("zonasCtrl", ["$scope", "$filter", "zonasFactory",
 
     $scope.saveContact = function(index) {
         //console.log("Saving contact");
+    	if ($scope.model.selected.inicioZona) {
+    		for (var i = 0; i < $scope.model.contacts.length; i++) {
+				if (i == index) continue;
+				if ($scope.model.contacts[i].inicioZona) {
+					alert("Este no puede establecerse como Terminal Principal porque ya esta activa una.");
+					return;
+				}
+			}
+    	}
+    	if ($scope.model.contacts[index].zonaEnlace.codigo != $scope.model.selected.zonaEnlace.codigo) {
+    		for (var i = 0; i < $scope.model.contacts.length; i++) {
+				if (i == index) continue;
+				if ($scope.model.contacts[i].zonaEnlace.codigo == $scope.model.selected.zonaEnlace.codigo) {
+					alert("La Zona Enlace seleccionada ya esta relacionada en otra Zona, por favor, rectificar");
+					return;
+				}
+			}
+    	}
         $scope.model.contacts[index] = angular.copy($scope.model.selected);
         zonasFactory.guardar(
     		$scope.model.selected
