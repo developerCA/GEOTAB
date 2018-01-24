@@ -332,8 +332,12 @@ public class GeoTabService {
 				localizacionDispositivo.setNumeroVuelta(dispositivo.getNumeroVuelta());
 				localizacionDispositivo.setTiempo(zona.getTiempo());
 
-				if (null != buscarZonaAnterior(dispositivo, localizacionDispositivo.getNumeroVuelta(), zona)) {
-
+				LocalizacionDispositivo posicionAnterior;
+				
+				posicionAnterior=buscarZonaAnterior(dispositivo, localizacionDispositivo.getNumeroVuelta(), zona);
+				
+				if (null != posicionAnterior) {
+					//localizacionDispositivo.set
 				}
 				localizacionDispositivoRepository.save(localizacionDispositivo);
 
@@ -350,7 +354,7 @@ public class GeoTabService {
 		LocalizacionDispositivo localizacionDispositivo = null;
 
 		if (null != zona.getZonaEnlace()) {
-			Zona zonaAnterior = zonaRepository.findOne(zona.getZonaEnlace());
+			Zona zonaAnterior = zonaRepository.findOne(zona.getZonaEnlace().getCodigo());
 			List<LocalizacionDispositivo> localizaciones = localizacionDispositivoRepository
 					.findByDispositivoAndZonaAndNumeroVuelta(dispositivo, zonaAnterior, numeroVuelta);
 
