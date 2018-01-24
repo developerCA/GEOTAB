@@ -12,4 +12,8 @@ import com.tecnolpet.ot.model.Zona;
 public interface LocalizacionDispositivoRepository extends JpaRepository<LocalizacionDispositivo, Integer> {
 
 	List<LocalizacionDispositivo> findByProcesoAndDispositivoAndZonaAndFecha(Integer proceso,Dispositivo dispositivo, Zona zona,Date fecha);
+
+	List<LocalizacionDispositivo> findByDispositivoAndZonaAndNumeroVuelta(Dispositivo dispositivo, Zona zona,Integer numeroVuelta);
+
+	
 }

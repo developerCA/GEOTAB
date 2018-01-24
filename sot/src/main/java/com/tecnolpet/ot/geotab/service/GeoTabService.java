@@ -332,6 +332,9 @@ public class GeoTabService {
 				localizacionDispositivo.setNumeroVuelta(dispositivo.getNumeroVuelta());
 				localizacionDispositivo.setTiempo(zona.getTiempo());
 
+				if (null != buscarZonaAnterior(dispositivo, localizacionDispositivo.getNumeroVuelta(), zona)) {
+
+				}
 				localizacionDispositivoRepository.save(localizacionDispositivo);
 
 			} catch (Exception e) {
@@ -340,6 +343,23 @@ public class GeoTabService {
 			}
 
 		}
+
+	}
+
+	private LocalizacionDispositivo buscarZonaAnterior(Dispositivo dispositivo, Integer numeroVuelta, Zona zona) {
+		LocalizacionDispositivo localizacionDispositivo = null;
+
+		if (null != zona.getZonaEnlace()) {
+			Zona zonaAnterior = zonaRepository.findOne(zona.getZonaEnlace());
+			List<LocalizacionDispositivo> localizaciones = localizacionDispositivoRepository
+					.findByDispositivoAndZonaAndNumeroVuelta(dispositivo, zonaAnterior, numeroVuelta);
+
+			if (localizaciones.isEmpty()) {
+				localizacionDispositivo = localizaciones.get(0);
+			}
+		}
+
+		return localizacionDispositivo;
 
 	}
 
