@@ -3,6 +3,9 @@ package com.tecnolpet.ot.model;
 import java.io.Serializable;
 import javax.persistence.*;
 
+import org.springframework.data.rest.core.annotation.RestResource;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.tecnolpet.ot.jview.ViewOT;
 
@@ -53,8 +56,11 @@ public class Zona implements Serializable {
 	private TipoZona tipoZona;
 	
 	@JsonView(ViewOT.PublicView.class)
-	@Column(name="zona_enlace")
-	private Integer zonaEnlace;
+	@JoinColumn(name="zona_enlace")
+	@ManyToOne
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+	@RestResource(exported=false)		
+	private Zona zonaEnlace;
 	
 	
 	public Zona() {
@@ -132,12 +138,14 @@ public class Zona implements Serializable {
 		this.inicioZona = inicioZona;
 	}
 
-	public Integer getZonaEnlace() {
+	public Zona getZonaEnlace() {
 		return zonaEnlace;
 	}
 
-	public void setZonaEnlace(Integer zonaEnlace) {
+	public void setZonaEnlace(Zona zonaEnlace) {
 		this.zonaEnlace = zonaEnlace;
 	}
+
+
 
 }

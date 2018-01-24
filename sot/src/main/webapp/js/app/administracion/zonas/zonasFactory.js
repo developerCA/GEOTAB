@@ -14,20 +14,21 @@ app.factory("zonasFactory", ["Restangular",
         },
 
         cargarRutas: function(empresa) {
-        	var url = "geotab/rutas/"
-    			+ empresa;
-        	return Restangular.allUrl(url).customGET();
+        	var url = "geotab/rutas/";
+    			
+        	return Restangular.allUrl(url).getList({codigoEmpresa:empresa});
         },
 
         cargarZonas: function(ruta) {
-        	var url = "geotab/zonas/"
-    			+ ruta;
-        	return Restangular.allUrl(url).customGET();
+        	var url = "geotab/zonas/";
+
+        	return Restangular.allUrl(url).getList({codigoRuta:ruta});
+        },
+
+        guardar: function(item){
+            return Restangular.allUrl("geotab/actualizarZona/").customPOST(item);
         },
 /*
-        create: function(item){
-            return service.post(item);
-        },
         update:function(item){
         	return item.put();
         },

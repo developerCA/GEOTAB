@@ -51,7 +51,6 @@
 				<table class="table table-striped m-b-none">
 					<thead>
 						<tr>
-							<th></th>
 							<th>#</th>
 							<th>Nombre</th>
 							<th>Tipo</th>
@@ -59,44 +58,12 @@
 							<th>Tiempo (minutos)</th>
 							<th>Zona Muerta</th>
 							<th>Terminal Principal</th>
-							<th>Acciones</th>
+							<th>Zona Enlace</th>
+							<th></th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr ng-repeat="z in zonas">
-							<td style="vertical-align:middle;">
-								<button ng-click="actualizarNotaPedido(g,i)"
-									class="btn btn-sm btn-info">
-									<i class="fa fa-check"></i>
-								</button>
-							</td>
-							<td style="vertical-align:middle;">
-								{{ $index+1 }}
-							</td>
-							<td style="vertical-align:middle;">
-								{{ z.nombre }}
-							</td>
-							<td style="vertical-align:middle;">
-								{{ z.tipoZona.nombre }} ({{ z.tipoZona.identificador }})
-							</td>
-							<td style="vertical-align:middle;">
-								{{ z.orden }}
-							</td>
-							<td style="vertical-align:middle;">
-								{{ z.tiempo }}
-							</td>
-							<td style="vertical-align:middle;">
-							</td>
-							<td style="vertical-align:middle;">
-								<span ng-if="z.inicioZona">
-									Si
-								</span>
-								<span ng-if="!z.inicioZona">
-									No
-								</span>
-							</td>
-							<td style="vertical-align:middle;">
-							</td>
+						<tr ng-repeat="z in zonas" ng-include="getTemplate(z)">
 						</tr>
 					</tbody>
 				</table>
@@ -104,3 +71,79 @@
 		</div>
 	</div>
 </div>
+
+<script type="text/ng-template" id="display">
+	<td style="vertical-align:middle;">
+		{{ $index+1 }}
+	</td>
+	<td style="vertical-align:middle;">
+		{{ z.nombre }}
+	</td>
+	<td style="vertical-align:middle;">
+		{{ z.tipoZona.nombre }} ({{ z.tipoZona.identificador }})
+	</td>
+	<td style="vertical-align:middle;">
+		{{ z.orden }}
+	</td>
+	<td style="vertical-align:middle;">
+		{{ z.tiempo }}
+	</td>
+	<td style="vertical-align:middle;">
+		<input type="checkbox" name="'valida' + $index" ng-checked="z.valida" ng-disabled="true">
+	</td>
+	<td style="vertical-align:middle;">
+		<input type="checkbox" name="'inicioZona' + $index" ng-checked="z.inicioZona" ng-disabled="true">
+	</td>
+	<td style="vertical-align:middle;">
+		<div class="input-group">
+		    <select class="form-control" 
+		        ng-model="z.zonaEnlace" ng-options="item.nombre for item in zonaz track by item.codigo">
+		    </select>
+		</div>
+	</td>
+	<td style="vertical-align:middle;">
+		<button ng-click="editContact($index);" class="btn btn-sm btn-info"
+			uib-tooltip="Editar" style="width:68px;">
+			<i class="fa fa-pencil"></i>
+		</button>
+	</td>
+</script>
+
+<script type="text/ng-template" id="edit">
+	<td style="vertical-align:middle;">
+		{{ $index+1 }}
+	</td>
+	<td style="vertical-align:middle;">
+		{{ model.selected.nombre }}
+	</td>
+	<td style="vertical-align:middle;">
+		{{ model.selected.tipoZona.nombre }} ({{ model.selected.tipoZona.identificador }})
+	</td>
+	<td style="vertical-align:middle;">
+		{{ model.selected.orden }}
+	</td>
+	<td style="vertical-align:middle;">
+		{{ model.selected.tiempo }}
+	</td>
+	<td style="vertical-align:middle;">
+		<input type="checkbox" name="'valida' + $index" ng-checked="model.selected.valida" ng-model="model.selected.valida">
+	</td>
+	<td style="vertical-align:middle;">
+		<input type="checkbox" name="'inicioZona' + $index" ng-checked="model.selected.inicioZona" ng-model="model.selected.inicioZona">
+	</td>
+	<td style="vertical-align:middle;">
+		<div class="input-group">
+		    <select class="form-control"
+		        ng-model="model.selected.zonaEnlace" ng-options="item.nombre for item in zonaz track by item.codigo">
+		    </select>
+		</div>
+	</td>
+	<td style="vertical-align:middle;">
+		<button ng-click="saveContact($index);" class="btn btn-sm btn-info" uib-tooltip="Guardar">
+			<i class="fa fa-check"></i>
+		</button>
+		<button ng-click="reset();" class="btn btn-sm btn-info" uib-tooltip="Cancelar">
+			<i class="fa fa-close"></i>
+		</button>
+	</td>
+</script>
