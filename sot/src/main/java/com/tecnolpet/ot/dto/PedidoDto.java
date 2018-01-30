@@ -1,14 +1,12 @@
 package com.tecnolpet.ot.dto;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.tecnolpet.ot.jview.ViewOT;
 import com.tecnolpet.ot.model.DetalleNotaPedido;
 import com.tecnolpet.ot.model.NotaPedido;
-import com.tecnolpet.ot.model.TareaDetalleNotaPedido;
 
 public class PedidoDto implements Serializable{
 	/**
@@ -19,8 +17,7 @@ public class PedidoDto implements Serializable{
 	private NotaPedido notaPedido;
 	@JsonView(ViewOT.PublicView.class)
 	private List<DetalleNotaPedido> detalles;
-	@JsonView(ViewOT.PublicView.class)
-	private List<TareaDetalleNotaPedido> detalleServicios;
+	
 	@JsonView(ViewOT.PublicView.class)
 	private DescuentoTotalDto descuento;
 	@JsonView(ViewOT.PublicView.class)
@@ -29,7 +26,7 @@ public class PedidoDto implements Serializable{
 	private Integer totalServicios;
 	
 	public PedidoDto(){
-		detalleServicios=new ArrayList<TareaDetalleNotaPedido>();
+		
 	}
 	public NotaPedido getNotaPedido() {
 		return notaPedido;
@@ -61,11 +58,6 @@ public class PedidoDto implements Serializable{
 	public void setTotalServicios(Integer totalServicios) {
 		this.totalServicios = totalServicios;
 	}
-	public List<TareaDetalleNotaPedido> getDetalleServicios() {
-		return detalleServicios;
-	}
-	public void setDetalleServicios(List<TareaDetalleNotaPedido> detalleServicios) {
-		this.detalleServicios = detalleServicios;
-	}
+	
 	
 }

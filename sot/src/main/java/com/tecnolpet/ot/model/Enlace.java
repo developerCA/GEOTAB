@@ -2,31 +2,34 @@ package com.tecnolpet.ot.model;
 
 import java.io.Serializable;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 
 import org.springframework.data.rest.core.annotation.RestResource;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.tecnolpet.ot.jview.ViewOT;
-
-import java.util.List;
-
 
 /**
  * The persistent class for the enlace database table.
  * 
  */
 @Entity
-@NamedQuery(name="Enlace.findAll", query="SELECT e FROM Enlace e")
+@NamedQuery(name = "Enlace.findAll", query = "SELECT e FROM Enlace e")
 public class Enlace implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="codigo")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "codigo")
 	@JsonView(ViewOT.PublicView.class)
 	private Integer id;
 	@JsonView(ViewOT.PublicView.class)
@@ -34,7 +37,7 @@ public class Enlace implements Serializable {
 	@JsonView(ViewOT.PublicView.class)
 	private String celular;
 
-	@Column(name="departamento_trabajo")
+	@Column(name = "departamento_trabajo")
 	@JsonView(ViewOT.PublicView.class)
 	private String departamentoTrabajo;
 	@JsonView(ViewOT.PublicView.class)
@@ -44,7 +47,7 @@ public class Enlace implements Serializable {
 	@JsonView(ViewOT.PublicView.class)
 	private String extension;
 
-	@Column(name="horario_atencion")
+	@Column(name = "horario_atencion")
 	@JsonView(ViewOT.PublicView.class)
 	private String horarioAtencion;
 	@JsonView(ViewOT.PublicView.class)
@@ -54,63 +57,58 @@ public class Enlace implements Serializable {
 	@JsonView(ViewOT.PublicView.class)
 	private String observaciones;
 
-	@Column(name="telefono_1")
+	@Column(name = "telefono_1")
 	@JsonView(ViewOT.PublicView.class)
 	private String telefono1;
 
-	@Column(name="telefono_2")
+	@Column(name = "telefono_2")
 	@JsonView(ViewOT.PublicView.class)
 	private String telefono2;
 
-	//bi-directional many-to-one association to Ciudad
+	// bi-directional many-to-one association to Ciudad
 	@ManyToOne
-	@JoinColumn(name="codigo_ciudad")
-	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-	@RestResource(exported=false)	
-	@JsonProperty(value="ciudadE")
+	@JoinColumn(name = "codigo_ciudad")
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+	@RestResource(exported = false)
+	@JsonProperty(value = "ciudadE")
 	@JsonView(ViewOT.PublicView.class)
 	private Ciudad ciudad;
 
-	//bi-directional many-to-one association to Cliente
+	// bi-directional many-to-one association to Cliente
 	@ManyToOne
-	@JoinColumn(name="codigo_cliente")
-	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-	@RestResource(exported=false)	
-	@JsonProperty(value="clienteE")
+	@JoinColumn(name = "codigo_cliente")
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+	@RestResource(exported = false)
+	@JsonProperty(value = "clienteE")
 	@JsonView(ViewOT.PublicView.class)
 	private Cliente cliente;
 
-	//bi-directional many-to-one association to Pais
+	// bi-directional many-to-one association to Pais
 	@ManyToOne
-	@JoinColumn(name="codigo_pais")
-	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-	@RestResource(exported=false)
-	@JsonProperty(value="paisE")
+	@JoinColumn(name = "codigo_pais")
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+	@RestResource(exported = false)
+	@JsonProperty(value = "paisE")
 	@JsonView(ViewOT.PublicView.class)
 	private Pais pais;
 
-	//bi-directional many-to-one association to Profesion
+	// bi-directional many-to-one association to Profesion
 	@ManyToOne
-	@JoinColumn(name="codigo_profesion")
-	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-	@RestResource(exported=false)	
-	@JsonProperty(value="profesionE")
+	@JoinColumn(name = "codigo_profesion")
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+	@RestResource(exported = false)
+	@JsonProperty(value = "profesionE")
 	@JsonView(ViewOT.PublicView.class)
 	private Profesion profesion;
 
-	//bi-directional many-to-one association to Provincia
+	// bi-directional many-to-one association to Provincia
 	@ManyToOne
-	@JoinColumn(name="codigo_provincia")
-	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-	@RestResource(exported=false)
-	@JsonProperty(value="provinciaE")
+	@JoinColumn(name = "codigo_provincia")
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+	@RestResource(exported = false)
+	@JsonProperty(value = "provinciaE")
 	@JsonView(ViewOT.PublicView.class)
 	private Provincia provincia;
-
-	//bi-directional many-to-one association to Suscripcion
-	@OneToMany(mappedBy="enlace")
-	@JsonIgnore
-	private List<Suscripcion> suscripciones;
 
 	public Enlace() {
 	}
@@ -257,28 +255,6 @@ public class Enlace implements Serializable {
 
 	public void setProvincia(Provincia provincia) {
 		this.provincia = provincia;
-	}
-
-	public List<Suscripcion> getSuscripciones() {
-		return this.suscripciones;
-	}
-
-	public void setSuscripciones(List<Suscripcion> suscripciones) {
-		this.suscripciones = suscripciones;
-	}
-
-	public Suscripcion addSuscripcion(Suscripcion suscripcion) {
-		getSuscripciones().add(suscripcion);
-		suscripcion.setEnlace(this);
-
-		return suscripcion;
-	}
-
-	public Suscripcion removeSuscripcion(Suscripcion suscripcion) {
-		getSuscripciones().remove(suscripcion);
-		suscripcion.setEnlace(null);
-
-		return suscripcion;
 	}
 
 }

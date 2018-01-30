@@ -44,13 +44,13 @@ public class Cliente implements Serializable {
 	private String apellidos;
 	@Column(name = "celular_1")
 	@JsonView(ViewOT.PublicView.class)
-		private String celular1;
+	private String celular1;
 
 	@Column(name = "celular_2")
 	@JsonView(ViewOT.PublicView.class)
-		private String celular2;
+	private String celular2;
 	@JsonView(ViewOT.PublicView.class)
-		private String direccion;
+	private String direccion;
 
 	@Column(name = "direccion_trabajo")
 	@JsonView(ViewOT.PublicView.class)
@@ -182,16 +182,6 @@ public class Cliente implements Serializable {
 	@JsonIgnore
 	private List<Enlace> enlaces;
 
-	// bi-directional many-to-one association to Factura
-	@OneToMany(mappedBy = "cliente")
-	@JsonIgnore
-	private List<Factura> facturas;
-
-	// bi-directional many-to-one association to Suscripcion
-	@OneToMany(mappedBy = "cliente")
-	@JsonIgnore
-	private List<Suscripcion> suscripciones;
-
 	@ManyToOne
 	@JoinColumn(name = "codigo_regional")
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
@@ -318,8 +308,6 @@ public class Cliente implements Serializable {
 		return this.lugarTrabajo;
 	}
 
-
-
 	public String getLogo_data() {
 		return logo_data;
 	}
@@ -406,8 +394,7 @@ public class Cliente implements Serializable {
 
 	public String getNombresCompletos() {
 		if (this.getNombres() != null && this.getApellidos() != null) {
-			setNombresCompletos(this.getNombres().concat(" ")
-					.concat(this.getApellidos()));
+			setNombresCompletos(this.getNombres().concat(" ").concat(this.getApellidos()));
 		}
 		return nombresCompletos;
 	}
@@ -508,50 +495,6 @@ public class Cliente implements Serializable {
 		enlace.setCliente(null);
 
 		return enlace;
-	}
-
-	public List<Factura> getFacturas() {
-		return this.facturas;
-	}
-
-	public void setFacturas(List<Factura> facturas) {
-		this.facturas = facturas;
-	}
-
-	public Factura addFactura(Factura factura) {
-		getFacturas().add(factura);
-		factura.setCliente(this);
-
-		return factura;
-	}
-
-	public Factura removeFactura(Factura factura) {
-		getFacturas().remove(factura);
-		factura.setCliente(null);
-
-		return factura;
-	}
-
-	public List<Suscripcion> getSuscripciones() {
-		return this.suscripciones;
-	}
-
-	public void setSuscripciones(List<Suscripcion> suscripciones) {
-		this.suscripciones = suscripciones;
-	}
-
-	public Suscripcion addSuscripcion(Suscripcion suscripcion) {
-		getSuscripciones().add(suscripcion);
-		suscripcion.setCliente(this);
-
-		return suscripcion;
-	}
-
-	public Suscripcion removeSuscripcion(Suscripcion suscripcion) {
-		getSuscripciones().remove(suscripcion);
-		suscripcion.setCliente(null);
-
-		return suscripcion;
 	}
 
 	public Regional getRegional() {

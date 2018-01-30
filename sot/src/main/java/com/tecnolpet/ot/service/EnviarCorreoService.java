@@ -1,7 +1,6 @@
 package com.tecnolpet.ot.service;
 
 import java.io.UnsupportedEncodingException;
-import java.util.List;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -18,7 +17,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.tecnolpet.ot.model.NotaPedido;
-import com.tecnolpet.ot.model.Seguimiento;
 import com.tecnolpet.ot.model.Usuario;
 import com.tecnolpet.ot.model.Vendedor;
 import com.tecnolpet.ot.repository.NotaPedidoRepository;
@@ -254,46 +252,5 @@ public class EnviarCorreoService {
 
 	}
 	
-	@Async
-	public void notificarSeguimiento(Seguimiento seguimiento) throws MailAuthenticationException, MailSendException, UnsupportedEncodingException, MessagingException{
-		
-		NotaPedido notaPedido=seguimiento.getTareaDetalleNotaPedido().getDetalleNotaPedido().getNotaPedido();
-Usuario usuarioReg=usuarioRepository.findOne(notaPedido.getUsuarioRegistro());
-		
-		
-		StringBuilder html = new StringBuilder();
-		String subject = "Avance de la Orden de Trabajo # "
-				+ notaPedido.getNumeroReferencia().toString();
-
-		html.append("<html>");
-		html.append("<head>");
-		html.append("<title></title>");
-		html.append("</head>");
-		html.append("<body>");
-		html.append(
-				"<h2 style='font-style:italic;'><span style='font-size:14px;'><span style='font-family:verdana,geneva,sans-serif;'>Orden de Trabajo &nbsp; # <strong>")
-				.append(notaPedido.getNumeroReferencia()).append("</strong>")
-				.append("</span></span></h2>");
-
-		
-		html.append("<p><span style='font-size:14px;'><span style='font-family:verdana,geneva,sans-serif;'>Se ha registrado un avance en el equipo ");
-		html.append(seguimiento.getTareaDetalleNotaPedido().getDetalleNotaPedido().getProducto().getNombre());
-		html.append(" con serie:").append(seguimiento.getTareaDetalleNotaPedido().getDetalleNotaPedido().getProducto().getSerie()).append("</span></span></p>");
-		
-				
-		html.append("<p>Gracias.</p>");
-		html.append("<p>GeoTab RS</p>");
-		html.append("<p>&nbsp;</p>");
-		html.append("</body>");
-		html.append("</html>");
-
-		/*List<Usuario> usuarios = usuarioRepository.findUsuariosByCliente(
-				notaPedido.getEmpresa(), notaPedido.getCliente());
-
-		for (Usuario usuario : usuarios) {
-			send(usuario.getEmailUsuario(),usuarioReg.getEmailUsuario(), subject, html.toString());
-		}*/
-
-	}
-
+	
 }

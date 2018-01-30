@@ -12,7 +12,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -32,7 +31,6 @@ import com.tecnolpet.ot.jview.ViewOT;
  */
 @Entity
 @Table(name = "nota_pedido")
-@NamedQuery(name = "NotaPedido.findAll", query = "SELECT n FROM NotaPedido n")
 public class NotaPedido implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -155,13 +153,6 @@ public class NotaPedido implements Serializable {
 	@RestResource(exported = false)
 	@JsonView(ViewOT.PublicView.class)
 	private Sucursal sucursal;
-
-	@ManyToOne
-	@JoinColumn(name = "codigo_sucursal_bodega")
-	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-	@RestResource(exported = false)
-	@JsonView(ViewOT.PublicView.class)
-	private SucursalBodega sucursalBodega;
 
 	@Temporal(TemporalType.DATE)
 	@Column(name = "fecha_gestion")
@@ -460,14 +451,6 @@ public class NotaPedido implements Serializable {
 
 	public void setSucursal(Sucursal sucursal) {
 		this.sucursal = sucursal;
-	}
-
-	public SucursalBodega getSucursalBodega() {
-		return sucursalBodega;
-	}
-
-	public void setSucursalBodega(SucursalBodega sucursalBodega) {
-		this.sucursalBodega = sucursalBodega;
 	}
 
 	public double getDescuento0() {

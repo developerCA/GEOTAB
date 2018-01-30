@@ -14,8 +14,6 @@ import com.tecnolpet.ot.model.Catalogo;
 import com.tecnolpet.ot.model.Cliente;
 import com.tecnolpet.ot.model.Empresa;
 import com.tecnolpet.ot.model.NotaPedido;
-import com.tecnolpet.ot.model.TareaDetalleNotaPedido;
-import com.tecnolpet.ot.model.Vendedor;
 
 /**
  * @author administrador
@@ -41,31 +39,6 @@ public interface NotaPedidoRepository extends JpaRepository<NotaPedido, Integer>
 	@Query("SELECT p FROM NotaPedido p WHERE p.empresa = :empresa and p.fechaHoraAprobacion>= :fechaDesde and p.fechaHoraAprobacion<= :fechaHasta  ORDER BY p.id DESC")
 	List<NotaPedido> findNotasPorClienteCierre(@Param("empresa") Empresa empresa, @Param("fechaDesde") Date fechaDesde, @Param("fechaHasta") Date fechaHasta);
 	
-	@Query("SELECT DISTINCT(t.detalleNotaPedido.notaPedido) FROM TareaDetalleNotaPedido t WHERE (t.tarea.nombre like :servicio and t.detalleNotaPedido.producto.nombre like :equipo and t.detalleNotaPedido.producto.serie like :serie and t.detalleNotaPedido.notaPedido.numeroReferencia like :numero ) and t.detalleNotaPedido.notaPedido.empresa = :empresa and t.detalleNotaPedido.notaPedido.cliente = :cliente  ")
-	List<NotaPedido> findNotasPorClienteFiltros(@Param("empresa") Empresa empresa,@Param("cliente") Cliente cliente,@Param("servicio") String servicio,@Param("equipo") String equipo,@Param("serie") String serie,@Param("numero") String numero);
-
-	@Query("SELECT DISTINCT(t.detalleNotaPedido.notaPedido) FROM TareaDetalleNotaPedido t WHERE (t.tarea.nombre like :servicio and t.detalleNotaPedido.producto.nombre like :equipo and t.detalleNotaPedido.producto.serie like :serie and t.detalleNotaPedido.notaPedido.numeroReferencia like :numero ) and t.detalleNotaPedido.notaPedido.empresa = :empresa   ")
-	List<NotaPedido> findNotasPorClienteFiltros(@Param("empresa") Empresa empresa,@Param("servicio") String servicio,@Param("equipo") String equipo,@Param("serie") String serie,@Param("numero") String numero);
-
-	@Query("SELECT t FROM TareaDetalleNotaPedido t WHERE (t.tarea.nombre like :servicio and cast(t.codigoReporte as string) like :reporte and (t.responsable= :tecnico or t.asistente= :tecnico ) ) and t.detalleNotaPedido.notaPedido.empresa = :empresa   ")
-	List<TareaDetalleNotaPedido> findExperiencia(@Param("empresa") Empresa empresa,@Param("servicio") String servicio,@Param("reporte") String reporte,@Param("tecnico") Vendedor  tecnico);
-
-	@Query("SELECT t FROM TareaDetalleNotaPedido t WHERE  (t.responsable= :tecnico or t.asistente= :tecnico )  and t.detalleNotaPedido.notaPedido.empresa = :empresa and  t.detalleNotaPedido.notaPedido.fechaApertura>= :fechaDesde and t.detalleNotaPedido.notaPedido.fechaApertura<= :fechaHasta  ")
-	List<TareaDetalleNotaPedido> findExperienciaFechas(@Param("empresa") Empresa empresa, @Param("fechaDesde") Date fechaDesde, @Param("fechaHasta") Date fechaHasta,@Param("tecnico") Vendedor  tecnico);
-	
-	
-	@Query("SELECT DISTINCT(t.detalleNotaPedido.notaPedido) FROM TareaDetalleNotaPedido t WHERE t.tarea.nombre like :servicio and t.detalleNotaPedido.producto.nombre like :equipo and t.detalleNotaPedido.producto.serie like :serie and t.detalleNotaPedido.notaPedido.numeroReferencia like :numero and cast(t.detalleNotaPedido.notaPedido.ordenInterna as string) like :numerooit and cast(t.codigoReporte as string) like :reporte and t.detalleNotaPedido.notaPedido.empresa = :empresa and t.detalleNotaPedido.notaPedido.cliente = :cliente  ")
-	List<NotaPedido> findNotasPorClienteFiltrosOit(@Param("empresa") Empresa empresa,@Param("cliente") Cliente cliente,@Param("servicio") String servicio,@Param("equipo") String equipo,@Param("serie") String serie,@Param("numero") String numero,@Param("numerooit") String numerooit,@Param("reporte") String reporte);
-
-	@Query("SELECT DISTINCT(t.detalleNotaPedido.notaPedido) FROM TareaDetalleNotaPedido t WHERE (t.tarea.nombre like :servicio and t.detalleNotaPedido.producto.nombre like :equipo and t.detalleNotaPedido.producto.serie like :serie and t.detalleNotaPedido.notaPedido.numeroReferencia like :numero and cast(t.detalleNotaPedido.notaPedido.ordenInterna as string) like :numerooit and cast(t.codigoReporte as string) like :reporte) and t.detalleNotaPedido.notaPedido.empresa = :empresa      ")
-	List<NotaPedido> findNotasPorClienteFiltrosOit(@Param("empresa") Empresa empresa,@Param("servicio") String servicio,@Param("equipo") String equipo,@Param("serie") String serie,@Param("numero") String numero,@Param("numerooit") String numerooit,@Param("reporte") String reporte);
-
-	
-	@Query("SELECT DISTINCT(t.detalleNotaPedido.notaPedido) FROM TareaDetalleNotaPedido t WHERE (t.tarea.nombre like :servicio and t.detalleNotaPedido.producto.nombre like :equipo and t.detalleNotaPedido.producto.serie like :serie and t.detalleNotaPedido.notaPedido.numeroReferencia like :numero and cast(t.detalleNotaPedido.notaPedido.ordenInterna as string) like :numerooit) and t.detalleNotaPedido.notaPedido.empresa = :empresa and  t.detalleNotaPedido.notaPedido.idCatalogo.sigla in ('REGIST')  ")
-	List<NotaPedido> findNotasPorClienteFiltrosOitSeguimiento(@Param("empresa") Empresa empresa,@Param("servicio") String servicio,@Param("equipo") String equipo,@Param("serie") String serie,@Param("numero") String numero,@Param("numerooit") String numerooit);
-
-	@Query("SELECT DISTINCT(t.detalleNotaPedido.notaPedido) FROM TareaDetalleNotaPedido t WHERE (t.tarea.nombre like :servicio and t.detalleNotaPedido.producto.nombre like :equipo and t.detalleNotaPedido.producto.serie like :serie and t.detalleNotaPedido.notaPedido.numeroReferencia like :numero and cast(t.detalleNotaPedido.notaPedido.ordenInterna as string) like :numerooit) and t.detalleNotaPedido.notaPedido.empresa = :empresa and t.detalleNotaPedido.notaPedido.cliente = :cliente and t.detalleNotaPedido.notaPedido.idCatalogo.sigla in ('REGIST')  ")
-	List<NotaPedido> findNotasPorClienteFiltrosOitSeguimiento(@Param("empresa") Empresa empresa,@Param("cliente") Cliente cliente,@Param("servicio") String servicio,@Param("equipo") String equipo,@Param("serie") String serie,@Param("numero") String numero,@Param("numerooit") String numerooit);
 
 	@Query("SELECT p FROM NotaPedido p WHERE p.idCatalogo.id = :registrado and p.empresa = :empresa ORDER BY p.id DESC")
 	List<NotaPedido> findNotasRegistradas(@Param("registrado") Integer registrado, @Param("empresa") Empresa empresa);	

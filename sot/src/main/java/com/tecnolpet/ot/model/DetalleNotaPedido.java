@@ -1,7 +1,6 @@
 package com.tecnolpet.ot.model;
 
 import java.io.Serializable;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,44 +9,39 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.tecnolpet.ot.jview.ViewOT;
-
 
 /**
  * The persistent class for the detalle_nota_pedido database table.
  * 
  */
 @Entity
-@Table(name="detalle_nota_pedido")
-@NamedQuery(name="DetalleNotaPedido.findAll", query="SELECT d FROM DetalleNotaPedido d")
+@Table(name = "detalle_nota_pedido")
 public class DetalleNotaPedido implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="codigo")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "codigo")
 	@JsonView(ViewOT.PublicView.class)
 	private Integer id;
 	@JsonView(ViewOT.PublicView.class)
 	private Integer cantidad;
-	
-	@Column(name="cantidad_real")
+
+	@Column(name = "cantidad_real")
 	@JsonView(ViewOT.PublicView.class)
 	private Integer cantidadReal;
-	
-	@Column(name="costo_unitario")
+
+	@Column(name = "costo_unitario")
 	@JsonView(ViewOT.PublicView.class)
 	private double costoUnitario;
 	@JsonView(ViewOT.PublicView.class)
 	private double descuento;
-	
+
 	@Transient
 	@JsonView(ViewOT.PublicView.class)
 	private Double descuentoAnt;
@@ -55,25 +49,11 @@ public class DetalleNotaPedido implements Serializable {
 	@Transient
 	@JsonView(ViewOT.PublicView.class)
 	private Boolean visible;
-	
+
 	@Transient
 	@JsonView(ViewOT.PublicView.class)
 	private Boolean renovacion;
-	
-	@Transient
-	@JsonView(ViewOT.PublicView.class)
-	private List<Tarea> tareas ;
-	
-	@OneToMany(mappedBy="detalleNotaPedido")
-	@JsonIgnore
-	private List<TareaDetalleNotaPedido> tareasDetalleNotaPedido;
-	
-	@Transient
-	@JsonView(ViewOT.PublicView.class)
-	private List<TareaDetalleNotaPedido> tareaServicios ;
-	
-	
-	
+
 	public Boolean getRenovacion() {
 		return renovacion;
 	}
@@ -82,11 +62,11 @@ public class DetalleNotaPedido implements Serializable {
 		this.renovacion = renovacion;
 	}
 
-	@Column(name="numero_accesos")
+	@Column(name = "numero_accesos")
 	@JsonView(ViewOT.PublicView.class)
 	private Integer numeroAccesos;
 
-	@Column(name="numero_meses")
+	@Column(name = "numero_meses")
 	@JsonView(ViewOT.PublicView.class)
 	private Integer numeroMeses;
 	@JsonView(ViewOT.PublicView.class)
@@ -94,45 +74,40 @@ public class DetalleNotaPedido implements Serializable {
 	@JsonView(ViewOT.PublicView.class)
 	private double total;
 
-	@Column(name="valor_descuento")
+	@Column(name = "valor_descuento")
 	@JsonView(ViewOT.PublicView.class)
 	private double valorDescuento;
 
-	@Column(name="valor_impuesto")
+	@Column(name = "valor_impuesto")
 	@JsonView(ViewOT.PublicView.class)
 	private double valorImpuesto;
 
-	@Column(name="valor_impuesto_0")
+	@Column(name = "valor_impuesto_0")
 	@JsonView(ViewOT.PublicView.class)
 	private double valorImpuesto0;
 
-	@Column(name="valor_real")
+	@Column(name = "valor_real")
 	@JsonView(ViewOT.PublicView.class)
 	private double valorReal;
 
-	//bi-directional many-to-one association to NotaPedido
+	// bi-directional many-to-one association to NotaPedido
 	@ManyToOne
-	@JoinColumn(name="codigo_nota_pedido")
+	@JoinColumn(name = "codigo_nota_pedido")
 	@JsonView(ViewOT.PublicView.class)
 	private NotaPedido notaPedido;
 
-	//bi-directional many-to-one association to Catalogo
+	// bi-directional many-to-one association to Catalogo
 	@ManyToOne
-	@JoinColumn(name="id_catalogo")
+	@JoinColumn(name = "id_catalogo")
 	@JsonView(ViewOT.PublicView.class)
 	private Catalogo catalogo;
 
-	//bi-directional many-to-one association to Producto
+	// bi-directional many-to-one association to Producto
 	@ManyToOne
-	@JoinColumn(name="codigo_producto")
+	@JoinColumn(name = "codigo_producto")
 	@JsonView(ViewOT.PublicView.class)
 	private Producto producto;
 
-	//bi-directional many-to-one association to Suscripcion
-	@OneToMany(mappedBy="detalleNotaPedido")
-	@JsonIgnore
-	private List<Suscripcion> suscripciones;
-	
 	@Transient
 	@JsonView(ViewOT.PublicView.class)
 	private Boolean eliminaNotaPedido;
@@ -184,39 +159,12 @@ public class DetalleNotaPedido implements Serializable {
 		return this.numeroAccesos;
 	}
 
-	public List<TareaDetalleNotaPedido> getTareasDetalleNotaPedido() {
-		return tareasDetalleNotaPedido;
-	}
-
-	public void setTareasDetalleNotaPedido(
-			List<TareaDetalleNotaPedido> tareasDetalleNotaPedido) {
-		this.tareasDetalleNotaPedido = tareasDetalleNotaPedido;
-	}
-
-	
-
 	public void setNumeroAccesos(Integer numeroAccesos) {
 		this.numeroAccesos = numeroAccesos;
 	}
 
 	public Integer getNumeroMeses() {
 		return this.numeroMeses;
-	}
-
-	public List<TareaDetalleNotaPedido> getTareaServicios() {
-		return tareaServicios;
-	}
-
-	public void setTareaServicios(List<TareaDetalleNotaPedido> tareaServicios) {
-		this.tareaServicios = tareaServicios;
-	}
-
-	public List<Tarea> getTareas() {
-		return tareas;
-	}
-
-	public void setTareas(List<Tarea> tareas) {
-		this.tareas = tareas;
 	}
 
 	public void setNumeroMeses(Integer numeroMeses) {
@@ -226,8 +174,6 @@ public class DetalleNotaPedido implements Serializable {
 	public double getSubtotal() {
 		return this.subtotal;
 	}
-
-	
 
 	public void setSubtotal(double subtotal) {
 		this.subtotal = subtotal;
@@ -295,28 +241,6 @@ public class DetalleNotaPedido implements Serializable {
 
 	public void setProducto(Producto producto) {
 		this.producto = producto;
-	}
-
-	public List<Suscripcion> getSuscripciones() {
-		return this.suscripciones;
-	}
-
-	public void setSuscripciones(List<Suscripcion> suscripciones) {
-		this.suscripciones = suscripciones;
-	}
-
-	public Suscripcion addSuscripcion(Suscripcion suscripcion) {
-		getSuscripciones().add(suscripcion);
-		suscripcion.setDetalleNotaPedido(this);
-
-		return suscripcion;
-	}
-
-	public Suscripcion removeSuscripcion(Suscripcion suscripcion) {
-		getSuscripciones().remove(suscripcion);
-		suscripcion.setDetalleNotaPedido(null);
-
-		return suscripcion;
 	}
 
 	public Boolean getEliminaNotaPedido() {

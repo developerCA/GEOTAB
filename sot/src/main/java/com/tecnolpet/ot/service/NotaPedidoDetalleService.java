@@ -12,7 +12,6 @@ import com.tecnolpet.ot.model.DetalleNotaPedido;
 import com.tecnolpet.ot.model.NotaPedido;
 import com.tecnolpet.ot.repository.CatalogoRepository;
 import com.tecnolpet.ot.repository.NotaPedidoDetalleRepository;
-import com.tecnolpet.ot.repository.TareaDetalleNotaPedidoRepository;
 
 /**
  * @author administrador
@@ -27,9 +26,7 @@ public class NotaPedidoDetalleService {
 	@Autowired
 	private CatalogoRepository catalogoRepository;	
 	
-	@Autowired
-	private TareaDetalleNotaPedidoRepository tareaDetalleNotaPedidoRepository;	
-	
+		
 	
 	public List<DetalleNotaPedido> findDetalleNotaPedido(){
 		return notaPedidoDetalleRepository.findDetalleNotaPedidoByCatalogo(catalogoRepository.findCatalogoBySigla("ACTIVO").get(0));
@@ -40,9 +37,7 @@ public class NotaPedidoDetalleService {
 		notaPedido.setId(id);
 		List<DetalleNotaPedido> detalles = notaPedidoDetalleRepository.findDetalleNotaPedidoByNotaPedidoAndCatalogo(notaPedido); 
 		
-		for (DetalleNotaPedido det:detalles){
-			det.setTareas(tareaDetalleNotaPedidoRepository.findTareasDetalleNotaPedido(det));
-		}
+		
 		return detalles;
 	}
 	
