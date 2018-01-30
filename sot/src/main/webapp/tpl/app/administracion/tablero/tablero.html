@@ -12,8 +12,8 @@
 			<div class="panel-heading">
 				<span class="pull-right"><i class="fa fa-car"></i> Tablero de
 					zonas</span> <a class="btn m-b-xs btn-sm btn-success btn-addon"
-					ng-click="traertablero()"> <i class="fa fa-plus"></i>
-					Actualizar
+					ng-click="traertablero()"> <i class="fa fa-refresh"></i>
+					Refrescar
 				</a>
 
 
@@ -22,17 +22,23 @@
 				<table class="table table-striped m-b-none">
 					<thead>
 						<tr>
-							<th colspan="2" class="text-center"><i class="fa fa-car"></i> UNIDAD</th>
-							<th ng-repeat="z in zonas" colspan="2" class="text-center">{{z.nombreZona}}</th>
+							<th colspan="2" class="text-center"><i class="fa fa-car"></i>
+								UNIDAD</th>
+							<th ng-repeat="z in zonas" colspan="3" class="text-center">{{z.nombreZona}}
+								| <span class="badge bg-primary"><i class="icon-clock"></i>
+									{{z.tiempo}}</span>
+							</th>
 						</tr>
 
 						<tr>
 
 							<th class="text-center">Cod.Vuelta</th>
 							<th class="text-center">Unidad</th>
-							<th ng-repeat-start="z in zonas" colspan="1" class="text-center">Entrada</th>
-							<th ng-repeat-end="" colspan="1" class="text-center">Salida</th>
 
+
+							<th ng-repeat-start="z in zonas" colspan="1" class="text-center">H.Programada</th>
+							<th ng-repeat-end ng-repeat="cab in columnas" colspan="1"
+								class="text-center">{{cab.nombre}}</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -41,8 +47,52 @@
 							<td class="text-center"><span class="badge bg-info">{{d.dispositivoTableroDto.numeroVuelta}}</span></td>
 							<td class="text-center">{{d.dispositivoTableroDto.dispositivo}}</td>
 							<td ng-repeat-start="h in d.listaHoras" colspan="1"
-								class="text-center">{{h.horaEntrada}}</td>
-							<td ng-repeat-end="" colspan="1" class="text-center">{{h.horaSalida}}</td>
+								class="text-center" style="padding: 2px">
+
+								<div class="input-group m-b"
+									ng-show="h.muestra==null || h.muestra==false ">
+									<span class="input-group-btn">
+										<button class="btn btn-xs btn-icon btn-success"
+											ng-show="h.inicioZona" ng-click="h.muestra=true">
+											<i class="fa fa-clock-o"></i>
+										</button>
+									</span> <input type="text" class="form-control"
+										ng-model="h.horaProgramadaTmp" ng-show="h.codigo!=null"
+										ng-disabled="(h.muestra==null || h.muestra==false)" />
+								</div>
+
+								<div ng-show="h.muestra==true ">
+									<div class="input-group m-b">
+										<span class="input-group-btn">
+
+											<button class="btn btn-xs  btn-info" ng-show="h.inicioZona"
+												ng-click="editarLocalizacion(h)">
+												<i class="fa fa-check"></i>
+											</button>
+											<button class="btn btn-xs  btn-danger" ng-show="h.inicioZona"
+												ng-click="cancelaLocalizacion(h)">
+												<i class="fa fa-times"></i>
+											</button>
+
+
+										</span> <input type="text" ui-mask="99:99:99" model-view-value="true"
+											class="form-control" ng-model="h.horaProgramadaTmp"
+											ng-show="h.codigo!=null" ng-disabled="!h.inicioZona "
+											style="padding: 2px 2px; font-size: 12px;" />
+									</div>
+								</div>
+
+
+
+
+
+							</td>
+							<td ng-repeat-end ng-repeat="cab in columnas" colspan="1"
+								class="text-center"><span ng-if="cab.nombre=='Hora'">{{h.horaSalida}}</span>
+								<span ng-if="cab.nombre=='Diferencia'"><span ng-class="{true:'label bg-info', false:'label bg-danger'}[h.cumpleTiempo]">{{h.diferenciaTiempo}}</span> </span>
+
+							</td>
+
 
 						</tr>
 

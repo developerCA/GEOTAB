@@ -11,5 +11,5 @@ public interface ZonaRepository extends JpaRepository<Zona, Integer> {
 	
 	Zona findByIdentificador(String identificador);
 	
-	List<Zona> findByRuta(Ruta ruta);
+	List<Zona> findByRutaOrderByOrdenAsc(Ruta ruta);
 }

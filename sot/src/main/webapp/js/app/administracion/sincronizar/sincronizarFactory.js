@@ -24,14 +24,19 @@ app.factory("sincronizarFactory", ["Restangular",
        sincronizarTablero:function(){
          	 return Restangular.allUrl("geotab/procesarTablero").customPOST();
        },
+       
+       sincronizarHoraProgramada:function(item){
+       	 return Restangular.allUrl("geotab/horaProgramada").customPOST(item);
+       },
      
         sincronizarDispositivos:function(items){
       	 return Restangular.allUrl("geotab/sincronizarDispositivos").customPOST(items);
         },
+        
         sincronizarZonas:function(itemDto){
         	
          	 return Restangular.allUrl("geotab/sincronizarZonas").customPOST(itemDto);
-           },
+        },
         
       
 	}

@@ -15,7 +15,7 @@ public interface VTableroRepository extends JpaRepository<VTablero, Integer> {
 
 	List<VTablero> findByCodigoRutaAndFechaOrderByOrdenAsc(Integer codigoRuta,Date fecha);
 	
-	@Query(value = "select distinct new com.tecnolpet.ot.geotab.dto.ZonaTableroDto( v.codigoZona,v.zona,v.orden) from VTablero v where v.fecha= :fecha and v.codigoRuta= :codigoRuta order by v.orden ")
+	@Query(value = "select distinct new com.tecnolpet.ot.geotab.dto.ZonaTableroDto( v.codigoZona,v.zona,v.orden,v.tiempo) from VTablero v where v.fecha= :fecha and v.codigoRuta= :codigoRuta order by v.orden ")
 	List<ZonaTableroDto> findByCodigoRutaAndFechaZonas(@Param("fecha") Date fecha,@Param("codigoRuta") Integer codigoRuta);
 	
 	@Query(value = "select distinct new com.tecnolpet.ot.geotab.dto.DispositivoTableroDto( v.codigoDispositivo,v.dispositivo,v.numeroVuelta) from VTablero v where v.fecha= :fecha and v.codigoRuta= :codigoRuta  ")

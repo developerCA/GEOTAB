@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.tecnolpet.ot.constant.SotApp;
+import com.tecnolpet.ot.dto.DiferenciaHoraDto;
 import com.tecnolpet.ot.geotab.dto.DispositivoGeotabDto;
 import com.tecnolpet.ot.geotab.dto.DispositivoTableroDto;
 import com.tecnolpet.ot.geotab.dto.GrupoChildrenGeoTabDto;
@@ -112,12 +113,14 @@ public class GeoTabService {
 
 	public TableroGeoTabDto devolverTablero(UsuarioAuthenticate usuario) {
 		Ruta ruta = usuario.getRuta();
-		// Date fecha = FechasUtils.sumarRestarDiasFecha(new Date(), -1);
 		Date fecha = new Date();
 		TableroGeoTabDto tablero = new TableroGeoTabDto();
 
+		procesarHoarasProgramadas(ruta.getCodigo(), fecha);
+
 		List<VTablero> listadoDatos = vTableroRepository.findByCodigoRutaAndFechaOrderByOrdenAsc(ruta.getCodigo(),
 				fecha);
+
 		List<ZonaTableroDto> listaZonas = vTableroRepository.findByCodigoRutaAndFechaZonas(fecha, ruta.getCodigo());
 		List<DispositivoTableroDto> listaDispositivos = vTableroRepository.findByCodigoRutaAndFechaDispositivos(fecha,
 				ruta.getCodigo());
@@ -138,6 +141,69 @@ public class GeoTabService {
 		tablero.setDispositivos(sList);
 
 		return tablero;
+
+	}
+
+	private void procesarHoarasProgramadas(Integer rutaCodigo, Date fecha) {
+
+		List<VTablero> listadoDatos = vTableroRepository.findByCodigoRutaAndFechaOrderByOrdenAsc(rutaCodigo, fecha);
+
+		for (VTablero tablero : listadoDatos) {
+			LocalizacionDispositivo localizacionDispositivo = localizacionDispositivoRepository
+					.findOne(tablero.getCodigo());
+
+			if (null != localizacionDispositivo.getZona().getInicioZona()
+					&& localizacionDispositivo.getZona().getInicioZona()) {
+
+				if (null != localizacionDispositivo.getHoraProgramada()) {
+
+					DiferenciaHoraDto diferencia = FechasUtils.diferenciaHoras(localizacionDispositivo.getHoraSalida(),
+							localizacionDispositivo.getHoraProgramada());
+
+					localizacionDispositivo.setDiferenciaTiempo(diferencia.getHoraDiferencia());
+					localizacionDispositivo.setCumpleTiempo(diferencia.getOperacion());
+
+					localizacionDispositivoRepository.save(localizacionDispositivo);
+
+				}
+
+			}
+
+			if (null != tablero.getCodigoEnlace()) {
+
+				LocalizacionDispositivo localizacionDispositivoEnlace = localizacionDispositivoRepository
+						.findOne(tablero.getCodigoEnlace());
+
+				if (null != localizacionDispositivoEnlace.getHoraProgramada()) {
+					if (null == tablero.getHoraProgramada()) {
+						Zona zonaFocalizada = zonaRepository.findOne(tablero.getCodigoZona());
+
+						Time horaProgramada = FechasUtils.aumentarMinutos(
+								localizacionDispositivoEnlace.getHoraProgramada(), zonaFocalizada.getTiempo());
+
+						DiferenciaHoraDto diferencia = FechasUtils
+								.diferenciaHoras(localizacionDispositivo.getHoraSalida(), horaProgramada);
+						localizacionDispositivo.setDiferenciaTiempo(diferencia.getHoraDiferencia());
+						localizacionDispositivo.setHoraProgramada(horaProgramada);
+						localizacionDispositivo.setCumpleTiempo(diferencia.getOperacion());
+						localizacionDispositivoRepository.save(localizacionDispositivo);
+
+					}
+				}
+			}
+
+		}
+
+	}
+
+	public void registrarHoraProgramada(VTablero vLocalizacionDipositivo) {
+
+		LocalizacionDispositivo localizacionDispositivo = localizacionDispositivoRepository
+				.findOne(vLocalizacionDipositivo.getCodigo());
+		localizacionDispositivo.setHoraProgramada(vLocalizacionDipositivo.getHoraProgramada());
+		localizacionDispositivoRepository.save(localizacionDispositivo);
+
+		procesarHoarasProgramadas(vLocalizacionDipositivo.getCodigoRuta(), vLocalizacionDipositivo.getFecha());
 
 	}
 
@@ -212,9 +278,10 @@ public class GeoTabService {
 	private FechaDispositivo establecerFecha(FechaDispositivo fechaProcesada) {
 
 		String fechaInicial = fechaProcesada.getFechaFinal();
-		TimeZone tz = TimeZone.getDefault();
+		TimeZone tz = TimeZone.getTimeZone("UTC");
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.S'Z'");
 		df.setTimeZone(tz);
+
 		String fechaFinalUTC = df.format(new Date());
 
 		fechaProcesada.setEstado("GEN");
@@ -233,7 +300,7 @@ public class GeoTabService {
 		fechaDispositivo.setEstado("GEN");
 		fechaDispositivo.setNemonico("FECDI");
 
-		TimeZone tz = TimeZone.getDefault();
+		TimeZone tz = TimeZone.getTimeZone("UTC");
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.S'Z'");
 		df.setTimeZone(tz);
 
@@ -304,46 +371,61 @@ public class GeoTabService {
 
 				Dispositivo dispositivo = dispositivoRepository.findOne(vLocalizacion.getCodigoDispositivo());
 				Zona zona = zonaRepository.findOne(vLocalizacion.getCodigoZona());
-				List<LocalizacionDispositivo> listaDispositivosProceso = localizacionDispositivoRepository
-						.findByProcesoAndDispositivoAndZonaAndFecha(proceso - 1, dispositivo, zona,
-								vLocalizacion.getFecha());
+				List<LocalizacionDispositivo> listaDispositivosProceso = null;
 
-				LocalizacionDispositivo localizacionDispositivo;
+				listaDispositivosProceso = localizacionDispositivoRepository
+						.findByDispositivoAndZonaAndFechaAndNumeroVuelta(dispositivo, zona, vLocalizacion.getFecha(),
+								dispositivo.getNumeroVuelta());
 
-				if (listaDispositivosProceso.isEmpty()) {
+				LocalizacionDispositivo localizacionDispositivo = null;
+
+				if (null == listaDispositivosProceso || listaDispositivosProceso.isEmpty()) {
+
 					localizacionDispositivo = new LocalizacionDispositivo();
+
 					if (zona.getInicioZona()) {
 						dispositivo.setNumeroVuelta(dispositivo.getNumeroVuelta() + 1);
 						dispositivoRepository.save(dispositivo);
 					}
+
 				} else {
-					localizacionDispositivo = listaDispositivosProceso.get(0);
+					System.out.println("Actualiza proceso de marca de zona");
+					if (zona.getZonaRetorno()) {
+						localizacionDispositivo = listaDispositivosProceso.get(0);
+						localizacionDispositivo.setHoraProgramada(null);
+						localizacionDispositivo.setDiferenciaTiempo(null);
+
+					}
+
 				}
 
-				localizacionDispositivo
-						.setDispositivo(dispositivoRepository.findOne(vLocalizacion.getCodigoDispositivo()));
-				localizacionDispositivo.setFecha(vLocalizacion.getFecha());
-				localizacionDispositivo.setHoraEntrada(vLocalizacion.getHoraEntrada());
-				localizacionDispositivo.setHoraSalida(vLocalizacion.getHoraSalida());
-				localizacionDispositivo.setProceso(proceso);
-				localizacionDispositivo
-						.setTipoHorario(tipoHorarioRepository.findOne(vLocalizacion.getCodigoTipoHorario()));
-				localizacionDispositivo.setZona(zonaRepository.findOne(vLocalizacion.getCodigoZona()));
-				localizacionDispositivo.setNumeroVuelta(dispositivo.getNumeroVuelta());
-				localizacionDispositivo.setTiempo(zona.getTiempo());
+				if (null != localizacionDispositivo) {
+					localizacionDispositivo
+							.setDispositivo(dispositivoRepository.findOne(vLocalizacion.getCodigoDispositivo()));
+					localizacionDispositivo.setFecha(vLocalizacion.getFecha());
+					localizacionDispositivo.setHoraEntrada(vLocalizacion.getHoraEntrada());
+					localizacionDispositivo.setHoraSalida(vLocalizacion.getHoraSalida());
+					localizacionDispositivo.setProceso(proceso);
+					localizacionDispositivo
+							.setTipoHorario(tipoHorarioRepository.findOne(vLocalizacion.getCodigoTipoHorario()));
+					localizacionDispositivo.setZona(zonaRepository.findOne(vLocalizacion.getCodigoZona()));
+					localizacionDispositivo.setNumeroVuelta(dispositivo.getNumeroVuelta());
+					localizacionDispositivo.setTiempo(zona.getTiempo());
 
-				LocalizacionDispositivo posicionAnterior;
-				
-				posicionAnterior=buscarZonaAnterior(dispositivo, localizacionDispositivo.getNumeroVuelta(), zona);
-				
-				if (null != posicionAnterior) {
-					//localizacionDispositivo.set
+					LocalizacionDispositivo posicionAnterior;
+					posicionAnterior = buscarZonaAnterior(dispositivo, localizacionDispositivo.getNumeroVuelta(), zona);
+
+					if (null != posicionAnterior) {
+						localizacionDispositivo.setCodigoEnlace(posicionAnterior.getCodigo());
+					}
+
+					localizacionDispositivoRepository.save(localizacionDispositivo);
+
 				}
-				localizacionDispositivoRepository.save(localizacionDispositivo);
 
 			} catch (Exception e) {
 				System.out.println("Error al procesar dispositivos");
-				System.err.println(e.getMessage());
+				System.err.println(e.getStackTrace());
 			}
 
 		}
@@ -354,11 +436,16 @@ public class GeoTabService {
 		LocalizacionDispositivo localizacionDispositivo = null;
 
 		if (null != zona.getZonaEnlace()) {
+			System.out.println(zona.getNombre());
 			Zona zonaAnterior = zonaRepository.findOne(zona.getZonaEnlace().getCodigo());
+			System.out.println(zonaAnterior.getNombre());
+			System.out.println(dispositivo.getCodigoDispositivo());
+			System.out.println(numeroVuelta);
 			List<LocalizacionDispositivo> localizaciones = localizacionDispositivoRepository
 					.findByDispositivoAndZonaAndNumeroVuelta(dispositivo, zonaAnterior, numeroVuelta);
 
-			if (localizaciones.isEmpty()) {
+			if (null != localizaciones && localizaciones.isEmpty() == false) {
+				System.out.println(localizaciones.size());
 				localizacionDispositivo = localizaciones.get(0);
 			}
 		}
@@ -392,7 +479,7 @@ public class GeoTabService {
 	}
 
 	private void procesarPasoZona(Localizacion localizacion) {
-		List<Zona> listaZonas = zonaRepository.findByRuta(localizacion.getDispositivo().getRuta());
+		List<Zona> listaZonas = zonaRepository.findByRutaOrderByOrdenAsc(localizacion.getDispositivo().getRuta());
 
 		for (Zona zona : listaZonas) {
 			List<Punto> listaPuntos = puntoRepository.findByZona(zona);
@@ -400,11 +487,8 @@ public class GeoTabService {
 			boolean buscaParadaZona = PoligonoUtils.buscarZonaPoligono(listaPuntos, localizacion);
 
 			if (buscaParadaZona) {
-
-				System.err.println("Dispositivo:" + localizacion.getDispositivo().getNombre());
-				System.err.println("Zona:" + zona.getNombre());
-				System.err.println("Zona:" + zona.getRuta().getNombre());
 				registraDispositivoZona(localizacion, zona);
+				break;
 			}
 
 		}
@@ -420,10 +504,21 @@ public class GeoTabService {
 			localizacionZona.setZona(zona);
 			localizacionZona.setFecha(FechasUtils.convertirStringTimeZoneToDate(localizacion.getFechaHora()));
 			localizacionZona.setFechaUtc(localizacion.getFechaHora());
-			localizacionZona.setHora(FechasUtils.convertirStringTimeZoneToTime(localizacion.getFechaHora()));
+			Time hora = FechasUtils.convertirStringTimeZoneToTime(localizacion.getFechaHora());
+
+			Date dateHora = new Date(hora.getTime());
+
+			Calendar calendarHora = Calendar.getInstance();
+			calendarHora.setTime(dateHora);
+			calendarHora.add(Calendar.HOUR, -5);
+
+			Time horaProcesada = new Time(calendarHora.getTime().getTime());
+
+			localizacionZona.setHora(horaProcesada);
+
 			localizacionZona.setTipoHorario(devolverTipoHora(localizacionZona.getHora()));
 			if (null == localizacionZona.getTipoHorario()) {
-				System.err.println("ssssssssssssss");
+				System.err.println("Proceso nulo de tipo de horario");
 				System.out.println(localizacionZona.getHora());
 			}
 			localizacionZona.setProceso(localizacion.getProceso());
@@ -610,6 +705,10 @@ public class GeoTabService {
 			zona.setIdentificador(zonaGeotabDto.getId());
 			zona.setOrden(zonaGeotabDto.getComment());
 			zona.setTipoZona(tipoZona);
+			zona.setTiempo(0);
+			zona.setInicioZona(Boolean.FALSE);
+			zona.setValida(Boolean.TRUE);
+
 		}
 
 		zonaRepository.save(zona);
@@ -650,7 +749,7 @@ public class GeoTabService {
 
 	public List<Zona> traerZonas(Integer id) {
 		Ruta ruta = rutaRepository.findOne(id);
-		List<Zona> zonas = zonaRepository.findByRuta(ruta);
+		List<Zona> zonas = zonaRepository.findByRutaOrderByOrdenAsc(ruta);
 
 		return zonas;
 	}

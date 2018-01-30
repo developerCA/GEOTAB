@@ -9,9 +9,9 @@ import com.tecnolpet.ot.model.Dispositivo;
 import com.tecnolpet.ot.model.LocalizacionDispositivo;
 import com.tecnolpet.ot.model.Zona;
 
-public interface LocalizacionDispositivoRepository extends JpaRepository<LocalizacionDispositivo, Integer> {
+public interface LocalizacionDispositivoRepository extends JpaRepository<LocalizacionDispositivo, Long> {
 
-	List<LocalizacionDispositivo> findByProcesoAndDispositivoAndZonaAndFecha(Integer proceso,Dispositivo dispositivo, Zona zona,Date fecha);
+	List<LocalizacionDispositivo> findByDispositivoAndZonaAndFechaAndNumeroVuelta(Dispositivo dispositivo, Zona zona,Date fecha,Integer numeroVuelta);
 
 	List<LocalizacionDispositivo> findByDispositivoAndZonaAndNumeroVuelta(Dispositivo dispositivo, Zona zona,Integer numeroVuelta);
 

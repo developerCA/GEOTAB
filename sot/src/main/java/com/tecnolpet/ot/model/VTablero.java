@@ -50,6 +50,29 @@ public class VTablero implements Serializable {
 	private String orden;
 	
 	private String zona;
+	
+	private Integer tiempo;
+	
+
+	@Column(name="hora_programadatmp")
+	private Time horaProgramadaTmp;
+	
+	@Column(name = "diferencia_tiempo")
+	private Time diferenciaTiempo;
+	
+	@Column(name="hora_programada")
+	private Time horaProgramada;
+	
+	@Column(name="cumple_tiempo")
+	private Boolean cumpleTiempo;
+	
+	
+	@Column(name="inicio_zona")
+	private Boolean inicioZona;
+	
+	
+	@Column(name = "codigo_enlace")
+	private Long codigoEnlace;
 
 	public VTablero() {
 	}
@@ -150,12 +173,68 @@ public class VTablero implements Serializable {
 		this.numeroVuelta = numeroVuelta;
 	}
 
+	public Time getDiferenciaTiempo() {
+		return diferenciaTiempo;
+	}
+
+	public void setDiferenciaTiempo(Time diferenciaTiempo) {
+		this.diferenciaTiempo = diferenciaTiempo;
+	}
+
 	public String getOrden() {
 		return orden;
 	}
 
 	public void setOrden(String orden) {
 		this.orden = orden;
+	}
+
+	public Integer getTiempo() {
+		return tiempo;
+	}
+
+	public void setTiempo(Integer tiempo) {
+		this.tiempo = tiempo;
+	}
+
+	public Boolean getInicioZona() {
+		return inicioZona;
+	}
+
+	public void setInicioZona(Boolean inicioZona) {
+		this.inicioZona = inicioZona;
+	}
+
+	public Time getHoraProgramada() {
+		return horaProgramada;
+	}
+
+	public void setHoraProgramada(Time horaProgramada) {
+		this.horaProgramada = horaProgramada;
+	}
+
+	public Boolean getCumpleTiempo() {
+		return cumpleTiempo;
+	}
+
+	public void setCumpleTiempo(Boolean cumpleTiempo) {
+		this.cumpleTiempo = cumpleTiempo;
+	}
+
+	public Long getCodigoEnlace() {
+		return codigoEnlace;
+	}
+
+	public void setCodigoEnlace(Long codigoEnlace) {
+		this.codigoEnlace = codigoEnlace;
+	}
+
+	public Time getHoraProgramadaTmp() {
+		return horaProgramadaTmp;
+	}
+
+	public void setHoraProgramadaTmp(Time horaProgramadaTmp) {
+		this.horaProgramadaTmp = horaProgramadaTmp;
 	}
 
 	

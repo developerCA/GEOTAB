@@ -21,6 +21,9 @@ angular.module('app', [
     'ngBootbox',
     'ngImgCrop',
     'mgcrea.ngStrap',
-    'underscore'
+    'underscore',
+    'mgcrea.ngStrap',
+    'ui.utils.masks',
+    'ui.mask',
     
 ]);

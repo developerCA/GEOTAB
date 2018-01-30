@@ -43,6 +43,10 @@ public class Zona implements Serializable {
 	@JsonView(ViewOT.PublicView.class)
 	@Column(name="inicio_zona")
 	private Boolean inicioZona;
+	
+	@JsonView(ViewOT.PublicView.class)
+	@Column(name="zona_retorno")
+	private Boolean zonaRetorno;
 
 	//bi-directional many-to-one association to Ruta
 	@JsonView(ViewOT.PublicView.class)
@@ -144,6 +148,14 @@ public class Zona implements Serializable {
 
 	public void setZonaEnlace(Zona zonaEnlace) {
 		this.zonaEnlace = zonaEnlace;
+	}
+
+	public Boolean getZonaRetorno() {
+		return zonaRetorno;
+	}
+
+	public void setZonaRetorno(Boolean zonaRetorno) {
+		this.zonaRetorno = zonaRetorno;
 	}
 
 

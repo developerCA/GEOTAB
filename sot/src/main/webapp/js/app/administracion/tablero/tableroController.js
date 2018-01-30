@@ -3,28 +3,31 @@ app.controller("tableroCtrl",
 				"$scope",
 				"$filter",
 				"$interval",
+				"toaster",
 				"tableroFactory",
 				"sincronizarFactory",
 				"_",
-				function($scope, $filter, $interval, tableroFactory,
+				function($scope, $filter, $interval, toaster,tableroFactory,
 						sincronizarFactory,_) {
 					$scope.tableros = null;
-					$scope.beginningOfDay = new Date();
-					$scope.endOfDay = new Date();
-					$scope.list = [ "bB9", "b21", "b23", "b82" ];
+					
 
 					$scope.tableros = [];
 					$scope.mostrar = false;
 					$scope.ultimo = null;
-					$scope.p = 0;
+					
 					$scope.data = [];
 
 					$scope.init = function() {
 						
 
-						console.log("inicia proed");
+						
 						$scope.iniciaCron();
+						$scope.iniciaCronTablero();
+						
 					}
+					
+					$scope.columnas=[{nombre:"Hora"},{nombre:"Diferencia"}];
 
 					$scope.bandera = 100;
 
@@ -40,9 +43,9 @@ app.controller("tableroCtrl",
 								sincronizarFactory
 										.sincronizarFechasLozalizaciones()
 										.then(function(r) {
-											console.log(r);
+											
 											var fechaProceso=r.objeto;
-								
+											console.log(fechaProceso);
 											if (r.estado){
 												
 												api.call("Get", {
@@ -75,7 +78,7 @@ app.controller("tableroCtrl",
 							} else {
 								$scope.pararCron();
 							}
-						}, 20000);
+						}, 30000);
 					};
 
 					// 200000
@@ -86,10 +89,32 @@ app.controller("tableroCtrl",
 						}
 					};
 
-					$scope.$watch("tableros", function() {
-						$scope.data = $scope.tableros;
-						console.log($scope.data);
-					});
+					var stopTablero;
+					$scope.stopTablero = function() {
+						if (angular.isDefined(stopTablero)) {
+							$interval.cancel(stopTablero);
+							stopTablero = undefined;
+						}
+					};
+
+					
+					$scope.iniciaCronTablero = function() {
+
+						if (angular.isDefined(stopTablero))
+							return;
+
+						stopTablero = $interval(function() {
+							if ($scope.bandera == 100) {
+								console.log("Actualizar tablero")
+
+								$scope.traertablero();
+							} else {
+								$scope.stopTablero();
+							}
+						}, 13000);
+					};
+
+					
 
 					$scope.traertablero = function() {
 						sincronizarFactory.sincronizarTablero().then(function(resp) {
@@ -99,15 +124,45 @@ app.controller("tableroCtrl",
 							$scope.zonas=$scope.tabla.zonas;
 							
 							$scope.dispositivos=$scope.tabla.dispositivos;
-						    /*$scope.zonas= _.groupBy($scope.tablero,function(data){
-						    	return data.codigoZona,data.zona;
-						    });*/
-						    
-							console.log($scope.tabla);
+						   
+							//console.log($scope.tabla);
 						    
 							
 
 						});
+					};
+					
+				
+					$scope.editarLocalizacion=function(vLocalizacion){
+						vLocalizacion.horaProgramada=vLocalizacion.horaProgramadaTmp;
+						
+					
+						
+						sincronizarFactory.sincronizarHoraProgramada(vLocalizacion).then(function(resp) {
+							vLocalizacion.muestra=false;
+							vLocalizacion.horaProgramadaTmp=null;
+							toaster
+							.pop("success", "Hora Programada",
+									"Se registro correctamente la hora programada, muy pronto se actualizará el tablero!");
+
+
+						},function() {
+							toaster
+							.pop("error", "Hora Programada",
+									"Es posible que el formato este incorrecto!");
+
+						    
+						}
+						);
+						
+						
+						
+						
+						
+					};
+					$scope.cancelaLocalizacion=function(vLocalizacion){
+						vLocalizacion.muestra=false;
+						vLocalizacion.horaProgramadaTmp=vLocalizacion.horaProgramada;
 					}
 					
 					

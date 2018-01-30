@@ -5,11 +5,13 @@ public class ZonaTableroDto {
 	private Integer codigoZona;
 	private String nombreZona;
 	private String orden;
+	private Integer tiempo;
 	
-	public ZonaTableroDto(Integer codigoZona,String nombreZona,String orden  ){
+	public ZonaTableroDto(Integer codigoZona,String nombreZona,String orden,Integer tiempo  ){
 		this.codigoZona=codigoZona;
 		this.nombreZona=nombreZona;
 		this.orden=orden;
+		this.tiempo=tiempo;
 				
 	}
 
@@ -35,6 +37,14 @@ public class ZonaTableroDto {
 
 	public void setOrden(String orden) {
 		this.orden = orden;
+	}
+
+	public Integer getTiempo() {
+		return tiempo;
+	}
+
+	public void setTiempo(Integer tiempo) {
+		this.tiempo = tiempo;
 	}
 	
 	

@@ -21,6 +21,7 @@ import com.tecnolpet.ot.jview.ViewOT;
 import com.tecnolpet.ot.model.Dispositivo;
 import com.tecnolpet.ot.model.Empresa;
 import com.tecnolpet.ot.model.Ruta;
+import com.tecnolpet.ot.model.VTablero;
 import com.tecnolpet.ot.model.Zona;
 import com.tecnolpet.ot.seguridad.UsuarioAuthenticate;
 
@@ -157,6 +158,22 @@ public class GeotabController {
 		try {
 			respuestaDto.setEstado(Boolean.TRUE);
 			respuestaDto.setObjeto(geoTabService.devolverTablero(usuario));
+
+		} catch (Exception ex) {
+			respuestaDto.setEstado(Boolean.FALSE);
+			respuestaDto.setMensaje(ex.getMessage());
+		}
+
+		return respuestaDto;
+	}
+
+	@RequestMapping(value = "/horaProgramada", method = RequestMethod.POST)
+	public RespuestaDto regitrarHoraProgramada(@RequestBody VTablero vlocalizacionDispositivo) {
+		RespuestaDto respuestaDto = new RespuestaDto();
+
+		try {
+			geoTabService.registrarHoraProgramada(vlocalizacionDispositivo);
+			respuestaDto.setEstado(Boolean.TRUE);
 
 		} catch (Exception ex) {
 			respuestaDto.setEstado(Boolean.FALSE);
