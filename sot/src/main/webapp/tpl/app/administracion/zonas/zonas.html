@@ -56,6 +56,7 @@
 							<th>Tipo</th>
 							<th>Orden</th>
 							<th>Tiempo (minutos)</th>
+							<th>Zona Retorno</th>
 							<th>Zona Muerta</th>
 							<th>Terminal Principal</th>
 							<th>Zona Enlace</th>
@@ -87,6 +88,9 @@
 	</td>
 	<td style="vertical-align:middle;">
 		{{ z.tiempo }}
+	</td>
+	<td style="vertical-align:middle;">
+		<input type="checkbox" name="'retorno' + $index" ng-checked="z.zonaRetorno" ng-disabled="true">
 	</td>
 	<td style="vertical-align:middle;">
 		<input type="checkbox" name="'valida' + $index" ng-checked="z.valida" ng-disabled="true">
@@ -125,6 +129,9 @@
 	<td style="vertical-align:middle;">
     <input type="number" placeholder="Escriba un tiempo"
         class="form-control" name="tiempo" ng-model="model.selected.tiempo">
+	</td>
+	<td style="vertical-align:middle;">
+		<input type="checkbox" name="'retorno' + $index" ng-checked="model.selected.zonaRetorno" ng-model="model.selected.zonaRetorno">
 	</td>
 	<td style="vertical-align:middle;">
 		<input type="checkbox" name="'valida' + $index" ng-checked="model.selected.valida" ng-model="model.selected.valida">
