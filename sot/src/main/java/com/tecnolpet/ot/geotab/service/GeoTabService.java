@@ -389,11 +389,16 @@ public class GeoTabService {
 					}
 
 				} else {
-					System.out.println("Actualiza proceso de marca de zona");
+					
 					if (zona.getZonaRetorno()) {
-						localizacionDispositivo = listaDispositivosProceso.get(0);
-						localizacionDispositivo.setHoraProgramada(null);
-						localizacionDispositivo.setDiferenciaTiempo(null);
+						System.out.println("Actualiza proceso de marca de zona");
+						System.out.println(listaDispositivosProceso.size());
+						if (listaDispositivosProceso.size()>0){
+							localizacionDispositivo = listaDispositivosProceso.get(0);
+							localizacionDispositivo.setHoraProgramada(null);
+							localizacionDispositivo.setDiferenciaTiempo(null);	
+						}
+						
 
 					}
 
@@ -609,6 +614,7 @@ public class GeoTabService {
 						geotabDispositivo.setSerie(dispositivo.getSerialNumber());
 						geotabDispositivo.setNombre(dispositivo.getName());
 						geotabDispositivo.setRuta(ruta);
+						geotabDispositivo.setNumeroVuelta(0);
 					}
 
 					dispositivoRepository.save(geotabDispositivo);

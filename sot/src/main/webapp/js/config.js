@@ -32,10 +32,14 @@ angular.module('app')
 .config(function(blockUIConfig) {
 
     blockUIConfig.requestFilter = function(config) {
-     //console.log(config.url);
+     console.log(config.url);
   if(config.url=="api/geotab/fechaDispositivos"){
       return false;
      }else if(config.url=="api/geotab/procesarDatos"){
+    	 console.log("1.1");
+      return false;      
+     }else if(config.url=="geotab/api/geotab/procesarDatos"){
+    	 console.log("2.1");
       return false;      
      }
   

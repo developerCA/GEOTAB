@@ -11,16 +11,16 @@ angular.module('app')
       isSmartDevice( $window ) && angular.element($window.document.body).addClass('smart');
 
       
-      $rootScope.versionApp="/sot-1.0";
+      $rootScope.versionApp="/geotab";
       //$rootScope.versionApp="";
       
       // config
       $scope.app = {
         name: 'GeoTab RS',
         version: '0.0.1',
-        versionApp:'/sot-1.0',
+        versionApp:'/geotab',
         //versionApp:'/',
-        logout:'sot-1.0/logout',
+        logout:'geotab/logout',
         // for chart colors
         color: {
           primary: '#7266ba',

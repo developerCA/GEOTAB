@@ -12,6 +12,8 @@
 	<artifactId>geotab</artifactId>
 	<version>1.0</version>
 
+<packaging>war</packaging>
+
 	<name>geotab</name>
 	<description>Sistema Geotab</description>
 
@@ -83,7 +85,12 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
-			
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-tomcat</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>
@@ -124,7 +131,7 @@
 	</dependencies>
 
 	<build>
-	 <!-- <finalName>sot-1.0</finalName> -->	
+	  <finalName>geotab</finalName> 
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
