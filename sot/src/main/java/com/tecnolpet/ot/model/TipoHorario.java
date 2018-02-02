@@ -1,9 +1,14 @@
 package com.tecnolpet.ot.model;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.sql.Time;
-import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 
 /**
@@ -28,10 +33,7 @@ public class TipoHorario implements Serializable {
 	@Column(name="nombre_tipo_hora")
 	private String nombreTipoHora;
 
-	//bi-directional many-to-one association to LocalizacionZona
-	@OneToMany(mappedBy="tipoHorario")
-	private List<LocalizacionZona> localizacionZonas;
-
+	
 	public TipoHorario() {
 	}
 
@@ -67,26 +69,6 @@ public class TipoHorario implements Serializable {
 		this.nombreTipoHora = nombreTipoHora;
 	}
 
-	public List<LocalizacionZona> getLocalizacionZonas() {
-		return this.localizacionZonas;
-	}
-
-	public void setLocalizacionZonas(List<LocalizacionZona> localizacionZonas) {
-		this.localizacionZonas = localizacionZonas;
-	}
-
-	public LocalizacionZona addLocalizacionZona(LocalizacionZona localizacionZona) {
-		getLocalizacionZonas().add(localizacionZona);
-		localizacionZona.setTipoHorario(this);
-
-		return localizacionZona;
-	}
-
-	public LocalizacionZona removeLocalizacionZona(LocalizacionZona localizacionZona) {
-		getLocalizacionZonas().remove(localizacionZona);
-		localizacionZona.setTipoHorario(null);
-
-		return localizacionZona;
-	}
+	
 
 }

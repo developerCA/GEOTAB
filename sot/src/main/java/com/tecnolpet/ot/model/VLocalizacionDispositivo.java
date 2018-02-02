@@ -16,12 +16,9 @@ public class VLocalizacionDispositivo implements Serializable {
 
 	@Id
 	private Integer id;
-	
+
 	@Column(name = "codigo_dispositivo")
 	private Integer codigoDispositivo;
-
-	@Column(name = "codigo_tipo_horario")
-	private Integer codigoTipoHorario;
 
 	@Column(name = "codigo_zona")
 	private Integer codigoZona;
@@ -38,8 +35,6 @@ public class VLocalizacionDispositivo implements Serializable {
 	private Time horaSalida;
 
 	private Integer proceso;
-	
-
 
 	public VLocalizacionDispositivo() {
 	}
@@ -50,14 +45,6 @@ public class VLocalizacionDispositivo implements Serializable {
 
 	public void setCodigoDispositivo(Integer codigoDispositivo) {
 		this.codigoDispositivo = codigoDispositivo;
-	}
-
-	public Integer getCodigoTipoHorario() {
-		return this.codigoTipoHorario;
-	}
-
-	public void setCodigoTipoHorario(Integer codigoTipoHorario) {
-		this.codigoTipoHorario = codigoTipoHorario;
 	}
 
 	public Integer getCodigoZona() {
@@ -115,7 +102,5 @@ public class VLocalizacionDispositivo implements Serializable {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-
-
 
 }

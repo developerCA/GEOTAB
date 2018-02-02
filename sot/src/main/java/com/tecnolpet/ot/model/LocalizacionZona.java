@@ -47,10 +47,7 @@ public class LocalizacionZona implements Serializable {
 	@JoinColumn(name="codigo_dispositivo")
 	private Dispositivo dispositivo;
 
-	//bi-directional many-to-one association to TipoHorario
-	@ManyToOne
-	@JoinColumn(name="codigo_tipo_horario")
-	private TipoHorario tipoHorario;
+	
 
 	//bi-directional many-to-one association to Zona
 	@ManyToOne
@@ -108,13 +105,7 @@ public class LocalizacionZona implements Serializable {
 		this.dispositivo = dispositivo;
 	}
 
-	public TipoHorario getTipoHorario() {
-		return this.tipoHorario;
-	}
 
-	public void setTipoHorario(TipoHorario tipoHorario) {
-		this.tipoHorario = tipoHorario;
-	}
 
 	public Zona getZona() {
 		return this.zona;

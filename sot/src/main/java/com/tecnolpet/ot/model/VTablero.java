@@ -5,72 +5,64 @@ import javax.persistence.*;
 import java.sql.Time;
 import java.util.Date;
 
-
 /**
  * The persistent class for the v_tablero database table.
  * 
  */
 @Entity
-@Table(name="v_tablero")
-
+@Table(name = "v_tablero")
 public class VTablero implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	private Long codigo;
 
-	@Column(name="codigo_ruta")
+	@Column(name = "codigo_ruta")
 	private Integer codigoRuta;
-	
-	@Column(name="codigo_dispositivo")
+
+	@Column(name = "codigo_dispositivo")
 	private Integer codigoDispositivo;
 
-	@Column(name="codigo_zona")
+	@Column(name = "codigo_zona")
 	private Integer codigoZona;
 
 	private String dispositivo;
 
-	@Column(name="hora_entrada")
+	@Column(name = "hora_entrada")
 	private Time horaEntrada;
 
-	@Column(name="hora_salida")
+	@Column(name = "hora_salida")
 	private Time horaSalida;
 
 	private String ruta;
-	
+
 	@Temporal(TemporalType.DATE)
 	private Date fecha;
 
-	@Column(name="tipo_horario")
-	private String tipoHorario;
-
 	@Column(name = "numero_vuelta")
 	private Integer numeroVuelta;
-	
-	private String orden;
-	
-	private String zona;
-	
-	private Integer tiempo;
-	
 
-	@Column(name="hora_programadatmp")
+	private String orden;
+
+	private String zona;
+
+	private Integer tiempo;
+
+	@Column(name = "hora_programadatmp")
 	private Time horaProgramadaTmp;
-	
+
 	@Column(name = "diferencia_tiempo")
 	private Time diferenciaTiempo;
-	
-	@Column(name="hora_programada")
+
+	@Column(name = "hora_programada")
 	private Time horaProgramada;
-	
-	@Column(name="cumple_tiempo")
+
+	@Column(name = "cumple_tiempo")
 	private Boolean cumpleTiempo;
-	
-	
-	@Column(name="inicio_zona")
+
+	@Column(name = "inicio_zona")
 	private Boolean inicioZona;
-	
-	
+
 	@Column(name = "codigo_enlace")
 	private Long codigoEnlace;
 
@@ -131,14 +123,6 @@ public class VTablero implements Serializable {
 
 	public void setRuta(String ruta) {
 		this.ruta = ruta;
-	}
-
-	public String getTipoHorario() {
-		return this.tipoHorario;
-	}
-
-	public void setTipoHorario(String tipoHorario) {
-		this.tipoHorario = tipoHorario;
 	}
 
 	public String getZona() {
@@ -236,7 +220,5 @@ public class VTablero implements Serializable {
 	public void setHoraProgramadaTmp(Time horaProgramadaTmp) {
 		this.horaProgramadaTmp = horaProgramadaTmp;
 	}
-
-	
 
 }
