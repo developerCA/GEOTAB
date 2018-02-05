@@ -12,6 +12,7 @@
   "dependencies": {
     "restangular": "~1.4.0",
     "angular-strap": "^2.3.12",
-    "angular-input-masks": "^2.6.0"
+    "angular-input-masks": "^2.6.0",
+    "angular-pdfjs-viewer": "^0.8.1"
   }
 }

@@ -25,5 +25,6 @@ angular.module('app', [
     'mgcrea.ngStrap',
     'ui.utils.masks',
     'ui.mask',
+    'pdfjsViewer',
     
 ]);

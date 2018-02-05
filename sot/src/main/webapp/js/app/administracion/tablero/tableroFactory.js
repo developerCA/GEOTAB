@@ -15,6 +15,8 @@ app.factory("tableroFactory", ["Restangular",
         tableroDispositivos:function(items){
       	 return Restangular.allUrl("geotab/tableroDispositivos").customPOST(items);
         },
+        
+        
 /*
         create: function(item){
             return service.post(item);

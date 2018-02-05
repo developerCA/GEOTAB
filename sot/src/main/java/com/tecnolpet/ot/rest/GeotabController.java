@@ -15,6 +15,7 @@ import com.tecnolpet.ot.dto.RespuestaDto;
 import com.tecnolpet.ot.geotab.dto.DispositivoGeotabDto;
 import com.tecnolpet.ot.geotab.dto.GrupoGeotabDto;
 import com.tecnolpet.ot.geotab.dto.ProcesaDatosGeotabDto;
+import com.tecnolpet.ot.geotab.dto.ReporteVueltaDto;
 import com.tecnolpet.ot.geotab.dto.SincronizarZonasDto;
 import com.tecnolpet.ot.geotab.service.GeoTabService;
 import com.tecnolpet.ot.jview.ViewOT;
@@ -37,7 +38,8 @@ public class GeotabController {
 	}
 
 	@RequestMapping(value = "/sincronizarGrupos", method = RequestMethod.POST)
-	public RespuestaDto sincronizarGrupos(@RequestBody List<GrupoGeotabDto> grupos) {
+	public RespuestaDto sincronizarGrupos(
+			@RequestBody List<GrupoGeotabDto> grupos) {
 		RespuestaDto respuestaDto = new RespuestaDto();
 
 		try {
@@ -51,8 +53,25 @@ public class GeotabController {
 		return respuestaDto;
 	}
 
+	@RequestMapping(value = "/reporte", method = RequestMethod.POST)
+	public RespuestaDto reporte(@RequestBody ReporteVueltaDto reporteVueltaDto) {
+		RespuestaDto respuestaDto = new RespuestaDto();
+
+		try {
+			respuestaDto.setEstado(Boolean.TRUE);
+			geoTabService.generarReporte(reporteVueltaDto);
+			respuestaDto.setObjeto(reporteVueltaDto);
+		} catch (Exception ex) {
+			respuestaDto.setEstado(Boolean.FALSE);
+			respuestaDto.setMensaje(ex.getMessage());
+		}
+
+		return respuestaDto;
+	}
+
 	@RequestMapping(value = "/sincronizarDispositivos", method = RequestMethod.POST)
-	public RespuestaDto sincronizarDispositivos(@RequestBody List<DispositivoGeotabDto> dispositivos) {
+	public RespuestaDto sincronizarDispositivos(
+			@RequestBody List<DispositivoGeotabDto> dispositivos) {
 		RespuestaDto respuestaDto = new RespuestaDto();
 
 		try {
@@ -68,7 +87,8 @@ public class GeotabController {
 	}
 
 	@RequestMapping(value = "/sincronizarZonas", method = RequestMethod.POST)
-	public RespuestaDto sincronizarZonas(@RequestBody SincronizarZonasDto sincronizarZonasDto) {
+	public RespuestaDto sincronizarZonas(
+			@RequestBody SincronizarZonasDto sincronizarZonasDto) {
 		RespuestaDto respuestaDto = new RespuestaDto();
 
 		try {
@@ -136,7 +156,8 @@ public class GeotabController {
 	}
 
 	@RequestMapping(value = "/procesarDatos", method = RequestMethod.POST)
-	public RespuestaDto procesarLocalizaciones(@RequestBody ProcesaDatosGeotabDto procesaDatosGeotabDto) {
+	public RespuestaDto procesarLocalizaciones(
+			@RequestBody ProcesaDatosGeotabDto procesaDatosGeotabDto) {
 		RespuestaDto respuestaDto = new RespuestaDto();
 
 		try {
@@ -152,7 +173,8 @@ public class GeotabController {
 	}
 
 	@RequestMapping(value = "/procesarTablero", method = RequestMethod.POST)
-	public RespuestaDto procesarTablero(@AuthenticationPrincipal UsuarioAuthenticate usuario) {
+	public RespuestaDto procesarTablero(
+			@AuthenticationPrincipal UsuarioAuthenticate usuario) {
 		RespuestaDto respuestaDto = new RespuestaDto();
 
 		try {
@@ -168,7 +190,8 @@ public class GeotabController {
 	}
 
 	@RequestMapping(value = "/horaProgramada", method = RequestMethod.POST)
-	public RespuestaDto regitrarHoraProgramada(@RequestBody VTablero vlocalizacionDispositivo) {
+	public RespuestaDto regitrarHoraProgramada(
+			@RequestBody VTablero vlocalizacionDispositivo) {
 		RespuestaDto respuestaDto = new RespuestaDto();
 
 		try {
@@ -185,13 +208,15 @@ public class GeotabController {
 
 	@JsonView(ViewOT.PublicView.class)
 	@RequestMapping(value = "/listar/dispositivos", method = RequestMethod.GET)
-	public List<Dispositivo> traerInstrumentos(@AuthenticationPrincipal UsuarioAuthenticate usuario) {
+	public List<Dispositivo> traerInstrumentos(
+			@AuthenticationPrincipal UsuarioAuthenticate usuario) {
 		return geoTabService.devolverDispositivos(usuario.getRuta());
 	}
 
 	@JsonView(ViewOT.PublicView.class)
 	@RequestMapping(value = "/listar/empresas", method = RequestMethod.GET)
-	public List<Empresa> traerEmpresas(@AuthenticationPrincipal UsuarioAuthenticate usuario) {
+	public List<Empresa> traerEmpresas(
+			@AuthenticationPrincipal UsuarioAuthenticate usuario) {
 		return geoTabService.traerEmpresas();
 	}
 

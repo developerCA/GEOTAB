@@ -1,3 +1,5 @@
+
+
 <toaster-container
 	toaster-options="{'position-class': 'toast-top-right', 'close-button':true}">
 </toaster-container>
@@ -18,6 +20,13 @@
 
 
 			</div>
+
+
+
+
+
+
+
 			<div class="table-responsive">
 				<table class="table table-striped m-b-none">
 					<thead>
@@ -44,7 +53,11 @@
 					<tbody>
 
 						<tr ng-repeat="d in tabla.tablero">
-							<td class="text-center"><span class="badge bg-info">{{d.dispositivoTableroDto.numeroVuelta}}</span></td>
+							<td class="text-center"><button
+									class="btn btn-sm btn-icon btn-default"
+									ng-click="imprimir(d.dispositivoTableroDto)">
+									<i class="fa fa-print"></i>
+								</button> <span class="badge bg-info">{{d.dispositivoTableroDto.numeroVuelta}}</span></td>
 							<td class="text-center">{{d.dispositivoTableroDto.dispositivo}}</td>
 							<td ng-repeat-start="h in d.listaHoras" colspan="1"
 								class="text-center" style="padding: 2px">
@@ -89,9 +102,9 @@
 							</td>
 							<td ng-repeat-end ng-repeat="cab in columnas" colspan="1"
 								class="text-center"><span ng-if="cab.nombre=='Hora'">{{h.horaSalida}}</span>
-								<span ng-if="cab.nombre=='Diferencia'"><span ng-class="{true:'label bg-info', false:'label bg-danger'}[h.cumpleTiempo]">{{h.diferenciaTiempo}}</span> </span>
-
-							</td>
+								<span ng-if="cab.nombre=='Diferencia'"><span
+									ng-class="{true:'label bg-info', false:'label bg-danger'}[h.cumpleTiempo]">{{h.diferenciaTiempo}}</span>
+							</span></td>
 
 
 						</tr>
@@ -100,6 +113,17 @@
 				</table>
 			</div>
 
+
+
+
+
+		</div>
+
+
+
+		<div class="some-pdf-container" >
+			<pdfjs-viewer src="{{ pdf.src }}"></pdfjs-viewer>
 		</div>
 	</div>
 </div>
+

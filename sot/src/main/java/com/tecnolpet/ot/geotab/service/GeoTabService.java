@@ -1,5 +1,6 @@
 package com.tecnolpet.ot.geotab.service;
 
+import java.sql.SQLException;
 import java.sql.Time;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -11,7 +12,19 @@ import java.util.List;
 import java.util.TimeZone;
 import java.util.stream.Collectors;
 
+import javax.sql.DataSource;
+
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.export.JRPdfExporter;
+import net.sf.jasperreports.export.SimpleExporterInput;
+import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
+import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +39,7 @@ import com.tecnolpet.ot.geotab.dto.GrupoGeotabDto;
 import com.tecnolpet.ot.geotab.dto.LocalizazionesGeotabDto;
 import com.tecnolpet.ot.geotab.dto.ProcesaDatosGeotabDto;
 import com.tecnolpet.ot.geotab.dto.PuntoZonaGeotabDto;
+import com.tecnolpet.ot.geotab.dto.ReporteVueltaDto;
 import com.tecnolpet.ot.geotab.dto.SincronizarZonasDto;
 import com.tecnolpet.ot.geotab.dto.TableroGeoTabDto;
 import com.tecnolpet.ot.geotab.dto.TableroViewGeoTabDto;
@@ -67,7 +81,14 @@ import com.tecnolpet.ot.utils.FechasUtils;
 import com.tecnolpet.ot.utils.PoligonoUtils;
 
 @Service
+@Configuration
 public class GeoTabService {
+
+	@Value("${pathReportes}")
+	private String staticPathReport;
+
+	@Value("${files}")
+	private String filesPdf;
 
 	@Autowired
 	private GeoTabGrupoRepository geoTabGrupoRepository;
@@ -111,6 +132,9 @@ public class GeoTabService {
 	@Autowired
 	private LocalizacionDispositivoRepository localizacionDispositivoRepository;
 
+	@Autowired
+	DataSource dataSource;
+
 	public TableroGeoTabDto devolverTablero(UsuarioAuthenticate usuario) {
 		Ruta ruta = usuario.getRuta();
 		Date fecha = new Date();
@@ -149,6 +173,36 @@ public class GeoTabService {
 
 		return tablero;
 
+	}
+
+	public ReporteVueltaDto generarReporte(ReporteVueltaDto reporteVueltaDto) {
+
+		String reporte = staticPathReport + "geotabticket.jasper";
+		SimpleDateFormat archivoNombre = new SimpleDateFormat("ddMMyyyyHHmmss");
+		String nombreArchivo = archivoNombre.format(new Date()) + ".pdf";
+		String nombreReporte = filesPdf + nombreArchivo;
+
+		try {
+			System.err.println(dataSource.getConnection());
+
+			JasperPrint jprint = (JasperPrint) JasperFillManager.fillReport(
+					reporte, null, dataSource.getConnection());
+
+			JRPdfExporter exp = new JRPdfExporter();
+			exp.setExporterInput(new SimpleExporterInput(jprint));
+			exp.setExporterOutput(new SimpleOutputStreamExporterOutput(
+					nombreReporte));
+			SimplePdfExporterConfiguration conf = new SimplePdfExporterConfiguration();
+			exp.setConfiguration(conf);
+			exp.exportReport();
+
+			reporteVueltaDto.setNombre(nombreArchivo);
+		} catch (JRException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 
 	private void procesarHoarasProgramadas(Integer rutaCodigo, Date fecha) {
@@ -455,7 +509,7 @@ public class GeoTabService {
 					localizacionDispositivo.setHoraSalida(vLocalizacion
 							.getHoraSalida());
 					localizacionDispositivo.setProceso(proceso);
-					
+
 					localizacionDispositivo.setZona(zonaRepository
 							.findOne(vLocalizacion.getCodigoZona()));
 					localizacionDispositivo.setNumeroVuelta(dispositivo
@@ -562,10 +616,7 @@ public class GeoTabService {
 			localizacionZona.setDispositivo(localizacion.getDispositivo());
 			localizacionZona.setEstado("GEN");
 			localizacionZona.setZona(zona);
-			localizacionZona
-					.setFecha(FechasUtils
-							.convertirStringTimeZoneToDate(localizacion
-									.getFechaHora()));
+			localizacionZona.setFecha(new Date());
 			localizacionZona.setFechaUtc(localizacion.getFechaHora());
 			Time hora = FechasUtils.convertirStringTimeZoneToTime(localizacion
 					.getFechaHora());
@@ -581,7 +632,7 @@ public class GeoTabService {
 			localizacionZona.setHora(horaProcesada);
 			localizacionZona.setProceso(localizacion.getProceso());
 			localizacionZonaRepository.save(localizacionZona);
-			
+
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 		}

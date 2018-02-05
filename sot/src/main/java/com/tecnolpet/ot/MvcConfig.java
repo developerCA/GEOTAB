@@ -15,7 +15,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @Configuration
 public class MvcConfig extends WebMvcConfigurerAdapter {
 
-	@Value("${filesDocumentos}")
+	@Value("${files}")
 	private String staticPath;
 
 	@Value("${version}")
@@ -42,25 +42,12 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		String myExternalFilePath = "file:///" + staticPath;
-		// String myExternalImgPath = "file:///"+imaganes;
-
 		String files;
-		// String imagen;
-		files = "/files/**";
 
-		// if ("".equals(version)){
-		//
-		// imagen="/img/**";
-		//
-		// }
-		// else{
-		//
-		// imagen="/"+version+"/img/**";
-		// }
+		files = "/files/**";
 
 		registry.addResourceHandler(files).addResourceLocations(
 				myExternalFilePath);
-		// registry.addResourceHandler(imagen).addResourceLocations(myExternalImgPath);
 
 		super.addResourceHandlers(registry);
 	}

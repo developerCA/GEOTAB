@@ -96,6 +96,29 @@ app.controller("tableroCtrl",
 							stopTablero = undefined;
 						}
 					};
+					
+					$scope.imprimir=function(tablero){
+						console.log(tablero);
+						
+						var reporte={vuelta:tablero.numeroVuelta,codigoDispositivo:tablero.codigoDispositivo};
+						sincronizarFactory.generarReporte(reporte).then(function(resp) {
+							
+							if (resp.estado){
+								
+								var reporte=resp.objeto;
+								console.log(reporte);
+								$scope.pdf = {src: 'files/'+reporte.nombre};
+								console.log($scope.pdf);
+								
+							}
+							
+							
+							
+						});
+						
+					};
+					
+					
 
 					
 					$scope.iniciaCronTablero = function() {
