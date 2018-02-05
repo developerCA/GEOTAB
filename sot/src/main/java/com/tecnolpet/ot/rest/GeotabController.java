@@ -1,5 +1,6 @@
 package com.tecnolpet.ot.rest;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -180,6 +181,24 @@ public class GeotabController {
 		try {
 			respuestaDto.setEstado(Boolean.TRUE);
 			respuestaDto.setObjeto(geoTabService.devolverTablero(usuario));
+
+		} catch (Exception ex) {
+			respuestaDto.setEstado(Boolean.FALSE);
+			respuestaDto.setMensaje(ex.getMessage());
+		}
+
+		return respuestaDto;
+	}
+
+	@RequestMapping(value = "/procesarTableroHistorico", method = RequestMethod.POST)
+	public RespuestaDto procesarTableroHistorico(
+			@AuthenticationPrincipal UsuarioAuthenticate usuario, Date fecha) {
+		RespuestaDto respuestaDto = new RespuestaDto();
+
+		try {
+			respuestaDto.setEstado(Boolean.TRUE);
+			respuestaDto.setObjeto(geoTabService.devolverTableroHistorico(
+					usuario, fecha));
 
 		} catch (Exception ex) {
 			respuestaDto.setEstado(Boolean.FALSE);

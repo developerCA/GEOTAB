@@ -175,6 +175,46 @@ public class GeoTabService {
 
 	}
 
+	public TableroGeoTabDto devolverTableroHistorico(
+			UsuarioAuthenticate usuario, Date fecha) {
+		Ruta ruta = usuario.getRuta();
+		TableroGeoTabDto tablero = new TableroGeoTabDto();
+
+		procesarHoarasProgramadas(ruta.getCodigo(), fecha);
+
+		List<VTablero> listadoDatos = vTableroRepository
+				.findByCodigoRutaAndFechaOrderByOrdenAsc(ruta.getCodigo(),
+						fecha);
+
+		List<ZonaTableroDto> listaZonas = vTableroRepository
+				.findByCodigoRutaAndFechaZonas(fecha, ruta.getCodigo());
+		List<DispositivoTableroDto> listaDispositivos = vTableroRepository
+				.findByCodigoRutaAndFechaDispositivos(fecha, ruta.getCodigo());
+
+		List<DispositivoTableroDto> sList = listaDispositivos
+				.stream()
+				.sorted(Comparator
+						.comparing(DispositivoTableroDto::getCodigoDispositivo)
+						.thenComparing(
+								Comparator
+										.comparing(DispositivoTableroDto::getNumeroVuelta)))
+				.collect(Collectors.toList());
+
+		List<TableroViewGeoTabDto> listaConfig = new ArrayList<>();
+
+		for (DispositivoTableroDto dispositivo : sList) {
+			listaConfig.add(armarZonaDispositivo(listadoDatos, listaZonas,
+					dispositivo));
+		}
+
+		tablero.setTablero(listaConfig);
+		tablero.setZonas(listaZonas);
+		tablero.setDispositivos(sList);
+
+		return tablero;
+
+	}
+
 	public ReporteVueltaDto generarReporte(ReporteVueltaDto reporteVueltaDto) {
 
 		String reporte = staticPathReport + "geotabticket.jasper";
