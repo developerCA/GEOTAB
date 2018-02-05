@@ -236,7 +236,8 @@ public class GeoTabService {
 			exp.setConfiguration(conf);
 			exp.exportReport();
 
-			reporteVueltaDto.setNombre(nombreArchivo);
+//			reporteVueltaDto.setNombre(nombreArchivo);
+			reporteVueltaDto.setNombre(nombreReporte);
 		} catch (JRException | SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

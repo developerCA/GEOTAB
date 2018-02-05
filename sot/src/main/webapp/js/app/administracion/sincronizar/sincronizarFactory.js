@@ -23,6 +23,10 @@ app.factory("sincronizarFactory", ["Restangular",
        generarReporte:function(item){
        	 return Restangular.allUrl("geotab/reporte").customPOST(item);
        },
+       
+       generarReporteGet:function(item){
+       	 return Restangular.allUrl("geotab/reporte/" + item.vuelta + "/" + item.codigoDispositivo).customGET();
+       },
     
        sincronizarTablero:function(){
          	 return Restangular.allUrl("geotab/procesarTablero").customPOST();

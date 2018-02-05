@@ -100,34 +100,31 @@ app.controller("tableroCtrl",
 					$scope.imprimir=function(tablero){
 						console.log(tablero);
 						
+						//$scope.cargaPdf = "http://localhost:8080/api/geotab/reporte/" + tablero.numeroVuelta + "/" + tablero.codigoDispositivo;
+
 						var reporte={vuelta:tablero.numeroVuelta,codigoDispositivo:tablero.codigoDispositivo};
+						$rootScope.nombreArchivo="http://localhost:8080/api/geotab/reporte/" + tablero.numeroVuelta + "/" + tablero.codigoDispositivo;
+						var ventana=$modal.open({
+							templateUrl:'visualizador.html',
+							controller:'visualizadorCtrl',
+							size:'lg',
+						})
+/*
+						$rootScope.nombreArchivo=reporte.nombre;
 						sincronizarFactory.generarReporte(reporte).then(function(resp) {
-							
 							if (resp.estado){
-								
 								var reporte=resp.objeto;
-								console.log(reporte);
-								
-								
 								$rootScope.nombreArchivo=reporte.nombre;
-								
 								var ventana=$modal.open({
 									templateUrl:'visualizador.html',
 									controller:'visualizadorCtrl',
 									size:'lg',
 								})
-								
 							}
-							
-							
-							
 						});
-						
+*/
 					};
-					
-					
 
-					
 					$scope.iniciaCronTablero = function() {
 
 						if (angular.isDefined(stopTablero))

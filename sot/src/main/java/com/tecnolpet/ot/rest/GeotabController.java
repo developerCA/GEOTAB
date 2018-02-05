@@ -1,10 +1,26 @@
 package com.tecnolpet.ot.rest;
 
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.web.bind.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -68,6 +84,46 @@ public class GeotabController {
 		}
 
 		return respuestaDto;
+	}
+
+	@RequestMapping(value = "/reporte/{vuelta}/{codigoDispositivo}", method = RequestMethod.GET, produces = "application/pdf")
+	public ResponseEntity<byte[]> reporteGET(
+			@PathVariable("vuelta") Integer idVuelta,
+			@PathVariable("codigoDispositivo") Integer idCodigoDispositivo,
+			HttpServletResponse response
+	) {
+		RespuestaDto respuestaDto = new RespuestaDto();
+		ReporteVueltaDto reporteVueltaDto = new ReporteVueltaDto();
+		reporteVueltaDto.setVuelta(idVuelta);
+		reporteVueltaDto.setCodigoDispositivo(idCodigoDispositivo);
+
+		try {
+			respuestaDto.setEstado(Boolean.TRUE);
+			geoTabService.generarReporte(reporteVueltaDto);
+			respuestaDto.setObjeto(reporteVueltaDto);
+		} catch (Exception ex) {
+			respuestaDto.setEstado(Boolean.FALSE);
+			respuestaDto.setMensaje(ex.getMessage());
+		}
+
+	    Path path = Paths.get(reporteVueltaDto.getNombre());
+	    byte[] pdfContents = null;
+	    try {
+	        pdfContents = Files.readAllBytes(path);
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+
+	    HttpHeaders headers = new HttpHeaders();
+	    //headers.setContentType(MediaType.parseMediaType("application/pdf"));
+	    //String filename = "data.pdf";
+	    //headers.add("content-disposition", "inline; filename=" + filename);
+	    //headers.add("content-disposition", "attachment; filename=" + filename);
+	    //headers.setContentDispositionFormData(filename, filename);
+	    headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+	    ResponseEntity<byte[]> response1 = new ResponseEntity<byte[]>(
+	            pdfContents, headers, HttpStatus.OK);
+	    return response1;
 	}
 
 	@RequestMapping(value = "/sincronizarDispositivos", method = RequestMethod.POST)
