@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.TimeZone;
 import java.util.stream.Collectors;
@@ -223,10 +224,15 @@ public class GeoTabService {
 		String nombreReporte = filesPdf + nombreArchivo;
 
 		try {
-			System.err.println(dataSource.getConnection());
+
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			map.put("vuelta", reporteVueltaDto.getVuelta());
+			map.put("dispositivo", reporteVueltaDto.getCodigoDispositivo());
+			System.out.println(reporteVueltaDto.getVuelta());
+			System.out.println(reporteVueltaDto.getCodigoDispositivo());
 
 			JasperPrint jprint = (JasperPrint) JasperFillManager.fillReport(
-					reporte, null, dataSource.getConnection());
+					reporte, map, dataSource.getConnection());
 
 			JRPdfExporter exp = new JRPdfExporter();
 			exp.setExporterInput(new SimpleExporterInput(jprint));
@@ -236,8 +242,7 @@ public class GeoTabService {
 			exp.setConfiguration(conf);
 			exp.exportReport();
 
-////			reporteVueltaDto.setNombre(nombreArchivo);
-			reporteVueltaDto.setNombre(nombreReporte);
+			reporteVueltaDto.setNombre("files/" + nombreArchivo);
 		} catch (JRException | SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
