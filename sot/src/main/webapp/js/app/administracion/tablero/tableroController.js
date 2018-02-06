@@ -6,9 +6,9 @@ app.controller("tableroCtrl",
 				"toaster",
 				"tableroFactory",
 				"sincronizarFactory",
-				"_",
+				"_","$modal","$rootScope",
 				function($scope, $filter, $interval, toaster,tableroFactory,
-						sincronizarFactory,_) {
+						sincronizarFactory,_,$modal,$rootScope) {
 					$scope.tableros = null;
 					
 
@@ -107,8 +107,15 @@ app.controller("tableroCtrl",
 								
 								var reporte=resp.objeto;
 								console.log(reporte);
-								$scope.pdf = {src: 'files/'+reporte.nombre};
-								console.log($scope.pdf);
+								
+								
+								$rootScope.nombreArchivo=reporte.nombre;
+								
+								var ventana=$modal.open({
+									templateUrl:'visualizador.html',
+									controller:'visualizadorCtrl',
+									size:'lg',
+								})
 								
 							}
 							

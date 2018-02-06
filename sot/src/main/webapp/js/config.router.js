@@ -651,6 +651,7 @@ angular
 																			'js/app/administracion/tablero/tableroFactory.js',
 																			'js/app/administracion/sincronizar/sincronizarFactory.js',
 																			'js/controllers/toaster.js',
+																			'js/app/administracion/visualizador/visualizadorController.js',
 																				])
 																			.then(
 																				function() {
