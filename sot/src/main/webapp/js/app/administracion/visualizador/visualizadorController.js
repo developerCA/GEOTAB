@@ -12,5 +12,5 @@ app.controller("visualizadorCtrl", ["$scope", "$filter", "$rootScope","$sce",
 			//console.log($scope.pdf);
 			//$window.open($scope.pdf.src);
         }
-      
+
 }]); 
