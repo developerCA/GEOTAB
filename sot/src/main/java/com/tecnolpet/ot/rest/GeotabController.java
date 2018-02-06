@@ -115,7 +115,7 @@ public class GeotabController {
 	    }
 
 	    HttpHeaders headers = new HttpHeaders();
-	    //headers.setContentType(MediaType.parseMediaType("application/pdf"));
+	    ////headers.setContentType(MediaType.parseMediaType("application/pdf"));
 	    //String filename = "data.pdf";
 	    //headers.add("content-disposition", "inline; filename=" + filename);
 	    //headers.add("content-disposition", "attachment; filename=" + filename);
