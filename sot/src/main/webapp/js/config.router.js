@@ -662,6 +662,38 @@ angular
 												}
 											})
 									.state(
+											'app.historia',
+											{
+												url : '/historia',
+												templateUrl : 'tpl/app/administracion/historia/historia.html',
+												resolve : {
+													deps : [
+															'$ocLazyLoad',
+															function(
+																	$ocLazyLoad) {
+																return $ocLazyLoad
+																		.load([
+																			'ui.select',
+																			'toaster',
+																			'js/app/user/userController.js',
+																			'js/app/administracion/notaPedido/notaPedidoFactory.js',
+																			'js/app/administracion/usuarios/usuariosFactory.js',
+																			'angularFileUpload',
+																			'js/app/administracion/historia/historiaController.js',
+																			'js/app/administracion/tablero/tableroFactory.js',
+																			'js/app/administracion/sincronizar/sincronizarFactory.js',
+																			'js/controllers/toaster.js',
+																			'js/app/administracion/visualizador/visualizadorController.js',
+																				])
+																			.then(
+																				function() {
+																					return $ocLazyLoad
+																						.load([ 'js/controllers/toaster.js' ]);
+																				});
+															} ]
+												}
+											})
+									.state(
 											'app.notaPedido',
 											{
 												url : '/ot',

@@ -248,9 +248,10 @@ public class GeotabController {
 
 	@RequestMapping(value = "/procesarTableroHistorico", method = RequestMethod.POST)
 	public RespuestaDto procesarTableroHistorico(
-			@AuthenticationPrincipal UsuarioAuthenticate usuario, Date fecha) {
+			@AuthenticationPrincipal UsuarioAuthenticate usuario, @RequestBody Date fecha) {
 		RespuestaDto respuestaDto = new RespuestaDto();
-
+		//System.out.print("Fecha: ");
+		//System.out.println(fecha);
 		try {
 			respuestaDto.setEstado(Boolean.TRUE);
 			respuestaDto.setObjeto(geoTabService.devolverTableroHistorico(

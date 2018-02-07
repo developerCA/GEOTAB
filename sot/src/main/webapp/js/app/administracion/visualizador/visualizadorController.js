@@ -1,16 +1,16 @@
-app.controller("visualizadorCtrl", ["$scope", "$filter", "$rootScope","$sce",
-    function($scope, $filter, $rootScope,$sce) {
-       
+app.controller("visualizadorCtrl", ["$scope", "$filter", "$rootScope",
+    function($scope, $filter, $rootScope) {
 
         $scope.visualizarPDF=function(){
-        	//console.log('ssssssssssssssssssss');
         	$scope.archivo=$rootScope.nombreArchivo;
-        	console.log($scope.archivo);
+        	//console.log($scope.archivo);
         	$scope.pdf = {
     			src: $scope.archivo
 			};
-			//console.log($scope.pdf);
-			//$window.open($scope.pdf.src);
         }
+    	
+    	$scope.cancelar=function(){
+    		this.$close();
+    	};
 
 }]); 

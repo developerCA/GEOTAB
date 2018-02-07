@@ -137,30 +137,22 @@ app.controller("tableroCtrl",
 						}, 13000);
 					};
 
-					
-
 					$scope.traertablero = function() {
 						sincronizarFactory.sincronizarTablero().then(function(resp) {
-						
-							$scope.tabla=resp.objeto;
-							
-							$scope.zonas=$scope.tabla.zonas;
-							
-							$scope.dispositivos=$scope.tabla.dispositivos;
-						   
-							//console.log($scope.tabla);
-						    
-							
+							if (resp.objeto.zonas == []) {
+								return;
+							}
 
+							$scope.tabla=resp.objeto;
+							$scope.zonas=$scope.tabla.zonas;
+							$scope.dispositivos=$scope.tabla.dispositivos;
+							//console.log($scope.tabla);
 						});
 					};
 					
-				
 					$scope.editarLocalizacion=function(vLocalizacion){
 						vLocalizacion.horaProgramada=vLocalizacion.horaProgramadaTmp;
-						
-					
-						
+
 						sincronizarFactory.sincronizarHoraProgramada(vLocalizacion).then(function(resp) {
 							vLocalizacion.muestra=false;
 							vLocalizacion.horaProgramadaTmp=null;

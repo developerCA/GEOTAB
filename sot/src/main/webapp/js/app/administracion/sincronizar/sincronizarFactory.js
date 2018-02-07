@@ -32,6 +32,14 @@ app.factory("sincronizarFactory", ["Restangular",
          	 return Restangular.allUrl("geotab/procesarTablero").customPOST();
        },
        
+       sincronizarTableroHistorico:function(fecha){
+    	   var tObj = {
+    			   fecha: fecha
+    	   };
+    	   
+    	   return Restangular.allUrl("geotab/procesarTableroHistorico").customPOST(new Date(fecha));
+       },
+       
        sincronizarHoraProgramada:function(item){
        	 return Restangular.allUrl("geotab/horaProgramada").customPOST(item);
        },
