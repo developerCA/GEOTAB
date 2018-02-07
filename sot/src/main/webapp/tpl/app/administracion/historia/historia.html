@@ -10,14 +10,17 @@
 	</div>
 	<div class="wrapper-md">
 		<div class="panel panel-info">
-			<div class="row">
-				<div class="col-md-12">
-					<div class="panel-heading">
+			<div class="panel-heading">
+				<div class="row">
+					<div class="col-md-12">
 						<span class="pull-right">
 							<i class="fa fa-car"></i>
 							Tablero de zonas
 						</span>
-						<div class="col-md-6">
+						<div class="col-md-1" style="width:200px !important">
+							<label>
+								Fecha a buscar:
+							</label>
 							<div class="input-group">
 								<input type="text" class="form-control" datepicker-popup="{{format}}"
 									ng-model="dt" is-open="opened" max-date="hoy"
@@ -30,7 +33,10 @@
 								</span>
 							</div>
 						</div>
-						<div class="col-md-2">
+						<div class="col-md-1" style="width:140px !important;">
+							<label>
+								<br>
+							</label>
 							<div class="input-group">
 								<a class="btn m-b-xs btn-sm btn-success btn-addon"
 									ng-click="traertablero()">
@@ -43,7 +49,7 @@
 				</div>
 			</div>
 
-			<div class="table-responsive" ng-show="tabla.tablero!=undefined">
+			<div class="table-responsive">
 				<table class="table table-striped m-b-none">
 					<thead>
 						<tr>
