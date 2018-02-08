@@ -52,6 +52,10 @@ public class Dispositivo implements Serializable {
 	@Column(name = "numero_vuelta")
 	private Integer numeroVuelta;
 	
+	@JsonView(ViewOT.PublicView.class)
+	@Column(name = "retorno_vuelta")
+	private Boolean retorno;
+	
 	// bi-directional many-to-one association to Producto
 	@ManyToOne
 	@JoinColumn(name = "codigo_ruta")
@@ -180,5 +184,13 @@ public class Dispositivo implements Serializable {
 
 	public void setNumeroVuelta(Integer numeroVuelta) {
 		this.numeroVuelta = numeroVuelta;
+	}
+
+	public Boolean getRetorno() {
+		return retorno;
+	}
+
+	public void setRetorno(Boolean retorno) {
+		this.retorno = retorno;
 	}
 }

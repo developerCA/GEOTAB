@@ -15,7 +15,6 @@ import com.tecnolpet.ot.jview.ViewOT;
  * 
  */
 @Entity
-@NamedQuery(name="Zona.findAll", query="SELECT z FROM Zona z")
 public class Zona implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -47,7 +46,13 @@ public class Zona implements Serializable {
 	@JsonView(ViewOT.PublicView.class)
 	@Column(name="zona_retorno")
 	private Boolean zonaRetorno;
-
+	
+	
+	
+	@JsonView(ViewOT.PublicView.class)
+	@Column(name="inicio_zona_retorno")
+	private Boolean inicioZonaRetorno;
+	
 	//bi-directional many-to-one association to Ruta
 	@JsonView(ViewOT.PublicView.class)
 	@ManyToOne
@@ -156,6 +161,14 @@ public class Zona implements Serializable {
 
 	public void setZonaRetorno(Boolean zonaRetorno) {
 		this.zonaRetorno = zonaRetorno;
+	}
+
+	public Boolean getInicioZonaRetorno() {
+		return inicioZonaRetorno;
+	}
+
+	public void setInicioZonaRetorno(Boolean inicioZonaRetorno) {
+		this.inicioZonaRetorno = inicioZonaRetorno;
 	}
 
 

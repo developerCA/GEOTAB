@@ -22,6 +22,24 @@ public class TestGeotab {
 
 	@Test
 	@Ignore
+	private TipoHorario devolverTipoHora(Time hora) {
+
+		List<TipoHorario> tipoHorarios = null;
+		TipoHorario tipoHorario = null;
+
+		for (TipoHorario th : tipoHorarios) {
+			if (hora.getTime() >= th.getHoraInicio().getTime()
+					&& hora.getTime() <= th.getHoraFin().getTime()) {
+				tipoHorario = th;
+				break;
+			}
+
+		}
+
+		return tipoHorario;
+	}
+	@Test
+	@Ignore
 	public void getPoints() {
 
 		List<Punto> listaPuntos = new ArrayList<>();

@@ -58,7 +58,6 @@ import com.tecnolpet.ot.model.LocalizacionDispositivo;
 import com.tecnolpet.ot.model.LocalizacionZona;
 import com.tecnolpet.ot.model.Punto;
 import com.tecnolpet.ot.model.Ruta;
-import com.tecnolpet.ot.model.TipoHorario;
 import com.tecnolpet.ot.model.TipoZona;
 import com.tecnolpet.ot.model.VLocalizacionDispositivo;
 import com.tecnolpet.ot.model.VTablero;
@@ -454,9 +453,14 @@ public class GeoTabService {
 		cambiarFechaEstadoGenerado(procesaDatosGeotabDto.getFechaDispositivo());
 
 		Integer proceso = localizacionRepository.traerNumeroProceso();
+		Integer numero = 0;
+		System.out.println("Lista de de a procesar: "
+				+ procesaDatosGeotabDto.getListaDatos().size());
 
 		for (LocalizazionesGeotabDto localizacion : procesaDatosGeotabDto
 				.getListaDatos()) {
+			numero += 1;
+			System.out.println("Procesado registro numero:" + numero);
 			List<Dispositivo> listaDispositivo = dispositivoRepository
 					.findByCodigoDispositivo(localizacion.getDevice().getId());
 			if (null != listaDispositivo) {
@@ -508,7 +512,19 @@ public class GeoTabService {
 				Zona zona = zonaRepository.findOne(vLocalizacion
 						.getCodigoZona());
 				List<LocalizacionDispositivo> listaDispositivosProceso = null;
-				System.out.println(zona.getNombre());
+
+				if (zona.getInicioZona() && dispositivo.getRetorno()) {
+
+					System.out.println("Crea vuelta para el dipositivo "
+							+ dispositivo.getNombre() + " y la zona "
+							+ zona.getNombre());
+
+					dispositivo
+							.setNumeroVuelta(dispositivo.getNumeroVuelta() + 1);
+					dispositivo.setRetorno(Boolean.FALSE);
+					dispositivoRepository.save(dispositivo);
+				}
+
 				listaDispositivosProceso = localizacionDispositivoRepository
 						.findByDispositivoAndZonaAndFechaAndNumeroVuelta(
 								dispositivo, zona, vLocalizacion.getFecha(),
@@ -521,18 +537,12 @@ public class GeoTabService {
 
 					localizacionDispositivo = new LocalizacionDispositivo();
 
-					if (zona.getInicioZona()) {
-						dispositivo.setNumeroVuelta(dispositivo
-								.getNumeroVuelta() + 1);
-						dispositivoRepository.save(dispositivo);
-					}
-
 				} else {
 
 					if (zona.getZonaRetorno()) {
 						System.out
 								.println("Actualiza proceso de marca de zona");
-						System.out.println(listaDispositivosProceso.size());
+
 						if (listaDispositivosProceso.size() > 0) {
 							localizacionDispositivo = listaDispositivosProceso
 									.get(0);
@@ -545,6 +555,13 @@ public class GeoTabService {
 				}
 
 				if (null != localizacionDispositivo) {
+					if (zona.getInicioZonaRetorno()) {
+						System.out.println("Inicia retorno del dipositivo"
+								+ dispositivo.getNombre() + " en la zona "
+								+ zona.getNombre());
+						dispositivo.setRetorno(Boolean.TRUE);
+						dispositivoRepository.save(dispositivo);
+					}
 					localizacionDispositivo
 							.setDispositivo(dispositivoRepository
 									.findOne(vLocalizacion
@@ -685,30 +702,13 @@ public class GeoTabService {
 
 	}
 
-	private TipoHorario devolverTipoHora(Time hora) {
-
-		List<TipoHorario> tipoHorarios = tipoHorarioRepository.findAll();
-		TipoHorario tipoHorario = null;
-
-		for (TipoHorario th : tipoHorarios) {
-			if (hora.getTime() >= th.getHoraInicio().getTime()
-					&& hora.getTime() <= th.getHoraFin().getTime()) {
-				tipoHorario = th;
-				break;
-			}
-
-		}
-
-		return tipoHorario;
-	}
-
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	private void cambiarFechaEstadoGenerado(FechaDispositivo fechaDispositivo) {
 		fechaDispositivo.setEstado("GEN");
 		fechaDispositivoRepository.save(fechaDispositivo);
 	}
 
-	public void sincronziarGrupos(List<GrupoGeotabDto> grupos) {
+	public void sincronizarGrupos(List<GrupoGeotabDto> grupos) {
 		StringBuilder hijos;
 		GeotabGrupo geotabGrupo;
 
@@ -775,6 +775,7 @@ public class GeoTabService {
 						geotabDispositivo.setNombre(dispositivo.getName());
 						geotabDispositivo.setRuta(ruta);
 						geotabDispositivo.setNumeroVuelta(0);
+						geotabDispositivo.setRetorno(Boolean.FALSE);
 					}
 
 					dispositivoRepository.save(geotabDispositivo);
@@ -886,7 +887,7 @@ public class GeoTabService {
 			zona.setInicioZona(Boolean.FALSE);
 			zona.setValida(Boolean.TRUE);
 			zona.setZonaRetorno(Boolean.FALSE);
-
+			zona.setInicioZonaRetorno(Boolean.FALSE);
 		}
 
 		zonaRepository.save(zona);

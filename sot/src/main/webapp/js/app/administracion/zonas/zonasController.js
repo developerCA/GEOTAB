@@ -62,7 +62,7 @@ app.controller("zonasCtrl", ["$scope", "$filter", "zonasFactory",
         $scope.model.selected = angular.copy($scope.model.contacts[index]);
     };
 
-    $scope.saveContact = function(index) {
+    $scope.guardarZona = function(index) {
         //console.log("Saving contact");
     	if ($scope.model.selected.inicioZona) {
     		for (var i = 0; i < $scope.model.contacts.length; i++) {
