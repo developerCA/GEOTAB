@@ -16,7 +16,7 @@ angular.module('app')
       
       // config
       $scope.app = {
-        name: 'GeoTab RS',
+        name: 'Mobility',
         version: '0.0.1',
         versionApp:'/geotab',
         //versionApp:'/',
@@ -34,7 +34,7 @@ angular.module('app')
         },
         settings: {
           themeID: 	3,
-          navbarHeaderColor: 'bg-success header',
+          navbarHeaderColor: 'bg-info header',
           navbarCollapseColor: 'bg-white header',
           asideColor: 'bg-dark',
           headerFixed: true,

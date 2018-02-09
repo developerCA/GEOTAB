@@ -19,76 +19,13 @@ app.controller("tableroCtrl",
 					$scope.data = [];
 
 					$scope.init = function() {
-						
-
-						
-						$scope.iniciaCron();
 						$scope.iniciaCronTablero();
-						
 					}
 					
 					$scope.columnas=[{nombre:"Hora"},{nombre:"Diferencia"}];
-
 					$scope.bandera = 100;
 
-					var stop;
-					$scope.iniciaCron = function() {
-
-						if (angular.isDefined(stop))
-							return;
-
-						stop = $interval(function() {
-							if ($scope.bandera == 100) {
-
-								sincronizarFactory
-										.sincronizarFechasLozalizaciones()
-										.then(function(r) {
-											
-											var fechaProceso=r.objeto;
-											console.log(fechaProceso);
-											if (r.estado){
-												
-												api.call("Get", {
-												          typeName: "LogRecord",
-														   search: {
-														   fromDate: fechaProceso.fechaInicio,
-														   toDate: fechaProceso.fechaFinal
-														            }
-												}, function(resultDatos) {
-												
-													console.log(resultDatos);
-												 var dtoDatos={fechaDispositivo:fechaProceso,listaDatos:resultDatos};
-												
-													sincronizarFactory.sincronizarLozalizaciones(
-															dtoDatos
-										    			).then(function(r) {
-
-
-										    		});
-												
-												   
-												}, function(e) {
-												    console.error("Failed:", e);
-												});
-												
-												
-											}
-										});
-
-							} else {
-								$scope.pararCron();
-							}
-						}, 30000);
-					};
-
-					// 200000
-					$scope.pararCron = function() {
-						if (angular.isDefined(stop)) {
-							$interval.cancel(stop);
-							stop = undefined;
-						}
-					};
-
+				
 					var stopTablero;
 					$scope.stopTablero = function() {
 						if (angular.isDefined(stopTablero)) {
@@ -100,7 +37,6 @@ app.controller("tableroCtrl",
 					$scope.imprimir=function(tablero){
 						console.log(tablero);
 						
-						//$scope.cargaPdf = "http://localhost:8080/api/geotab/reporte/" + tablero.numeroVuelta + "/" + tablero.codigoDispositivo;
 
 						var reporte={vuelta:tablero.numeroVuelta,codigoDispositivo:tablero.codigoDispositivo};
 						
@@ -134,7 +70,7 @@ app.controller("tableroCtrl",
 							} else {
 								$scope.stopTablero();
 							}
-						}, 13000);
+						}, 16000);
 					};
 
 					$scope.traertablero = function() {

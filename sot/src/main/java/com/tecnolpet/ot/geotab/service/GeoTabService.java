@@ -453,14 +453,14 @@ public class GeoTabService {
 		cambiarFechaEstadoGenerado(procesaDatosGeotabDto.getFechaDispositivo());
 
 		Integer proceso = localizacionRepository.traerNumeroProceso();
+		Integer cantidad=0;
 		Integer numero = 0;
-		System.out.println("Lista de de a procesar: "
-				+ procesaDatosGeotabDto.getListaDatos().size());
+		cantidad= procesaDatosGeotabDto.getListaDatos().size();
 
 		for (LocalizazionesGeotabDto localizacion : procesaDatosGeotabDto
 				.getListaDatos()) {
 			numero += 1;
-			System.out.println("Procesado registro numero:" + numero);
+			System.out.println("Procesado registro numero:" + numero +"/"+cantidad);
 			List<Dispositivo> listaDispositivo = dispositivoRepository
 					.findByCodigoDispositivo(localizacion.getDevice().getId());
 			if (null != listaDispositivo) {

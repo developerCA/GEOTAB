@@ -40,13 +40,10 @@ var app = angular.module('app').config(
 		} else if (config.url == "api/geotab/procesarDatos") {
 			return false;
 		} else if (config.url == "geotab/api/geotab/procesarDatos") {
-			console.log("2.1");
 			return false;
 		} else if (config.url == "api/geotab/procesarTablero") {
-			console.log("2.2");
 			return false;
 		}else if (config.url == "api/geotab/fechasDispositivos") {
-			console.log("2.4");
 			return false;
 		}
 		

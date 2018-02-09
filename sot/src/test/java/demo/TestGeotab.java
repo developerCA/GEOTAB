@@ -11,7 +11,15 @@ import java.util.TimeZone;
 
 import org.junit.Ignore;
 import org.junit.Test;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
 
+import com.tecnolpet.ot.geotab.dto.LocalizazionesGeotabDto;
+import com.tecnolpet.ot.geotab.dto.LogCredentialsDto;
+import com.tecnolpet.ot.geotab.dto.LogParamDto;
+import com.tecnolpet.ot.geotab.dto.LogRecordDto;
+import com.tecnolpet.ot.geotab.dto.LogSearchDto;
+import com.tecnolpet.ot.geotab.dto.ResultLogRecodDto;
 import com.tecnolpet.ot.model.Localizacion;
 import com.tecnolpet.ot.model.Punto;
 import com.tecnolpet.ot.model.TipoHorario;
@@ -21,23 +29,36 @@ import com.tecnolpet.ot.utils.PoligonoUtils;
 public class TestGeotab {
 
 	@Test
-	@Ignore
-	private TipoHorario devolverTipoHora(Time hora) {
+	public void restGeotab() {
 
-		List<TipoHorario> tipoHorarios = null;
-		TipoHorario tipoHorario = null;
+		RestTemplate restTemplate = new RestTemplate();
 
-		for (TipoHorario th : tipoHorarios) {
-			if (hora.getTime() >= th.getHoraInicio().getTime()
-					&& hora.getTime() <= th.getHoraFin().getTime()) {
-				tipoHorario = th;
-				break;
-			}
+		LogRecordDto logRecord = new LogRecordDto();
 
-		}
+		logRecord.setMethod("Get");
+		LogParamDto logParamDto = new LogParamDto();
+		logParamDto.setTypeName("LogRecord");
+		LogSearchDto logSearchDto = new LogSearchDto();
+		logSearchDto.setFromDate("2018-02-08T02:12:05.107Z");
+		logSearchDto.setToDate("2018-02-08T02:13:05.107Z");
+		logParamDto.setSearch(logSearchDto);
+		LogCredentialsDto logCredentialsDto = new LogCredentialsDto();
 
-		return tipoHorario;
+		logParamDto.setCredentials(logCredentialsDto);
+
+		logRecord.setParams(logParamDto);
+
+		ResponseEntity<ResultLogRecodDto> response = restTemplate
+				.postForEntity("https://my49.geotab.com/apiv1", logRecord,
+						ResultLogRecodDto.class);
+
+		ResultLogRecodDto dato=response.getBody();
+		
+		System.out.println(dato.getResult().size());
+		
+		
 	}
+
 	@Test
 	@Ignore
 	public void getPoints() {
@@ -75,7 +96,8 @@ public class TestGeotab {
 	public void Fechas() {
 		String fechaUtc = "2018-01-15T23:26:09.655Z";
 
-		SimpleDateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.S'Z'");
+		SimpleDateFormat isoFormat = new SimpleDateFormat(
+				"yyyy-MM-dd'T'HH:mm:ss.S'Z'");
 		isoFormat.setTimeZone(TimeZone.getDefault());
 		try {
 			Date date = isoFormat.parse(fechaUtc);
@@ -95,7 +117,8 @@ public class TestGeotab {
 	@Ignore
 	public void devolverTipoHora() throws ParseException {
 
-		Time hora = FechasUtils.convertirStringTimeZoneToTime("2018-01-15T23:28:00.655Z");
+		Time hora = FechasUtils
+				.convertirStringTimeZoneToTime("2018-01-15T23:28:00.655Z");
 		List<TipoHorario> tipoHorarios = new ArrayList<>();
 
 		TipoHorario t1 = new TipoHorario();
@@ -142,10 +165,11 @@ public class TestGeotab {
 	}
 
 	@Test
+	@Ignore
 	public void horas() throws InterruptedException {
 
 		Date dateIni = new Date();
-		Time t1=new Time(dateIni.getTime());
+		Time t1 = new Time(dateIni.getTime());
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(t1);
 
@@ -154,7 +178,7 @@ public class TestGeotab {
 		Thread.sleep(3000);
 
 		Date dateFin = new Date();
-		Time t2=new Time(dateFin.getTime());
+		Time t2 = new Time(dateFin.getTime());
 		Calendar cal2 = Calendar.getInstance();
 		cal2.setTime(t2);
 		System.out.println(cal2);
@@ -170,14 +194,15 @@ public class TestGeotab {
 		long restominutos = diffMinutos % 60;
 		long diffHoras = (diff / (60 * 60 * 1000));
 
-		Calendar calendarDiff=Calendar.getInstance();
-		calendarDiff.set(0, 0, 0, (int)diffHoras, (int)restominutos, (int)diffSegundos);
+		Calendar calendarDiff = Calendar.getInstance();
+		calendarDiff.set(0, 0, 0, (int) diffHoras, (int) restominutos,
+				(int) diffSegundos);
 		System.out.println(diffSegundos);
 		System.out.println(restominutos);
 		System.out.println(diffHoras);
 
 		System.out.println(calendarDiff.getTime());
-		Time timeDiff=new Time(calendarDiff.getTime().getTime());
+		Time timeDiff = new Time(calendarDiff.getTime().getTime());
 		System.out.println(timeDiff.toString());
 
 	}

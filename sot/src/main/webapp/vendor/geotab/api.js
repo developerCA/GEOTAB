@@ -100,7 +100,8 @@ var GeotabApi = function (getCredentialsCallback, newOptions, customCredentialSt
          */
         cleanupCall = function (uid) {
             // Remove this function once we're done with it
-            var script = document.getElementById(uid);
+           return;
+        	//var script = document.getElementById(uid);
             if (script) {
                 script.parentNode.removeChild(script);
                 // Manually garbage-collect the script
@@ -160,6 +161,8 @@ var GeotabApi = function (getCredentialsCallback, newOptions, customCredentialSt
                     cleanupCall(uid);
                 }
             };
+            
+            /*
             document.getElementsByTagName("body")[0].appendChild((function () {
                 var s = document.createElement("script");
                 s.type = "text/javascript";
@@ -177,7 +180,7 @@ var GeotabApi = function (getCredentialsCallback, newOptions, customCredentialSt
                 };
                 return s;
             })());
-
+             */
             if (timeoutTimer) {
                 clearTimeout(timeoutTimer);
             }
@@ -188,7 +191,7 @@ var GeotabApi = function (getCredentialsCallback, newOptions, customCredentialSt
                             error: {
                                 name: "JSONPTimeout",
                                 message: "Could not complete the JSONP request in a timely manner (" + options.timeout + "s)",
-                                target: document.getElementById(uid)
+                                //target: document.getElementById(uid)
                             }
                         });
                         window[JSONP_REQUESTS_PROPERTY_STR][uid] = function () {
