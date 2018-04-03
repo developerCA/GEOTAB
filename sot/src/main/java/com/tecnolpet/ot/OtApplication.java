@@ -2,6 +2,7 @@ package com.tecnolpet.ot;
 
 import java.text.SimpleDateFormat;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -16,6 +17,10 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import com.tecnolpet.ot.dto.ConfigZonasPuntosDto;
+import com.tecnolpet.ot.repository.PuntoRepository;
+import com.tecnolpet.ot.repository.ZonaRepository;
+
 
 @Configuration
 @EnableAutoConfiguration
@@ -28,6 +33,12 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 		@PropertySource(value = "file:${external.config}", ignoreResourceNotFound = true) })
 public class OtApplication extends SpringBootServletInitializer{
 	 
+	@Autowired
+	ZonaRepository zonaRepository;
+	
+	@Autowired
+	PuntoRepository puntoRepository;
+	
 
 	@Override
 	protected SpringApplicationBuilder configure(
@@ -48,5 +59,14 @@ public class OtApplication extends SpringBootServletInitializer{
 		Jackson2ObjectMapperBuilder b = new Jackson2ObjectMapperBuilder();
 		b.indentOutput(true).dateFormat(new SimpleDateFormat("yyyy-MM-dd"));
 		return b;
+	}
+	
+	@Bean
+	public ConfigZonasPuntosDto configZonasPuntosDto(){
+		final ConfigZonasPuntosDto config=new ConfigZonasPuntosDto();
+		
+		config.setListaPuntos(puntoRepository.findAll());
+		config.setListaZonas(zonaRepository.findAll());
+		return config;
 	}
 }

@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 server: "my49.geotab.com",
                 database: "mobility",
                 email: "raul.mediavilla@mobility.com.ec",
-                password: "adri1979"
+                password: "raul1979"
             };
 
         function initializeGeotabApi() {

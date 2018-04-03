@@ -1,6 +1,5 @@
 package com.tecnolpet.ot.geotab.service;
 
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +25,16 @@ public class GeoTabServiceJob {
 	@Autowired
 	GeoTabService geoTabService;
 
-	@Scheduled(fixedRate = 100000)
+	@Scheduled(fixedRate = 15000)
 	public void procesarGps() {
-		System.out.println(new Date());
+		
 		procesarGpsFechas();
+	}
+	
+	@Scheduled(fixedRate = 400)
+	public void procesarGpsDispositivos() {
+		
+		geoTabService.procesarPasoZona();
 	}
 
 	private void procesarGpsFechas() {

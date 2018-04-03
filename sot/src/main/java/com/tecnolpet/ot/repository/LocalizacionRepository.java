@@ -1,5 +1,7 @@
 package com.tecnolpet.ot.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -9,4 +11,6 @@ public interface LocalizacionRepository extends JpaRepository<Localizacion, Inte
 	
 	@Query(value= "select nextval('proceso_localizacion_seq') ",nativeQuery=true)
 	public Integer traerNumeroProceso();
+	
+	public List<Localizacion> findByProceso(Integer proceso);
 }

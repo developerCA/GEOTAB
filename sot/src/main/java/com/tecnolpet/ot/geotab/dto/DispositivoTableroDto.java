@@ -1,18 +1,17 @@
 package com.tecnolpet.ot.geotab.dto;
 
+
 public class DispositivoTableroDto {
 	private Integer codigoDispositivo;
 	private String dispositivo;
 	private Integer numeroVuelta;
-	
-	
-	public DispositivoTableroDto(Integer codigoDispositivo,String dispositivo,Integer numeroVuelta  ){
-		this.codigoDispositivo=codigoDispositivo;
-		this.dispositivo=dispositivo;
-		this.numeroVuelta=numeroVuelta;
-		
-		
-		
+
+	public DispositivoTableroDto(Integer codigoDispositivo, String dispositivo,
+			Integer numeroVuelta) {
+		this.codigoDispositivo = codigoDispositivo;
+		this.dispositivo = dispositivo;
+		this.numeroVuelta = numeroVuelta;
+
 	}
 
 	public Integer getCodigoDispositivo() {
@@ -41,7 +40,4 @@ public class DispositivoTableroDto {
 
 	
 
-
-	
-	
 }

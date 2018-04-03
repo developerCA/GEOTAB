@@ -9,7 +9,7 @@ public class LogCredentialsDto {
 	public LogCredentialsDto() {
 		this.database = "mobility";
 		this.userName = "raul.mediavilla@mobility.com.ec";
-		this.password = "adri1979";
+		this.password = "raul1979";
 	}
 
 	public String getDatabase() {

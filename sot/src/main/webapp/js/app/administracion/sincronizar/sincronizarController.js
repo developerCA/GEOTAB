@@ -5,11 +5,11 @@ app.controller("sincronizarCtrl", ["$scope", "$filter", "sincronizarFactory",
       
 
     	$scope.sincronizarDispositivos = function(){
-    		
+    		console.log(api);
             api.call("Get", {
                 typeName: "Device"
             }, function(result) {
-    		   
+    		    console.log(result);
     		    sincronizarFactory.sincronizarDispositivos(
     				result
     			).then(function(r) {
