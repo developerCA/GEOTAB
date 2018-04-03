@@ -430,9 +430,32 @@ angular
 																				'js/app/administracion/calibracion/calibracionFactory.js',
 																				'js/app/administracion/notaPedido/notaPedidoFactory.js',
 																				'js/app/administracion/usuarios/usuariosFactory.js',
-																				'js/app/user/userController.js' ]);
+																				'js/app/user/userController.js'
+																		]);
 															} ]
 												}
+											})
+											.state(
+													'app.admindispositivos',
+													{
+														url : '/admindispositivos',
+														templateUrl : 'tpl/app/administracion/dispositivos/admindispositivos.html',
+														resolve : {
+															deps : [
+																	'$ocLazyLoad',
+																	function(
+																			$ocLazyLoad) {
+																		return $ocLazyLoad
+																				.load([
+																						'toaster',
+																						'js/app/user/userController.js',
+																						'js/app/administracion/notaPedido/notaPedidoFactory.js',
+																						'js/app/administracion/usuarios/usuariosFactory.js',
+																						'js/app/administracion/dispositivos/admindispositivosController.js',
+																						'js/app/administracion/dispositivos/admindispositivosFactory.js'
+																				]);
+																	} ]
+														}
 											})
 									.state(
 											'app.consultac',

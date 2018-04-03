@@ -8,13 +8,12 @@ app.controller("calibracionCtrl",["$scope", "calibracionFactory",  "$timeout","t
 	$scope.dispositivos = null;
 	
 	$scope.modalOptions = {
-			headerText : 'Instrumento',
-			bodyText : '',
-			type:'danger'
+		headerText : 'Instrumento',
+		bodyText : '',
+		type:'danger'
 	};
 	
 	$scope.init = function(){
-		
 		$scope.cargarDispositivos();
 	}
 	
@@ -23,8 +22,7 @@ app.controller("calibracionCtrl",["$scope", "calibracionFactory",  "$timeout","t
 			$scope.dispositivos = r;
 		});
 	}
-	
-	
+
 	$scope.sincronizarDispositivos = function(){
 		
         api.call("Get", {

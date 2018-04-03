@@ -11,7 +11,6 @@ app.controller("zonasCtrl", ["$scope", "$filter", "zonasFactory",
 
     $scope.init = function() {
     	zonasFactory.cargarEmpresas().then(function(rest) {
-    		//console.log(rest);
     		$scope.empresas = rest.splice(1);
     	});
     }
