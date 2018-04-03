@@ -975,6 +975,13 @@ public class GeoTabService {
 
 		return dispositivoRepository.findByRuta(ruta);
 	}
+	
+	public List<Dispositivo> devolverDispositivos(Integer idRuta) {
+
+		Ruta ruta=rutaRepository.findOne(idRuta);
+		
+		return dispositivoRepository.findByRuta(ruta);
+	}
 
 	public List<Ruta> devolverRutas(Integer codigoEmpresa) {
 		Empresa empresa = empresaRepository.findOne(codigoEmpresa);

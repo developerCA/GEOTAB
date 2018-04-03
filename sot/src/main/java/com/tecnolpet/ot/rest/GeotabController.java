@@ -300,6 +300,13 @@ public class GeotabController {
 			@AuthenticationPrincipal UsuarioAuthenticate usuario) {
 		return geoTabService.devolverDispositivos(usuario.getRuta());
 	}
+	
+	@JsonView(ViewOT.PublicView.class)
+	@RequestMapping(value = "/listar/dispositivosRuta", method = RequestMethod.GET)
+	public List<Dispositivo> traerDipositivos(
+			@RequestParam Integer ruta) {
+		return geoTabService.devolverDispositivos(ruta);
+	}
 
 	@JsonView(ViewOT.PublicView.class)
 	@RequestMapping(value = "/listar/empresas", method = RequestMethod.GET)
