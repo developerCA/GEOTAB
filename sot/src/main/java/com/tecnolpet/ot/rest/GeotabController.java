@@ -189,6 +189,24 @@ public class GeotabController {
 		return respuestaDto;
 	}
 
+	@RequestMapping(value = "/eliminarDispositivo", method = RequestMethod.POST)
+	public RespuestaDto eliminarDispositivo(@RequestBody Dispositivo dispositivo
+
+	) {
+		RespuestaDto respuestaDto = new RespuestaDto();
+
+		try {
+			geoTabService.eliminarDipositivo(dispositivo);
+			respuestaDto.setEstado(Boolean.TRUE);
+			
+		} catch (Exception ex) {
+			respuestaDto.setEstado(Boolean.FALSE);
+			respuestaDto.setMensaje(ex.getMessage());
+		}
+
+		return respuestaDto;
+	}
+
 	@RequestMapping(value = "/editarZona", method = RequestMethod.POST)
 	public RespuestaDto editarZona(@RequestBody Integer idZona
 

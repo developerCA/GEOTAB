@@ -184,6 +184,15 @@ public class GeoTabService {
 
 	}
 
+	public void eliminarDipositivo(Dispositivo dispositivo){
+		
+		localizacionDispositivoRepository.eliminarLocalizacionDipositivo(dispositivo);
+		localizacionZonaRepository.eliminarLocalizacionZona(dispositivo);
+		localizacionRepository.eliminarLocalizacion(dispositivo);
+		dispositivoRepository.delete(dispositivo);
+		
+		
+	}
 	public TableroGeoTabDto devolverTableroHistorico(
 			UsuarioAuthenticate usuario, Date fecha) {
 		Ruta ruta = usuario.getRuta();
