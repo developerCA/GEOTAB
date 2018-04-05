@@ -91,6 +91,14 @@ app.controller("zonasCtrl", ["$scope", "$filter", "zonasFactory",
         $scope.reset();
     };
 
+    $scope.eliminar = function(index) {
+        zonasFactory.eliminar(
+    		$scope.zonas[index]
+		).then(function(rest) {
+		});
+        $scope.reset();
+    };
+
     $scope.reset = function() {
         $scope.model.selected = {};
     };

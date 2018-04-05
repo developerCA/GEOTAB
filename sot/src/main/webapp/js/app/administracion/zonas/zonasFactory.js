@@ -28,6 +28,10 @@ app.factory("zonasFactory", ["Restangular",
         guardar: function(item){
             return Restangular.allUrl("geotab/actualizarZona/").customPOST(item);
         },
+
+        eliminar: function(item){
+            return Restangular.allUrl("geotab/eliminarZona/").customPOST(item);
+        },
 /*
         update:function(item){
         	return item.put();
