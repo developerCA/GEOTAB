@@ -95,8 +95,10 @@ app.controller("zonasCtrl", ["$scope", "$filter", "zonasFactory",
         zonasFactory.eliminar(
     		$scope.zonas[index]
 		).then(function(rest) {
+			 $scope.cargarZonas();
+			 $scope.reset();
 		});
-        $scope.reset();
+       
     };
 
     $scope.reset = function() {

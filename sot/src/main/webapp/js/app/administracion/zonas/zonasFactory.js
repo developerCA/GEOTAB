@@ -30,11 +30,9 @@ app.factory("zonasFactory", ["Restangular",
         },
 
         eliminar: function(item){
-            return Restangular.allUrl("geotab/eliminarZona/").customPOST(item);
+        	console.log(item);
+            return Restangular.allUrl("geotab/eliminarZona/").customPOST(item.codigo);
         },
-/*
-        update:function(item){
-        	return item.put();
-        },
-*/	}
+
+	}
 }]);

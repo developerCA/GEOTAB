@@ -18,7 +18,7 @@ app.factory("sincronizarFactory", ["Restangular",
         
         sincronizarLozalizaciones:function(item){
          	 return Restangular.allUrl("geotab/procesarDatos").customPOST(item);
-       },
+        },
        
        generarReporte:function(item){
        	 return Restangular.allUrl("geotab/reporte").customPOST(item);

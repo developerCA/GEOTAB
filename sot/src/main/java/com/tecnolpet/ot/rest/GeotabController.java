@@ -232,7 +232,7 @@ public class GeotabController {
 		try {
 			respuestaDto.setEstado(Boolean.TRUE);
 			geoTabService.procesarLocalizaciones(procesaDatosGeotabDto);
-			// respuestaDto.setObjeto(geoTabService.devolverFechaProceso());
+			
 		} catch (Exception ex) {
 			respuestaDto.setEstado(Boolean.FALSE);
 			respuestaDto.setMensaje(ex.getMessage());
@@ -262,8 +262,7 @@ public class GeotabController {
 	public RespuestaDto procesarTableroHistorico(
 			@AuthenticationPrincipal UsuarioAuthenticate usuario, @RequestBody Date fecha) {
 		RespuestaDto respuestaDto = new RespuestaDto();
-		//System.out.print("Fecha: ");
-		//System.out.println(fecha);
+		
 		try {
 			respuestaDto.setEstado(Boolean.TRUE);
 			respuestaDto.setObjeto(geoTabService.devolverTableroHistorico(
@@ -284,6 +283,22 @@ public class GeotabController {
 
 		try {
 			geoTabService.registrarHoraProgramada(vlocalizacionDispositivo);
+			respuestaDto.setEstado(Boolean.TRUE);
+
+		} catch (Exception ex) {
+			respuestaDto.setEstado(Boolean.FALSE);
+			respuestaDto.setMensaje(ex.getMessage());
+		}
+
+		return respuestaDto;
+	}
+	
+	@RequestMapping(value = "/eliminarZona", method = RequestMethod.POST)
+	public RespuestaDto elimizarZona(@RequestBody Integer codigo){
+		RespuestaDto respuestaDto = new RespuestaDto();
+
+		try {
+			geoTabService.eliminarZona(codigo);
 			respuestaDto.setEstado(Boolean.TRUE);
 
 		} catch (Exception ex) {

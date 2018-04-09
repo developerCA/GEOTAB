@@ -184,15 +184,16 @@ public class GeoTabService {
 
 	}
 
-	public void eliminarDipositivo(Dispositivo dispositivo){
-		
-		localizacionDispositivoRepository.eliminarLocalizacionDipositivo(dispositivo);
+	public void eliminarDipositivo(Dispositivo dispositivo) {
+
+		localizacionDispositivoRepository
+				.eliminarLocalizacionDipositivo(dispositivo);
 		localizacionZonaRepository.eliminarLocalizacionZona(dispositivo);
 		localizacionRepository.eliminarLocalizacion(dispositivo);
 		dispositivoRepository.delete(dispositivo);
-		
-		
+
 	}
+
 	public TableroGeoTabDto devolverTableroHistorico(
 			UsuarioAuthenticate usuario, Date fecha) {
 		Ruta ruta = usuario.getRuta();
@@ -351,6 +352,14 @@ public class GeoTabService {
 
 	}
 
+	public void eliminarZona(Integer idZona) {
+
+		Zona zona = zonaRepository.findOne(idZona);
+
+		zona.setEstado(Boolean.FALSE);
+		zonaRepository.save(zona);
+	}
+
 	private TableroViewGeoTabDto armarZonaDispositivo(List<VTablero> datos,
 			List<ZonaTableroDto> zonas, DispositivoTableroDto dispositivo) {
 
@@ -474,8 +483,7 @@ public class GeoTabService {
 		cambiarFechaEstadoGenerado(procesaDatosGeotabDto.getFechaDispositivo());
 
 		Integer proceso = localizacionRepository.traerNumeroProceso();
-		System.out.println("Inicia Proceso:"+proceso);
-		
+		System.out.println("Inicia Proceso:" + proceso);
 
 		if (null == procesaDatosGeotabDto.getListaDatos()
 				|| procesaDatosGeotabDto.getListaDatos().isEmpty()) {
@@ -492,11 +500,9 @@ public class GeoTabService {
 		procesoLocalizacion.setFecha(new Date());
 		procesoLocalizacionRepository.save(procesoLocalizacion);
 
-	
-
 		for (LocalizazionesGeotabDto localizacion : procesaDatosGeotabDto
 				.getListaDatos()) {
-		
+
 			List<Dispositivo> listaDispositivo = dispositivoRepository
 					.findByCodigoDispositivo(localizacion.getDevice().getId());
 			if (null != listaDispositivo) {
@@ -514,7 +520,7 @@ public class GeoTabService {
 								.getLongitude());
 						localizacionModel.setProceso(proceso);
 						localizacionRepository.save(localizacionModel);
-						
+
 					}
 
 				} catch (Exception e) {
@@ -525,8 +531,7 @@ public class GeoTabService {
 
 		}
 
-		System.out.println("Finaliza registra proceso:"+proceso);
-		
+		System.out.println("Finaliza registra proceso:" + proceso);
 
 		procesaDatosGeotabDto.getFechaDispositivo().setEstado("PRO");
 		fechaDispositivoRepository.save(procesaDatosGeotabDto
@@ -537,7 +542,6 @@ public class GeoTabService {
 		List<VLocalizacionDispositivo> listaVDispositivos = vlocalizacionRepository
 				.findByProceso(proceso);
 
-		
 		for (VLocalizacionDispositivo vLocalizacion : listaVDispositivos) {
 
 			try {
@@ -575,7 +579,6 @@ public class GeoTabService {
 				} else {
 
 					if (zona.getZonaRetorno()) {
-						
 
 						if (listaDispositivosProceso.size() > 0) {
 							localizacionDispositivo = listaDispositivosProceso
@@ -590,7 +593,7 @@ public class GeoTabService {
 
 				if (null != localizacionDispositivo) {
 					if (zona.getInicioZonaRetorno()) {
-						
+
 						dispositivo.setRetorno(Boolean.TRUE);
 						dispositivoRepository.save(dispositivo);
 					}
@@ -699,14 +702,18 @@ public class GeoTabService {
 				if (null != configZonasPuntosDto.getListaZonas()) {
 
 					List<Zona> listaZonas = configZonasPuntosDto
-							.getListaZonas().stream()
-							.filter(z -> z.getRuta().getCodigo().equals(ruta.getCodigo()))
+							.getListaZonas()
+							.stream()
+							.filter(z -> z.getRuta().getCodigo()
+									.equals(ruta.getCodigo()))
 							.collect(Collectors.toList());
 
 					for (Zona zona : listaZonas) {
 						List<Punto> listaPuntos = configZonasPuntosDto
-								.getListaPuntos().stream()
-								.filter(p -> p.getZona().getCodigo().equals(zona.getCodigo()))
+								.getListaPuntos()
+								.stream()
+								.filter(p -> p.getZona().getCodigo()
+										.equals(zona.getCodigo()))
 								.collect(Collectors.toList());
 
 						boolean buscaParadaZona = PoligonoUtils
@@ -721,13 +728,13 @@ public class GeoTabService {
 				}
 
 			}
-			
-			System.out.println("Finaliza procesamiento:"+pl.getNumero());
+
+			System.out.println("Finaliza procesamiento:" + pl.getNumero());
 			pl.setEstado("PRO");
 			procesoLocalizacionRepository.save(pl);
-			
-			 procesarPasoDispositivos(pl.getNumero());
-			 liberarZonasGeneradas(pl.getNumero());
+
+			procesarPasoDispositivos(pl.getNumero());
+			liberarZonasGeneradas(pl.getNumero());
 		}
 
 	}
@@ -805,7 +812,6 @@ public class GeoTabService {
 
 			if (null != indentificadorRuta) {
 
-				System.out.println(indentificadorRuta);
 				Ruta ruta = rutaRepository
 						.findByIdentificador(indentificadorRuta);
 
@@ -932,6 +938,7 @@ public class GeoTabService {
 			zona.setRuta(ruta);
 			zona.setOrden(zonaGeotabDto.getComment());
 			zona.setTipoZona(tipoZona);
+			zona.setEstado(Boolean.TRUE);
 			if (null == zona.getZonaRetorno()) {
 				zona.setZonaRetorno(Boolean.FALSE);
 			}
@@ -942,6 +949,7 @@ public class GeoTabService {
 			zona.setRuta(ruta);
 			zona.setIdentificador(zonaGeotabDto.getId());
 			zona.setOrden(zonaGeotabDto.getComment());
+			zona.setEstado(Boolean.TRUE);
 			zona.setTipoZona(tipoZona);
 			zona.setTiempo(0);
 			zona.setInicioZona(Boolean.FALSE);
@@ -975,11 +983,11 @@ public class GeoTabService {
 
 		return dispositivoRepository.findByRuta(ruta);
 	}
-	
+
 	public List<Dispositivo> devolverDispositivos(Integer idRuta) {
 
-		Ruta ruta=rutaRepository.findOne(idRuta);
-		
+		Ruta ruta = rutaRepository.findOne(idRuta);
+
 		return dispositivoRepository.findByRuta(ruta);
 	}
 
@@ -995,7 +1003,8 @@ public class GeoTabService {
 
 	public List<Zona> traerZonas(Integer id) {
 		Ruta ruta = rutaRepository.findOne(id);
-		List<Zona> zonas = zonaRepository.findByRutaOrderByOrdenAsc(ruta);
+		List<Zona> zonas = zonaRepository.findByRutaAndEstadoOrderByOrdenAsc(
+				ruta, Boolean.TRUE);
 
 		return zonas;
 	}

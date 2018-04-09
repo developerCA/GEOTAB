@@ -46,8 +46,8 @@ public class Zona implements Serializable {
 	@JsonView(ViewOT.PublicView.class)
 	@Column(name="zona_retorno")
 	private Boolean zonaRetorno;
-	
-	
+	@JsonView(ViewOT.PublicView.class)
+	private Boolean estado;
 	
 	@JsonView(ViewOT.PublicView.class)
 	@Column(name="inicio_zona_retorno")
@@ -169,6 +169,14 @@ public class Zona implements Serializable {
 
 	public void setInicioZonaRetorno(Boolean inicioZonaRetorno) {
 		this.inicioZonaRetorno = inicioZonaRetorno;
+	}
+
+	public Boolean getEstado() {
+		return estado;
+	}
+
+	public void setEstado(Boolean estado) {
+		this.estado = estado;
 	}
 
 
